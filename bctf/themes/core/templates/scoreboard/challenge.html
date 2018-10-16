@@ -25,16 +25,28 @@
                             <textarea class="form-control" readonly rows="10" id="challenge_description">
                                 {{challenge.description}}
                             </textarea>
-                            
+
                             <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
                             {% if challenge.pk in solved_by_user %}
-                                Already solved
+                                <div class="alert alert-success">
+                                    <strong>Already Solved</strong>
+                                </div>
                             {% else %}
-                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..."><br />
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                            <div class="input-group mb-3">
+                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                                <div class="input-group-append">
+                                    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
                             {% endif %}
-                            
                         </form>
+
+                        {% if error %}
+                            <div class="alert alert-dismissible alert-danger">
+                                <button type="button" data-dismiss="alert" class="close">×</button>
+                                <strong>Oh snap! {{error}}</strong>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="solvedTab">
@@ -59,11 +71,15 @@
 </div>
 
 <script>                    
+
+    $('document').ready( function() {
+
         var form_options = {
             target: '#challengeModals',
-            success: function() {  }
+            success: function() { }
         }
         $('#flag-submit-form').ajaxForm(form_options);
+        
 
-
+    })
 </script>

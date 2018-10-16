@@ -43,10 +43,10 @@ class SubmitFlagView(FormView):
                     challenge=challenge,
                     account=self.request.user,
                 )
-                return render(self.request, 'scoreboard/flag_success.html', {'challenge_id': challenge_id})
+                return render(self.request, 'scoreboard/flag_success.html', {'challenge': challenge})
             else:
-                return render(self.request, 'scoreboard/flag_success.html', {'challenge_id': challenge_id})
+                return render(self.request, 'scoreboard/challenge.html', {'challenge': challenge, 'error': 'Wrong flag!'})
         else:
-            return render(self.request, 'scoreboard/flag_success.html', {'challenge_id': challenge_id})
+            return render(self.request, 'scoreboard/challenge.html', {'challenge': challenge, 'error': 'Already solved!'})
         
  
