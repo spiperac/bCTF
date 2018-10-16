@@ -10,7 +10,7 @@ from apps.challenges.forms import SubmitFlagForm
 class ChallengesListView(ListView):
     model = Challenge
     context_object_name = 'challenges'
-    template_name = 'scoreboard/list_challenges.html'
+    template_name = 'challenge/list_challenges.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -21,7 +21,7 @@ class ChallengesListView(ListView):
 
 class SubmitFlagView(FormView):
     form_class = SubmitFlagForm
-    template_name = 'scoreboard/challenge.html'
+    template_name = 'challenge/challenge.html'
 
     def get_context_data(self, **kwargs):
         context = super(SubmitFlagView, self).get_context_data(**kwargs)
@@ -33,8 +33,6 @@ class SubmitFlagView(FormView):
     def form_valid(self, form):
         challenge_id = form.cleaned_data['challenge_id']
         flag = form.cleaned_data['flag']
-        print(challenge_id)
-        print(flag)
         challenge = Challenge.objects.get(pk=challenge_id)
 
         if Solves.objects.filter(challenge=challenge, account=self.request.user).count() == 0:
@@ -43,10 +41,10 @@ class SubmitFlagView(FormView):
                     challenge=challenge,
                     account=self.request.user,
                 )
-                return render(self.request, 'scoreboard/flag_success.html', {'challenge': challenge})
+                return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
             else:
-                return render(self.request, 'scoreboard/challenge.html', {'challenge': challenge, 'error': 'Wrong flag!'})
+                return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'error': 'Wrong flag!'})
         else:
-            return render(self.request, 'scoreboard/challenge.html', {'challenge': challenge, 'error': 'Already solved!'})
+            return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'error': 'Already solved!'})
         
  
