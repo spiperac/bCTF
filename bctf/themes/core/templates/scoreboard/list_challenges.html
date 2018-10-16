@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block extra_js%}
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Typography -->
+    <div class="row tall-row">
+        <div class="col-lg-12">
+            <h1>Challenges</h1>
+            <hr>
+        </div>
+    </div>
+    <table class="challenge-table">
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td class="category">{{category}}</td>
+                {% for challenge in challenges %}
+                    {% if challenge.category == category and challenge.visible == True %}
+                        <td class="challenge">
+                            <a  value="{{challenge}}" 
+                                class="btn btn-info"
+                                href="#challengeModals"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                                {{challenge.name}}<br />{{challenge.points}}
+                            </a>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block modals %}
+<!-- Modal -->
+<div class="modal fade" id="challengeModals">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<script>
+    $('document').ready(function() {
+
+        $('#challengeModals').on('show.bs.modal', function (event) {
+            var modal = $(this)
+            var challengeID = $(event.relatedTarget).data('challenge-id')
+            var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
+            $.ajax({
+                url: formURL,
+                context: document.body
+            }).done(function(response) {
+                modal.html(response);
+            });
+        })
+
+    });
+</script>
+{% endblock %}

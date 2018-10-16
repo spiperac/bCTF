@@ -1,0 +1,13 @@
+.challenge-table {
+
+}
+
+.challenge-table td.category {
+    border-right: 2px solid black;
+    padding-bottom: 20px;
+}
+
+.challenge-table td.challenge {
+    padding-left: 30px;
+    padding-bottom: 20px;
+}

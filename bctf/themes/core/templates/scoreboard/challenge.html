@@ -1,0 +1,69 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">{{challenge.name}} {{challenge.points}} pts </h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a href="#challengeDetails" aria-selected="true" id="details-tab" aria-controls="challengeDetails" class="nav-link active" role="tab" data-toggle="tab">Details</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">Solved {{solvers.count}}</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="challengeDetails" aria-labelledby="home-tab">
+                    <div class="form-group">
+                        <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+                            {% csrf_token %}
+                            <textarea class="form-control" readonly rows="10" id="challenge_description">
+                                {{challenge.description}}
+                            </textarea>
+                            
+                            <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                            {% if challenge.pk in solved_by_user %}
+                                Already solved
+                            {% else %}
+                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..."><br />
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            {% endif %}
+                            
+                        </form>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="solvedTab">
+                    <table>
+                        <thead class="table">
+                            <th>Team</th>
+                            <th>Time</th>
+                        </thead>
+                        <tbody>
+                            {% for solve in solvers %}
+                            <tr>
+                                <td>{{solve.account.username}}</td>
+                                <td>{{solve.create_at}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>                    
+        var form_options = {
+            target: '#challengeModals',
+            success: function() {  }
+        }
+        $('#flag-submit-form').ajaxForm(form_options);
+
+
+</script>
