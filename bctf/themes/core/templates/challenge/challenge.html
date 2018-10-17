@@ -22,9 +22,7 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="challengeDetails" aria-labelledby="home-tab">
-                    <textarea class="form-control" readonly rows="10" id="challenge_description">
                         {{challenge.description}}
-                    </textarea>
                     <div class="form-group">
                         <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                             {% csrf_token %}
@@ -38,7 +36,7 @@
                             {% endif %}
 
                             <br />
-                            
+
                             {% if challenge.pk in solved_by_user %}
                                 <div class="alert alert-success">
                                     <strong>Already Solved</strong>
