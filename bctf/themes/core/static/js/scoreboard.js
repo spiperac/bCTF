@@ -1,12 +1,12 @@
 $('document').ready(function() {
     update_feed();
-    scoregraph();
-    setInterval(update_feed, 30000); // Update scores every 5 minutes
+    setInterval(update_feed, 120000); // Update scores every 2 minutes
 
 })
 
 function update_feed() {
     clean_table();
+    scoregraph();
     populate_scores();
 }
 
@@ -94,22 +94,32 @@ function scoregraph () {
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)',
             hovermode: 'closest',
+            height: 400,
+            titlefont:{
+                color: 'white',
+            },
             xaxis: {
                 showgrid: false,
                 showspikes: true,
+                color: 'white',
             },
             yaxis: {
                 showgrid: false,
                 showspikes: true,
+                color: 'white',
             },
             legend: {
-                "orientation": "h"
+                "orientation": "h",
+                font: {
+                    color: 'white',
+                    size: 15,
+                },
             }
         };
 
         $('#score-graph').empty(); // Remove spinners
         Plotly.newPlot('score-graph', traces, layout, {
-            // displayModeBar: false,
+            displayModeBar: false,
             displaylogo: false
         });
     });
@@ -137,4 +147,9 @@ function colorhash(str) {
         hash |= 0; // Convert to 32bit integer
     }
     return hash;
+};
+
+
+window.onresize = function () {
+    Plotly.Plots.resize(document.getElementById('score-graph'));
 };

@@ -69,7 +69,7 @@
                             {% for solve in challenge.solves_set.all %}
                             <tr>
                                 <td>{{solve.account.username}}</td>
-                                <td>{{solve.create_at}}</td>
+                                <td>{{solve.created_at}}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

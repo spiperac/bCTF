@@ -6,5 +6,4 @@ app_name = 'api'
 urlpatterns = [
     path('scores/', scores, name='score'),
     path('top/', top_scores, name='top'),
-
 ]
