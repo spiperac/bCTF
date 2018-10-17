@@ -43,8 +43,8 @@ class SubmitFlagView(FormView):
                 )
                 return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
             else:
-                return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'error': 'Wrong flag!'})
+                return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
-            return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'error': 'Already solved!'})
+            return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
         
  

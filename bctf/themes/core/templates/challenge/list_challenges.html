@@ -14,7 +14,10 @@
             <hr>
         </div>
     </div>
-    <table class="challenge-table">
+    <div class="text-center" id="challenge-loader">
+        <div class="loader"></div>
+    </div>
+    <table class="challenge-table" id="challenge-table" style="display:none">
         <tbody>
         {% for category in categories %}
             <tr>
@@ -42,7 +45,7 @@
 
 {% block modals %}
 <!-- Modal -->
-<div class="modal fade" id="challengeModals">
+<div class="modal fade" tabindex="-1" id="challengeModals">
     <!-- Hack to close modal from inside another view -->
     <div class="modal-dialog modal-dialog-centered" role="document">
     </div>
@@ -50,6 +53,8 @@
 
 <script>
     $('document').ready(function() {
+        $('#challenge-loader').hide();
+        $('#challenge-table').show();
 
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
