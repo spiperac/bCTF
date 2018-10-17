@@ -16,14 +16,9 @@
     <link href="{% static 'css/scoreboard.css' %}" rel="stylesheet">
     <link href="{% static 'fonts/css/all.min.css' %}" rel="stylesheet">
 
-    <!-- JavaScript files -->
+    <!-- Early JS-->
+    <script src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-    {% block extra_js%}
-
-    {% endblock %}
 
 </head>
 
@@ -73,5 +68,13 @@
     {% block modals %}
 
     {% endblock %}
+
+<!-- JavaScript files -->
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+{% block extra_js%}
+
+{% endblock %}
 </body>
 </html>
