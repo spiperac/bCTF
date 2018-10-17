@@ -16,7 +16,7 @@
                         <a href="#hintsTab" aria-controls="hintsTab" id="hints-tab" class="nav-link" role="tab" data-toggle="tab">Hints {{challenge.hint_set.count}}</a>
                     </li>
                 <li class="nav-item">
-                    <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">Solved {{solvers.count}}</a>
+                    <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">Solved {{challenge.solves_set.all.count}}</a>
                 </li>
             </ul>
             <!-- Tab panes -->
@@ -29,11 +29,7 @@
                         <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                             {% csrf_token %}
                             <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
-                            {% if challenge.pk in solved_by_user %}
-                                <div class="alert alert-success">
-                                    <strong>Already Solved</strong>
-                                </div>
-                            {% else %}
+
                             <br />
                             {% if challenge.attachment_set.count > 0 %}
                                 {% for attachment in challenge.attachment_set.all %}
@@ -42,6 +38,13 @@
                             {% endif %}
 
                             <br />
+                            
+                            {% if challenge.pk in solved_by_user %}
+                                <div class="alert alert-success">
+                                    <strong>Already Solved</strong>
+                                </div>
+                            {% else %}
+
                             <div class="input-group mb-3">
                                 <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
                                 <div class="input-group-append">
@@ -65,7 +68,7 @@
                             <th>Time</th>
                         </thead>
                         <tbody>
-                            {% for solve in solvers %}
+                            {% for solve in challenge.solves_set.all %}
                             <tr>
                                 <td>{{solve.account.username}}</td>
                                 <td>{{solve.create_at}}</td>

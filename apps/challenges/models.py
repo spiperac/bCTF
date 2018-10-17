@@ -37,6 +37,6 @@ class Attachment(models.Model):
 
 
 class Solves(models.Model):
-    challenge = models.ForeignKey(Challenge, related_name='solved', on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now=True)
