@@ -59,7 +59,8 @@
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             var challengeID = $(event.relatedTarget).data('challenge-id')
-            var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
+            //var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
+            var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
                 url: formURL,
                 context: document.body

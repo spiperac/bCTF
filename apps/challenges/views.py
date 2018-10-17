@@ -3,11 +3,12 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.generic import TemplateView, ListView, FormView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.challenges.models import Challenge, Category, Solves
 from apps.challenges.forms import SubmitFlagForm
 
 
-class ChallengesListView(ListView):
+class ChallengesListView(LoginRequiredMixin, ListView):
     model = Challenge
     context_object_name = 'challenges'
     template_name = 'challenge/list_challenges.html'
@@ -19,7 +20,7 @@ class ChallengesListView(ListView):
         context['solves'] = Solves.objects.all()
         return context
 
-class SubmitFlagView(FormView):
+class SubmitFlagView(LoginRequiredMixin, FormView):
     form_class = SubmitFlagForm
     template_name = 'challenge/challenge.html'
 

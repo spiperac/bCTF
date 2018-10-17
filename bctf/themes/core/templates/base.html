@@ -13,6 +13,7 @@
     <link href="{% static 'css/news.css' %}" rel="stylesheet">
     <link href="{% static 'css/challenge.css' %}" rel="stylesheet">
     <link href="{% static 'css/loader.css' %}" rel="stylesheet">
+    <link href="{% static 'css/scoreboard.css' %}" rel="stylesheet">
     <link href="{% static 'fonts/css/all.min.css' %}" rel="stylesheet">
 
     <!-- JavaScript files -->
@@ -35,21 +36,29 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="navbar-nav navbar-left">
-                    <li class="nav-item"><a class="nav-link" href="/challenges/">Scoreboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/challenges/"><span class="glyphicon glyphicon-screenshot"></span> Challenges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">Scoreboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}"><span class="glyphicon glyphicon-screenshot"></span> Challenges</a></li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Profile
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Profile</a>
-                            <a class="dropdown-item" href="#">Settings</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                        </div>
-                    </li>
+                    {% if user.is_superuser %}
+                    <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Profile({{user.username}})
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

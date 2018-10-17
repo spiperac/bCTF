@@ -8,5 +8,18 @@ class Account(AbstractUser):
     def __str__(self):
         return self.username
     
+    @property
+    def points(self):
+        if self.solves_set.all().count() > 0:
+            points = self.solves_set.all().aggregate(total_points=models.Sum('challenge__points'))
+            if points is None:
+                points = 0
+                return points
+            else:
+                return points['total_points']
+        else:
+            points = 0
+            return points
+            
     def rank(self):
         pass
