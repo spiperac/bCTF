@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from apps.accounts.models import Account
 
@@ -30,6 +31,9 @@ class Flag(models.Model):
 class Attachment(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     data = models.FileField(upload_to='media/attachments/')
+
+    def filename(self):
+        return os.path.basename(self.data.name)
 
 
 class Solves(models.Model):

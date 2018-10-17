@@ -13,25 +13,35 @@
                     <a href="#challengeDetails" aria-selected="true" id="details-tab" aria-controls="challengeDetails" class="nav-link active" role="tab" data-toggle="tab">Details</a>
                 </li>
                 <li class="nav-item">
+                        <a href="#hintsTab" aria-controls="hintsTab" id="hints-tab" class="nav-link" role="tab" data-toggle="tab">Hints {{challenge.hint_set.count}}</a>
+                    </li>
+                <li class="nav-item">
                     <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">Solved {{solvers.count}}</a>
                 </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="challengeDetails" aria-labelledby="home-tab">
+                    <textarea class="form-control" readonly rows="10" id="challenge_description">
+                        {{challenge.description}}
+                    </textarea>
                     <div class="form-group">
                         <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                             {% csrf_token %}
-                            <textarea class="form-control" readonly rows="10" id="challenge_description">
-                                {{challenge.description}}
-                            </textarea>
-
                             <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
                             {% if challenge.pk in solved_by_user %}
                                 <div class="alert alert-success">
                                     <strong>Already Solved</strong>
                                 </div>
                             {% else %}
+                            <br />
+                            {% if challenge.attachment_set.count > 0 %}
+                                {% for attachment in challenge.attachment_set.all %}
+                                    <a role="button" class="btn" href="{{attachment.data.url}}"><i class="fas fa-download"></i> {{attachment.filename}}</a>
+                                {% endfor %}
+                            {% endif %}
+
+                            <br />
                             <div class="input-group mb-3">
                                 <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
                                 <div class="input-group-append">
@@ -40,7 +50,6 @@
                             </div>
                             {% endif %}
                         </form>
-
                         {% if error %}
                             <div class="alert alert-dismissible alert-danger">
                                 <button type="button" data-dismiss="alert" class="close">×</button>
@@ -64,6 +73,13 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="hintsTab">
+                    <ul>
+                        {% for hint in challenge.hint_set.all %}
+                        <li>{{hint.text}}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
