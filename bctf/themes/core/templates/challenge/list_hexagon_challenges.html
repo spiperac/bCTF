@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_js%}
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/honeycombs.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron jt-scores">
+    <!-- Typography -->
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <h1>Challenges <i class="fas fa-flag-checkered"></i></h1>
+            <hr>
+        </div>
+    </div>
+    <div class="col-md-12 text-center" id="challenge-loader">
+        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+    </div>
+
+    <div class="honeycombs">
+
+            {% for challenge in challenges %}
+                    <a  value="{{challenge}}" 
+                    class="comblink"
+                    href="#challengeModals"
+                    data-toggle="modal"
+                    data-target="#challengeModals"
+                    data-challenge-id="{{challenge.pk}}"
+                    >
+                    <div class="comb">
+
+                        <div class="front-content">
+                            {% if challenge.pk in solved_by_user.all %}
+                                <p style="color:green !important">{{challenge.category}}</p>
+                                <p style="color:green !important">{{challenge.points}}</p>
+                                <i class="fas fa-check"></i>
+                            {% else %}
+                                <p>{{challenge.category}}</p>
+                                <p style="color:grey !important">{{challenge.points}}</p>
+                            {% endif %}
+                        </div>
+                        <div class="back-content">
+                            {% if challenge.pk in solved_by_user.all %}
+                                <p style="color:green !important"><b>{{challenge.name}}</b></p>
+                                <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
+                                <i class="fas fa-check"></i>
+                            {% else %}
+                                <p><b>{{challenge.name}}</b></p>
+                                <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </a>
+            {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block modals %}
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" id="challengeModals">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<script>
+    $('document').ready(function() {
+        $('#challenge-loader').hide();
+        $('#challenge-table').show();
+
+        $('.honeycombs').honeycombs({
+            combWidth: 200,  // width of the hexagon
+            margin: -20,		// spacing between hexagon
+            threshold: 3  	// hide placeholder hexagons when number of hexagons in a row is more than the threshold number
+        });
+    
+        $('#challengeModals').on('show.bs.modal', function (event) {
+            var modal = $(this)
+            var challengeID = $(event.relatedTarget).data('challenge-id')
+            //var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
+            var formURL = `/challenges/${challengeID}/flag/`
+            $.ajax({
+                url: formURL,
+                context: document.body
+            }).done(function(response) {
+                modal.html(response);
+            });
+        })
+
+    });
+</script>
+{% endblock %}
