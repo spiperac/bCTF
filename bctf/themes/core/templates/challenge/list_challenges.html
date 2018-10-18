@@ -6,16 +6,16 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="jumbotron jt-scores">
     <!-- Typography -->
-    <div class="row tall-row">
+    <div class="row tall-row text-center">
         <div class="col-lg-12">
-            <h1>Challenges</h1>
+            <h1>Challenges <i class="fas fa-flag-checkered"></i></h1>
             <hr>
         </div>
     </div>
-    <div class="text-center" id="challenge-loader">
-        <div class="loader"></div>
+    <div class="col-md-12 text-center" id="challenge-loader">
+        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
     </div>
     <table class="challenge-table" id="challenge-table" style="display:none">
         <tbody>
@@ -25,13 +25,25 @@
                 {% for challenge in challenges %}
                     {% if challenge.category == category and challenge.visible == True %}
                         <td class="challenge">
+                            {% if challenge.pk in solved_by_user.all %}
                             <a  value="{{challenge}}" 
-                                class="btn btn-primary  btn-challenge"
+                                class="btn btn-success btn-challenge"
                                 href="#challengeModals"
                                 data-toggle="modal"
                                 data-target="#challengeModals"
                                 data-challenge-id="{{challenge.pk}}"
                                 >
+                                <i class="fas fa-check"></i>
+                            {% else %}
+                            <a  value="{{challenge}}" 
+                                class="btn btn-primary btn-challenge"
+                                href="#challengeModals"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                                <i class="fas fa-crosshairs"></i>
+                            {% endif %}
                                 {{challenge.name}}<br />{{challenge.points}}
                             </a>
                         </td>
@@ -41,6 +53,8 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+
 {% endblock %}
 
 {% block modals %}
@@ -55,7 +69,7 @@
     $('document').ready(function() {
         $('#challenge-loader').hide();
         $('#challenge-table').show();
-
+    
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             var challengeID = $(event.relatedTarget).data('challenge-id')

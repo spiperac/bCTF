@@ -11,7 +11,7 @@ from apps.challenges.forms import SubmitFlagForm
 class ChallengesListView(LoginRequiredMixin, ListView):
     model = Challenge
     context_object_name = 'challenges'
-    template_name = 'challenge/list_challenges.html'
+    template_name = 'challenge/list_hexagon_challenges.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
