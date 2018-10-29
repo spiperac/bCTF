@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="content">
+        <div class="row">
+            <div class="col-8">
+
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">Profile</div>
+                    <div class="card-body">
+                        <h5 class="card-title">#1 {{object.username}}</h5>
+                    </div>
+                    <div class="card-footer">
+                        Points: {{object.points}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4">
+                <h4>History</h4>
+                <h6>Solved</h6>
+                {% if solved.count == 0 %}
+                    <p>Nothing solved yet!</p>
+                {% else %}
+                <ul>
+                    {% for solve in solved %}
+                        <li>{{solve.challenge.name}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <h6>First bloods</h6>
+                {% if solved.count == 0 %}
+                    <p>No first bloods!</p>
+                {% else %}
+                <ul>
+                    {% for first_blood in first_bloods %}
+                        <li>{{first_blood.challenge.name}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

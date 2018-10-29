@@ -49,22 +49,26 @@
             </div>
             <div class="col-4">
                 <h4><i class="fas fa-tint fa-danger" style="color:red"></i> First Bloods!</h4>
-                <table class="table table-borderless">
-                    <thead>
-                        <th>Team</th>
-                        <th>Challenge</th>
-                        <th>Time</th>
-                    </thead>
-                    <tbody>
-                        {% for first_blood in first_bloods %}
-                        <tr>
-                            <td><a href="#" style="color:green">{{first_blood.account.username}}</a></td>
-                            <td>{{first_blood.challenge.name}}</td>
-                            <td>{{first_blood.created_at}}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                {% if first_bloods.count == 0 %}
+                    <p>No first bloods yet!</p>
+                {% else %}
+                    <table class="table table-borderless">
+                        <thead>
+                            <th>Team</th>
+                            <th>Challenge</th>
+                            <th>Time</th>
+                        </thead>
+                        <tbody>
+                            {% for first_blood in first_bloods %}
+                            <tr>
+                                <td><a href="{% url 'profile' first_blood.account.pk %}" style="color:green">{{first_blood.account.username}}</a></td>
+                                <td>{{first_blood.challenge.name}}</td>
+                                <td>{{first_blood.created_at}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
 
                 <h4><i class="fas fa-crosshairs" style="color:black"></i> Solves stats</h4>
                 <table class="table table-borderless">
@@ -74,10 +78,12 @@
                     </thead>
                     <tbody>
                         {% for challenge in challenges %}
-                        <tr>
-                            <td>{{challenge.name}}</td>
-                            <td>{{challenge.solves_set.all.count}}</td>
-                        </tr>
+                            {% if challenge.solves_set.all.count > 0 %}
+                                <tr>
+                                    <td>{{challenge.name}}</td>
+                                    <td>{{challenge.solves_set.all.count}}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

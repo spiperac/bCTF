@@ -44,7 +44,7 @@
                                     Profile({{user.username}})
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="{% url 'profile' user.pk %}">Profile</a>
                                 <a class="dropdown-item" href="#">Settings</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
