@@ -36,7 +36,8 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     {% if user.is_superuser %}
-                    <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'administration:informations' %}">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/">DjangoAdmin</a></li>
                     {% endif %}
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">

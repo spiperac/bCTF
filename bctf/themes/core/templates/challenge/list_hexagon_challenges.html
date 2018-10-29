@@ -25,6 +25,7 @@
         <div class="row">
             <div class="col-8">
                 {% for challenge in challenges %}
+                    {% if challenge.visible %}
                         <a value="{{challenge}}" 
                         href="#challengeModals"
                         data-toggle="modal"
@@ -45,6 +46,7 @@
                                 </span>
                             </span>
                         </a>
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="col-4">
