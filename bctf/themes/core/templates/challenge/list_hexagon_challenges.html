@@ -25,42 +25,33 @@
         <div class="row">
             <div class="col-8">
                 {% for challenge in challenges %}
-                    {% if challenge.pk in solved_by_user.all %}
-
                         <a value="{{challenge}}" 
                         href="#challengeModals"
                         data-toggle="modal"
                         data-target="#challengeModals"
                         data-challenge-id="{{challenge.pk}}">
                             <span class="hb hb-md hb-custom">
-                                <span class="front-btn">
-                                    <p style="color:green !important">{{challenge.category}}</p>
-                                    <p style="color:green !important">{{challenge.points}}</p>
-                                </span>
-                                <span class="back-btn">
-                                    <p style="color:green !important"><b>{{challenge.name}}</b></p>
-                                    <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
-                                </span>
+                                {% if challenge.pk in solved_by_user.all %}
+                                    <span class="front-btn success">
+                                        <p>{{challenge.category}}</p>
+                                        <p>{{challenge.points}}</p>
+                                    </span>
+                                    <span class="back-btn success">
+                                        <p><b>{{challenge.name}}</b></p>
+                                        <p>Solved: {{challenge.solves_set.all.count}}</p>
+                                    </span>
+                                {% else %}
+                                    <span class="front-btn">
+                                        <p>{{challenge.category}}</p>
+                                        <p style="color:grey !important">{{challenge.points}}</p>
+                                    </span>
+                                    <span class="back-btn">
+                                        <p><b>{{challenge.name}}</b></p>
+                                        <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
+                                    </span>
+                                {% endif %}
                             </span>
                         </a>
-                    {% else %}
-                        <a value="{{challenge}}" 
-                        href="#challengeModals"
-                        data-toggle="modal"
-                        data-target="#challengeModals"
-                        data-challenge-id="{{challenge.pk}}">
-                            <span class="hb hb-md hb-custom">
-                                <span class="front-btn">
-                                    <p>{{challenge.category}}</p>
-                                    <p style="color:grey !important">{{challenge.points}}</p>
-                                </span>
-                                <span class="back-btn">
-                                    <p><b>{{challenge.name}}</b></p>
-                                    <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
-                                </span>
-                            </span>
-                        </a>
-                    {% endif %}
                 {% endfor %}
             </div>
             <div class="col-4">
@@ -74,7 +65,7 @@
                     <tbody>
                         {% for first_blood in first_bloods %}
                         <tr>
-                            <td>{{first_blood.account.username}}</td>
+                            <td><a href="#" style="color:green">{{first_blood.account.username}}</a></td>
                             <td>{{first_blood.challenge.name}}</td>
                             <td>{{first_blood.created_at}}</td>
                         </tr>
@@ -82,7 +73,7 @@
                     </tbody>
                 </table>
 
-                <h4><i class="fas fa-skull-crossbones" style="color:black"></i> Solves stats</h4>
+                <h4><i class="fas fa-crosshairs" style="color:black"></i> Solves stats</h4>
                 <table class="table table-borderless">
                     <thead>
                         <th>Challenge</th>

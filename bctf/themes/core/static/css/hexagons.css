@@ -344,5 +344,13 @@ inv 		= Inverse Behaver of buttons
 .back-btn > p {
 	line-height: 1.1;
 }
+
+.front-btn.success {
+	color:green !important;
+}
+
+.back-btn.success { 
+	color:green !important;
+}
 /* 5.4 - Custom Button hover colors End
 -------------------------------------------------*/
