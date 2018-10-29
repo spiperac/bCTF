@@ -1,0 +1,348 @@
+/* ---------------------------------------------------------------------- 
+* Product Name: CSS3 Hexagon Buttons
+* Product URI: http://shariarbd.com/demo/css3-hexagon-buttons/
+* Author: Shariar
+* Author URI: http://shariarbd.com/
+* Description: CSS3 Hexagon Buttons created with pure css3 by Shariar
+* Version: 1.0.1
+* License: The MIT License (MIT)
+* Tags: CSS3 Hexagon Buttons, social buttons, buttons
+* ---------------------------------------------------------------------- */
+
+
+/* 1.0 - Class Description 
+------------------------------------------------------------------------ 
+
+hb    		= Hexagon Buttons
+hb-custom 	= Custom Hexagon Buttons
+hb-lg 		= Large Hexagon        = width : 256px
+hb-md 		= Medium Hexagon       = width : 128px
+hb-sm 		= Small Hexagon        = width : 64px
+hb-xs 		= Extra Small Hexagon  = width : 32px
+spin		= Spin hole button on hover
+spin-icon	= Spin icon on hover
+inv 		= Inverse Behaver of buttons 
+
+* 1.0 -Class Description End
+------------------------------------------------------------------------*/
+
+
+
+
+/* 2.0 - Button style
+------------------------------------------------------------------------*/
+
+/* 2.1 - Default Button style
+-------------------------------------------------*/
+.hb {
+	display: inline-block;
+	position:relative;
+	text-align: center; /*  Default text align center */
+	z-index: 0;
+	
+}
+
+.hb:before,
+.hb:after {
+	position: absolute;
+	content: "";  
+	left: -1px;
+	top: 0;
+	z-index: -1;
+}
+
+.hb:before {
+	-webkit-transform: rotate(60deg);
+	-moz-transform: rotate(60deg);
+	-ms-transform: rotate(60deg);
+	-o-transform: rotate(60deg);
+	transform: rotate(60deg);
+}
+
+.hb:after {
+	-webkit-transform: rotate(-60deg);
+	-moz-transform: rotate(-60deg);
+	-ms-transform: rotate(-60deg);
+	-o-transform: rotate(-60deg);
+	transform: rotate(-60deg);
+}
+
+.hb i {
+	z-index: 9;
+	-webkit-transition: all .25s ease;
+	   -moz-transition: all .25s ease;
+	    -ms-transition: all .25s ease;
+	     -o-transition: all .25s ease;
+	        transition: all .25s ease;
+}
+
+
+.hb,
+.hb:before,
+.hb:after { 
+	 box-sizing: border-box;
+
+	 /* default transition time is set .25s = 250 millisecond  
+	 Uncomment following if you want to set transition on hexagon color change */ 
+
+	 -webkit-transition: all .25s ease;
+	   -moz-transition: all .25s ease;
+	    -ms-transition: all .25s ease;
+	     -o-transition: all .25s ease;
+	        transition: all .25s ease;
+}
+
+
+/* 2.1 - Default Button style End
+-------------------------------------------------*/
+
+
+
+/* 2.2 - Large Button style 
+-------------------------------------------------*/
+
+.hb-lg {
+	line-height: 150px;
+	font-size: 150px;
+	margin: 74px 0px; /* Original output, margin 0 of the button */ 
+	/*margin: 89px 15px;*/ /* New output, margin 15px of the button,  74 + 15 = 89 */  
+}
+.hb-lg ,
+.hb-lg:before,
+.hb-lg:after { 
+	height: 148px;
+	width: 256px; 
+} 
+
+/* 2.2 - Large Button style  End
+-------------------------------------------------*/
+
+
+
+/* 2.3 - Medium Button style 
+-------------------------------------------------*/
+
+.hb-md {
+	line-height: 74px;
+	font-size: 74px;
+	margin: 37px 0px; /* Original output, margin 0 of the button */ 
+	/*margin: 52px 15px;*/ /* New output, margin 15px of the button,  37 + 15 = 52 */ 
+}
+.hb-md ,
+.hb-md:before ,
+.hb-md:after {
+	height: 74px;
+	width: 128px; 
+} 
+
+/* 2.3 - Medium Button style End
+-------------------------------------------------*/
+
+
+
+/* 2.4 - Small Button style 
+-------------------------------------------------*/
+
+.hb-sm {
+	line-height: 37px;
+	font-size: 37px;
+	margin: 18.5px 0px; /* Original output, margin 0 of the button */ 
+	/*margin: 33.5px 15px;*/ /* New output, margin 15px of the button,  18.5 + 15 = 33.5 */ 
+	
+}
+.hb-sm ,
+.hb-sm:before ,
+.hb-sm:after {
+	height: 37px;
+	width: 64px; 
+} 
+
+/* 2.4 - Small Button style  End
+-------------------------------------------------*/
+
+
+
+/* 2.5 - Extra Small Button style 
+-------------------------------------------------*/
+.hb-xs {
+	line-height: 18.5px;
+	font-size: 18.5px;
+	margin: 9.5px 0px; /* Original output, margin 0 of the button */ 
+	/*margin: 33.5px 15px;*/ /* New output, margin 15px of the button,  9.5 + 15 = 24.5 */ 
+}
+.hb-xs ,
+.hb-xs:before ,
+.hb-xs:after {
+	height:18.5px;
+	width:32px; 
+}
+
+/* 2.5 - Extra Small Button style  End
+-------------------------------------------------*/
+
+
+
+/* 2.0 - Button style End
+------------------------------------------------------------------------*/
+
+
+
+/* 3.0 - Margin of hexagon
+------------------------------------------------------------------------*/
+.hb-lg-margin {
+	margin: 15px;
+}
+.hb-md-margin {
+	margin: 15px;
+}
+.hb-sm-margin {
+	margin: 15px;
+}
+.hb-xs-margin {
+	margin: 15px;
+}
+.hb-lg-margin,
+.hb-md-margin,
+.hb-sm-margin,
+.hb-xs-margin {
+	display: inline-block;
+	overflow: hidden;
+}
+.hb-lg-margin {
+	height: 296px;
+	width: 256px;
+}
+.hb-md-margin {
+	height: 148px;
+	width: 128px;
+}
+.hb-sm-margin {
+	height: 74px;
+	width: 64px;
+}
+.hb-xs-margin {
+	height: 38px;
+	width: 32px;
+}
+
+/* 3.0 - Margin of hexagon End
+------------------------------------------------------------------------*/
+
+
+
+/* 4.0 - Buttons Effects
+------------------------------------------------------------------------*/
+.spin,
+.spin-icon i {
+	-webkit-transition: -webkid-transform .25s  ease;
+	   -moz-transition: -moz-transform .25s  ease;
+	    -ms-transition: -ms-transform .25s  ease;
+	     -o-transition: -o-transform .25s  ease;
+	        transition: transform .25s  ease;
+}
+
+.spin-icon:hover i,
+.spin:hover {
+	-webkit-transform:rotate(360deg);
+	   -moz-transform:rotate(360deg);
+	    -ms-transform:rotate(360deg);
+	     -o-transform:rotate(360deg);
+			transform:rotate(360deg);	
+}
+/*4.0 - Buttons Effects
+------------------------------------------------------------------------*/
+
+
+
+
+/* 5.0 - Buttons Color
+------------------------------------------------------------------------*/
+/* 5.1 - Default Colors
+-------------------------------------------------*/
+.hb,
+.hb:before,
+.hb:after {
+	background-color: #2c3e50;  /*  Default background color  */ 
+	border-left:1px solid #2c3e50;
+	border-right:1px solid #2c3e50;
+	color: #2ecc71; /* Default font color */
+}
+/* 5.1 - Default Colors End
+-------------------------------------------------*/
+
+
+/* 5.2 - Default hover colors
+-------------------------------------------------*/
+.hb:hover,
+.hb:hover:before,
+.hb:hover:after {
+	background: transparent;  
+	border-left:1px solid #2ecc71;
+	border-right:1px solid #2ecc71;  
+	color: #2ecc71; /* Default hover font color */
+}
+/* 5.2 - Default hover colors end
+-------------------------------------------------*/
+
+
+
+/* 5.3 - Custom Button colors
+-------------------------------------------------*/
+.hb-custom,
+.hb-custom:before,
+.hb-custom:after {
+	background: #000000 !important;  /*  Custom background color  */
+	color: white!important; /* Custom font color */
+	font-size:14px; /* Custom font size */
+	border-left:1px solid #000000 !important;;
+	border-right:1px solid #394744 !important;; 
+}
+
+.hb-custom > .front-btn {
+	padding-top: 10px;
+	display: inline-block;
+}
+.hb-custom > .back-btn {
+	display: none;
+}
+/* 5.3 - Custom Button colors End
+-------------------------------------------------*/
+
+
+
+/* 5.4 - Custom Button hover colors
+-------------------------------------------------*/
+.hb-custom:hover,
+.hb-custom:hover:after,
+.hb-custom:hover:before {
+	background: #000000 !important;  
+	border-left:1px solid #000000 !important;;
+	border-right:1px solid #f1c40f !important;; 
+	color: white!important; /* Custom hover font color */
+}
+
+.hb-custom:hover,
+.hb-custom:hover:before,
+.hb-custom:hover:after {
+	background: #000000 !important;  
+	border-left:1px solid #000000 !important;;
+	border-right:1px solid #f1c40f !important;; 
+	color: white!important; /* Custom hover font color */
+}
+.hb-custom:hover > .front-btn {
+	display: none;
+}
+.hb-custom:hover > .back-btn {
+	padding-top: 10px;
+	display: block;
+}
+
+.front-btn > p {
+	line-height: 1.1;
+}
+
+.back-btn > p {
+	line-height: 1.1;
+}
+/* 5.4 - Custom Button hover colors End
+-------------------------------------------------*/

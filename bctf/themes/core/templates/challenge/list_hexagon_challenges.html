@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block extra_js%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/hexagons.css' %}">
+
     <script src="{% static 'js/jquery.form.js' %}"></script>
-    <script src="{% static 'js/honeycombs.js' %}"></script>
+    <script src="{% static 'js/hexagons.min.js' %}"></script>
 
 {% endblock %}
 
@@ -20,43 +22,45 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
     </div>
 
-    <div class="honeycombs">
+    {% for challenge in challenges %}
+        {% if challenge.pk in solved_by_user.all %}
 
-            {% for challenge in challenges %}
-                    <a  value="{{challenge}}" 
-                    class="comblink"
-                    href="#challengeModals"
-                    data-toggle="modal"
-                    data-target="#challengeModals"
-                    data-challenge-id="{{challenge.pk}}"
-                    >
-                    <div class="comb">
+            <a value="{{challenge}}" 
+            href="#challengeModals"
+            data-toggle="modal"
+            data-target="#challengeModals"
+            data-challenge-id="{{challenge.pk}}">
+                <span class="hb hb-md hb-custom">
+                    <span class="front-btn">
+                        <p style="color:green !important">{{challenge.category}}</p>
+                        <p style="color:green !important">{{challenge.points}}</p>
+                    </span>
+                    <span class="back-btn">
+                        <p style="color:green !important"><b>{{challenge.name}}</b></p>
+                        <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
+                    </span>
+                </span>
+            </a>
+        {% else %}
+            <a value="{{challenge}}" 
+            href="#challengeModals"
+            data-toggle="modal"
+            data-target="#challengeModals"
+            data-challenge-id="{{challenge.pk}}">
+                <span class="hb hb-md hb-custom">
+                    <span class="front-btn">
+                        <p>{{challenge.category}}</p>
+                        <p style="color:grey !important">{{challenge.points}}</p>
+                    </span>
+                    <span class="back-btn">
+                        <p><b>{{challenge.name}}</b></p>
+                        <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
+                    </span>
+                </span>
+            </a>
+        {% endif %}
+    {% endfor %}
 
-                        <div class="front-content">
-                            {% if challenge.pk in solved_by_user.all %}
-                                <p style="color:green !important">{{challenge.category}}</p>
-                                <p style="color:green !important">{{challenge.points}}</p>
-                                <i class="fas fa-check"></i>
-                            {% else %}
-                                <p>{{challenge.category}}</p>
-                                <p style="color:grey !important">{{challenge.points}}</p>
-                            {% endif %}
-                        </div>
-                        <div class="back-content">
-                            {% if challenge.pk in solved_by_user.all %}
-                                <p style="color:green !important"><b>{{challenge.name}}</b></p>
-                                <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
-                                <i class="fas fa-check"></i>
-                            {% else %}
-                                <p><b>{{challenge.name}}</b></p>
-                                <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                    </a>
-            {% endfor %}
-
-    </div>
 </div>
 
 {% endblock %}
@@ -73,13 +77,6 @@
     $('document').ready(function() {
         $('#challenge-loader').hide();
         $('#challenge-table').show();
-
-        $('.honeycombs').honeycombs({
-            combWidth: 200,  // width of the hexagon
-            margin: -20,		// spacing between hexagon
-            threshold: 3  	// hide placeholder hexagons when number of hexagons in a row is more than the threshold number
-        });
-    
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             var challengeID = $(event.relatedTarget).data('challenge-id')
