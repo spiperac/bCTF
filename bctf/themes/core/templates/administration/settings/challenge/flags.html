@@ -7,14 +7,16 @@
         </button>
         </div>
         <div class="modal-body">
-            <a  role="button"
-                class="btn btn-primary"
-                href="#flagAddModal"
-                data-toggle="modal"
-                data-target="#flagAddModal"
-            >
-                <i class="fas fa-plus"></i> Add Flag
-            </a>
+            <form method="POST" id="new-hint-form">
+                {% csrf_token %}
+                <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                <div class="input-group mb-3">
+                    <input id="id_flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                    <div class="input-group-append">
+                        <button id="flag-button" type="button" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </form>
             <table class="table table-stripped">
                 <thead>
                     <tr>
@@ -30,7 +32,7 @@
                             <td>{{flag.text}}</td>
                             <td>
                                 <i class="fas fa-edit"></i>
-                                <i class="fas fa-trash"></i>
+                                <button href="#" class="btn btn-default delete-flag" value="{{flag.pk}}"><i class="fas fa-trash"></i></button> 
                             </td>
                         </tr>
                     {% endfor %}
@@ -51,16 +53,56 @@
 <script>
 $('document').ready( function() {
     
-    $('#flagAddModal').on('show.bs.modal', function (event) {
-        var modal = $(this)
-        var formURL = `{% url 'administration:add-flag' object.pk %}`
+    $( "#flag-button" ).click(function() {
+        var URL=`{% url 'administration:add-flag' object.pk %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: $("#id_challenge_id").val(),
+            flag: $("#id_flag").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadFlags();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    $(".delete-flag" ).click(function() {
+        var URL=`{% url 'administration:delete-flag' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            flag: $(this).val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadFlags();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    function reloadFlags() {
+        var modal = $('#flagsModal').modal();
+        var challengeID = `{{challenge.pk}}`;
+        var formURL = `challenge/${challengeID}/flags`
         $.ajax({
             url: formURL,
             context: document.body
         }).done(function(response) {
             modal.html(response);
         });
-    })
+    }
 
 })
 </script>

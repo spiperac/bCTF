@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Flag, Hint
-from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm
+from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm
 
 
 class IndexView(UserPassesTestMixin, TemplateView):
@@ -120,6 +120,26 @@ class FlagAddView(UserPassesTestMixin, FormView):
                 )
 
                 return HttpResponse(status=204)
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+
+class FlagDeleteView(UserPassesTestMixin, View):
+        form_class = FlagDeleteForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                        flag = form.cleaned_data['flag']
+                        flag = Flag.objects.get(
+                                pk=flag
+                        )
+                        flag.delete()
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
 
         def test_func(self):
                 return self.request.user.is_staff

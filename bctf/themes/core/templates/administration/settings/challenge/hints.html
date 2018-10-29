@@ -9,7 +9,6 @@
         <div class="modal-body">
             <form method="POST" id="new-hint-form">
                 {% csrf_token %}
-                <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
                 <div class="input-group mb-3">
                     <input id="id_hint" name="hint" type="text" class="form-control" placeholder="Hint ..." required><br />
                     <div class="input-group-append">
