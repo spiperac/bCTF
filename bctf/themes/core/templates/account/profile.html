@@ -2,13 +2,19 @@
 {% load static %}
 
 {% block content %}
-<div class="jumbotron">
+<div class="jumbotron jt-scores">
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <h1>Profile <i class="fas fa-users"></i></h1>
+            <hr>
+        </div>
+    </div>
     <div class="content">
         <div class="row">
             <div class="col-8">
 
                 <div class="card" style="width: 18rem;">
-                    <div class="card-header">Profile</div>
+                    <div class="card-header">Info</div>
                     <div class="card-body">
                         <h5 class="card-title">#1 {{object.username}}</h5>
                     </div>

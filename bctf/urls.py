@@ -16,6 +16,7 @@ urlpatterns = [
     # apps
     path('', include('apps.scoreboard.urls')),
     path('api/', include('api.urls')),
+    path('administration/', include('apps.administration.urls')),
     path('challenges/', include('apps.challenges.urls')),
 
 ]

@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="challenge-modal-title">Update Challenge {{object.name}}</h5>
+            <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'administration:update-challenge' object.pk %}" id="challenge-category-from">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button id="submit" type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    $('document').ready( function() {
+    
+        var form_options = {
+                target: '#challengeUpdateModal',
+                success: function() { }
+            }
+            $('#challenge-category-from').ajaxForm(form_options);
+    
+    
+    })
+    </script>

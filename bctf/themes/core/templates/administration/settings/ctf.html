@@ -1,0 +1,190 @@
+{% extends 'administration/index.html' %}
+{% load static %}
+
+{% block extra_js%}
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+{% endblock %}
+
+{% block settings %}
+<div class="row">
+    <div class="col-4">
+        <h5>Categories</h5>
+        <a  role="button" 
+            class="btn btn-default" 
+            href="#categoryModals"
+            data-toggle="modal"
+            data-target="#categoryModals"
+            >
+            <i class="fas fa-plus"></i>Add Category
+        </a>
+        <table class="table table-borderless">
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td style="color:grey">{{category.name}}</td>
+                    <td>
+                        <a data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryUpdateModal">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a role="button" data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryDeleteModal">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-8">
+        <h5>Challenges</h5>
+        <a role="button" 
+            class="btn btn-default" 
+            href="#challengeAddModal"
+            data-toggle="modal"
+            data-target="#challengeAddModal"
+            >
+            <i class="fas fa-plus"></i>Add Challenge
+        </a>
+
+        <table class="table table-borderless">
+            <tbody>
+                {% for challenge in challenges %}
+                <tr>
+                    <td style="color:grey"></i>- {{challenge.name}}</td>
+                    <td>
+                        <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeUpdateModal">
+                            <i class="fas fa-edit"></i> 
+                        </a>
+                        <i class="fas fa-question"></i> 
+                        <i class="fas fa-flag"></i> 
+                        <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeDeleteModal">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Category Modal -->
+<div class="modal fade" tabindex="-1" id="categoryModals">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Category Update Modal -->
+<div class="modal fade" tabindex="-1" id="categoryUpdateModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Category Delete Modal -->
+<div class="modal fade" tabindex="-1" id="categoryDeleteModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Challenge Modal -->
+<div class="modal fade" tabindex="-1" id="challengeAddModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Challenge Update Modal -->
+<div class="modal fade" tabindex="-1" id="challengeUpdateModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+<!-- Challenge Delete Modal -->
+<div class="modal fade" tabindex="-1" id="challengeDeleteModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+
+<script>
+$('document').ready(function() {
+
+    $('#categoryModals').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var formURL = `{% url 'administration:add-category' %}`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#categoryUpdateModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var categoryID = $(event.relatedTarget).data('category-id');
+        var formURL = `category/${categoryID}/update`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#categoryDeleteModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var categoryID = $(event.relatedTarget).data('category-id');
+        var formURL = `category/${categoryID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#challengeAddModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var formURL = `{% url 'administration:add-challenge' %}`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#challengeUpdateModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `challenge/${challengeID}/update`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#challengeDeleteModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `challenge/${challengeID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+});
+</script>
+{% endblock %}
