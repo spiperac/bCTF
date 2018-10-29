@@ -1,0 +1,58 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">Hints for {{object.name}}</h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="new-hint-form" action="{% url 'administration:add-hint' object.pk %}">
+                {% csrf_token %}
+                <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                <div class="input-group mb-3">
+                    <input id="id_hint" name="hint" type="text" class="form-control" placeholder="Hint ..." required><br />
+                    <div class="input-group-append">
+                        <button id="submit" type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hint</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hint in object.hint_set.all %}
+                        <tr>
+                            <td>{{hint.pk}}</td>
+                            <td>{{hint.text}}</td>
+                            <td>
+                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-trash"></i>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$('document').ready( function() {
+    
+    $("#new-hint-form").submit(function(event) {
+        console.log('submited');
+        $('#hintsModal').hide().show();
+    });
+
+    $('#hintsModal').on('show.bs.modal', function (event) {
+        $(e.target).removeData('bs.modal');
+    });
+})
+</script>

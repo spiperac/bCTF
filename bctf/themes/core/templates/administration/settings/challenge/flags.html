@@ -1,0 +1,66 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">Flags {{object.name}}</h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <a  role="button"
+                class="btn btn-primary"
+                href="#flagAddModal"
+                data-toggle="modal"
+                data-target="#flagAddModal"
+            >
+                <i class="fas fa-plus"></i> Add Flag
+            </a>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Flag</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flag in object.flag_set.all %}
+                        <tr>
+                            <td>{{flag.pk}}</td>
+                            <td>{{flag.text}}</td>
+                            <td>
+                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-trash"></i>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Flags Add Modal -->
+<div class="modal fade" tabindex="-1" id="flagAddModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<script>
+$('document').ready( function() {
+    
+    $('#flagAddModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var formURL = `{% url 'administration:add-flag' object.pk %}`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+})
+</script>

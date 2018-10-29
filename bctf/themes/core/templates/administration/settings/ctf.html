@@ -10,7 +10,7 @@
     <div class="col-4">
         <h5>Categories</h5>
         <a  role="button" 
-            class="btn btn-default" 
+            class="btn btn-info" 
             href="#categoryModals"
             data-toggle="modal"
             data-target="#categoryModals"
@@ -24,10 +24,10 @@
                     <td style="color:grey">{{category.name}}</td>
                     <td>
                         <a data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryUpdateModal">
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit fa-lg"></i>
                         </a>
                         <a role="button" data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryDeleteModal">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash fa-lg"></i>
                         </a>
                     </td>
                 </tr>
@@ -39,7 +39,7 @@
     <div class="col-8">
         <h5>Challenges</h5>
         <a role="button" 
-            class="btn btn-default" 
+            class="btn btn-info" 
             href="#challengeAddModal"
             data-toggle="modal"
             data-target="#challengeAddModal"
@@ -48,18 +48,33 @@
         </a>
 
         <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Visible?</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
             <tbody>
                 {% for challenge in challenges %}
                 <tr>
                     <td style="color:grey"></i>- {{challenge.name}}</td>
+                    <td>{{challenge.category}}</td>
+                    <td>{{challenge.visible}}</td>
                     <td>
                         <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeUpdateModal">
-                            <i class="fas fa-edit"></i> 
+                            <i class="fas fa-edit fa-lg"></i> 
                         </a>
-                        <i class="fas fa-question"></i> 
-                        <i class="fas fa-flag"></i> 
+                        <i class="fas fa-download fa-lg"></i>
+                        <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#hintsModal">
+                            <i class="fas fa-question fa-lg"></i>
+                        </a>
+                        <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#flagsModal">
+                            <i class="fas fa-flag fa-lg"></i> 
+                        </a>
                         <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeDeleteModal">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash fa-lg"></i>
                         </a>
                     </td>
                 </tr>
@@ -111,6 +126,19 @@
     </div>
 </div>
 
+<!-- Flags Modal -->
+<div class="modal fade" tabindex="-1" id="flagsModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Hints Modal -->
+<div class="modal fade" tabindex="-1" id="hintsModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
 
 <script>
 $('document').ready(function() {
@@ -177,6 +205,31 @@ $('document').ready(function() {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
         var formURL = `challenge/${challengeID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#flagsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `challenge/${challengeID}/flags`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+
+    $('#hintsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `challenge/${challengeID}/hints`
         $.ajax({
             url: formURL,
             context: document.body

@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, FormView, View
+from django.http import HttpResponse
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Flag, Hint
+from apps.administration.forms import FlagAddForm, HintAddForm
+
 
 class IndexView(UserPassesTestMixin, TemplateView):
     template_name = 'administration/index.html'
@@ -82,3 +85,64 @@ class DeleteCategoryView(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
             return self.request.user.is_staff
+
+
+class FlagsView(UserPassesTestMixin, DetailView):
+        model = Challenge
+        template_name = 'administration/settings/challenge/flags.html'
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+class FlagAddView(UserPassesTestMixin, FormView):
+        form_class = FlagAddForm
+        template_name = 'administration/settings/challenge/add_flag.html'
+
+        def get_context_data(self, **kwargs):
+                context = super(FlagAddView, self).get_context_data(**kwargs)
+                context['challenge'] = Challenge.objects.get(pk=self.kwargs['pk'])
+                return context
+
+        def form_valid(self, form):
+                challenge_id = form.cleaned_data['challenge_id']
+                flag = form.cleaned_data['flag']
+                challenge = Challenge.objects.get(pk=challenge_id)
+
+                new_flag = Flag.objects.create(
+                        challenge=challenge,
+                        text=flag
+                )
+
+                return HttpResponse(status=204)
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+class HintsView(UserPassesTestMixin, DetailView):
+        model = Challenge
+        template_name = 'administration/settings/challenge/hints.html'
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+class HintAddView(UserPassesTestMixin, View):
+        form_class = HintAddForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                        challenge_id = form.cleaned_data['challenge_id']
+                        hint = form.cleaned_data['hint']
+                        challenge = Challenge.objects.get(pk=challenge_id)
+
+                        new_hint = Hint.objects.create(
+                                challenge=challenge,
+                                text=hint
+                        )
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+                        
+        def test_func(self):
+                return self.request.user.is_staff
