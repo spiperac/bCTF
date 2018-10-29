@@ -30,26 +30,19 @@
                         data-toggle="modal"
                         data-target="#challengeModals"
                         data-challenge-id="{{challenge.pk}}">
+                        {% if challenge.pk in solved_by_user.all %}
+                            <span class="hb hb-md hb-custom success">
+                        {% else %}
                             <span class="hb hb-md hb-custom">
-                                {% if challenge.pk in solved_by_user.all %}
-                                    <span class="front-btn success">
-                                        <p>{{challenge.category}}</p>
-                                        <p>{{challenge.points}}</p>
-                                    </span>
-                                    <span class="back-btn success">
-                                        <p><b>{{challenge.name}}</b></p>
-                                        <p>Solved: {{challenge.solves_set.all.count}}</p>
-                                    </span>
-                                {% else %}
-                                    <span class="front-btn">
-                                        <p>{{challenge.category}}</p>
-                                        <p style="color:grey !important">{{challenge.points}}</p>
-                                    </span>
-                                    <span class="back-btn">
-                                        <p><b>{{challenge.name}}</b></p>
-                                        <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
-                                    </span>
-                                {% endif %}
+                        {% endif %}
+                                <span class="front-btn">
+                                    <p>{{challenge.category}}</p>
+                                    <p>{{challenge.points}}</p>
+                                </span>
+                                <span class="back-btn">
+                                    <p><b>{{challenge.name}}</b></p>
+                                    <p>Solved: {{challenge.solves_set.all.count}}</p>
+                                </span>
                             </span>
                         </a>
                 {% endfor %}

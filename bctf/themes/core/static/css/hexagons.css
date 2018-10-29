@@ -305,6 +305,10 @@ inv 		= Inverse Behaver of buttons
 .hb-custom > .back-btn {
 	display: none;
 }
+
+.hb-custom.success {
+	color:green !important;
+}
 /* 5.3 - Custom Button colors End
 -------------------------------------------------*/
 
@@ -329,6 +333,11 @@ inv 		= Inverse Behaver of buttons
 	border-right:1px solid #f1c40f !important;; 
 	color: white!important; /* Custom hover font color */
 }
+
+.hb-custom:hover.success {
+	color:green !important;
+}
+
 .hb-custom:hover > .front-btn {
 	display: none;
 }
@@ -345,12 +354,5 @@ inv 		= Inverse Behaver of buttons
 	line-height: 1.1;
 }
 
-.front-btn.success {
-	color:green !important;
-}
-
-.back-btn.success { 
-	color:green !important;
-}
 /* 5.4 - Custom Button hover colors End
 -------------------------------------------------*/
