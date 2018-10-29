@@ -17,6 +17,9 @@ class Challenge(models.Model):
     points = models.IntegerField()
     visible = models.BooleanField(default=True)
     
+    @property
+    def sorted_by_solves_set(self):
+        return self.solves_set.order_by('points')
 
 class Hint(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
@@ -37,6 +40,12 @@ class Attachment(models.Model):
 
 
 class Solves(models.Model):
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class FirstBlood(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

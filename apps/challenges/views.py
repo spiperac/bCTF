@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views.generic import TemplateView, ListView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from apps.challenges.models import Challenge, Category, Solves
+from apps.challenges.models import Challenge, Category, Solves, FirstBlood
 from apps.challenges.forms import SubmitFlagForm
 
 
@@ -18,6 +18,7 @@ class ChallengesListView(LoginRequiredMixin, ListView):
         context['categories'] = Category.objects.all()
         context['solved_by_user'] = Solves.objects.filter(account=self.request.user.pk).values_list('challenge', flat=True)
         context['solves'] = Solves.objects.all()
+        context['first_bloods'] = FirstBlood.objects.all()
         return context
 
 class SubmitFlagView(LoginRequiredMixin, FormView):
@@ -38,6 +39,12 @@ class SubmitFlagView(LoginRequiredMixin, FormView):
 
         if Solves.objects.filter(challenge=challenge, account=self.request.user).count() == 0:
             if flag in challenge.flag_set.all().values_list('text', flat=True):
+                if Solves.objects.filter(challenge=challenge).count() == 0:
+                    new_first_blood = FirstBlood.objects.create(
+                        challenge=challenge,
+                        account=self.request.user,                       
+                    )
+
                 new_solve = Solves.objects.create(
                     challenge=challenge,
                     account=self.request.user,

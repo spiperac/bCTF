@@ -21,48 +21,87 @@
     <div class="col-md-12 text-center" id="challenge-loader">
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                {% for challenge in challenges %}
+                    {% if challenge.pk in solved_by_user.all %}
 
-    {% for challenge in challenges %}
-        {% if challenge.pk in solved_by_user.all %}
+                        <a value="{{challenge}}" 
+                        href="#challengeModals"
+                        data-toggle="modal"
+                        data-target="#challengeModals"
+                        data-challenge-id="{{challenge.pk}}">
+                            <span class="hb hb-md hb-custom">
+                                <span class="front-btn">
+                                    <p style="color:green !important">{{challenge.category}}</p>
+                                    <p style="color:green !important">{{challenge.points}}</p>
+                                </span>
+                                <span class="back-btn">
+                                    <p style="color:green !important"><b>{{challenge.name}}</b></p>
+                                    <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
+                                </span>
+                            </span>
+                        </a>
+                    {% else %}
+                        <a value="{{challenge}}" 
+                        href="#challengeModals"
+                        data-toggle="modal"
+                        data-target="#challengeModals"
+                        data-challenge-id="{{challenge.pk}}">
+                            <span class="hb hb-md hb-custom">
+                                <span class="front-btn">
+                                    <p>{{challenge.category}}</p>
+                                    <p style="color:grey !important">{{challenge.points}}</p>
+                                </span>
+                                <span class="back-btn">
+                                    <p><b>{{challenge.name}}</b></p>
+                                    <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
+                                </span>
+                            </span>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                <h4><i class="fas fa-tint fa-danger" style="color:red"></i> First Bloods!</h4>
+                <table class="table table-borderless">
+                    <thead>
+                        <th>Team</th>
+                        <th>Challenge</th>
+                        <th>Time</th>
+                    </thead>
+                    <tbody>
+                        {% for first_blood in first_bloods %}
+                        <tr>
+                            <td>{{first_blood.account.username}}</td>
+                            <td>{{first_blood.challenge.name}}</td>
+                            <td>{{first_blood.created_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-            <a value="{{challenge}}" 
-            href="#challengeModals"
-            data-toggle="modal"
-            data-target="#challengeModals"
-            data-challenge-id="{{challenge.pk}}">
-                <span class="hb hb-md hb-custom">
-                    <span class="front-btn">
-                        <p style="color:green !important">{{challenge.category}}</p>
-                        <p style="color:green !important">{{challenge.points}}</p>
-                    </span>
-                    <span class="back-btn">
-                        <p style="color:green !important"><b>{{challenge.name}}</b></p>
-                        <p style="color:green !important">Solved: {{challenge.solves_set.all.count}}</p>
-                    </span>
-                </span>
-            </a>
-        {% else %}
-            <a value="{{challenge}}" 
-            href="#challengeModals"
-            data-toggle="modal"
-            data-target="#challengeModals"
-            data-challenge-id="{{challenge.pk}}">
-                <span class="hb hb-md hb-custom">
-                    <span class="front-btn">
-                        <p>{{challenge.category}}</p>
-                        <p style="color:grey !important">{{challenge.points}}</p>
-                    </span>
-                    <span class="back-btn">
-                        <p><b>{{challenge.name}}</b></p>
-                        <p style="color:grey !important">Solved: {{challenge.solves_set.all.count}}</p>
-                    </span>
-                </span>
-            </a>
-        {% endif %}
-    {% endfor %}
+                <h4><i class="fas fa-skull-crossbones" style="color:black"></i> Solves stats</h4>
+                <table class="table table-borderless">
+                    <thead>
+                        <th>Challenge</th>
+                        <th>Solved</th>
+                    </thead>
+                    <tbody>
+                        {% for challenge in challenges %}
+                        <tr>
+                            <td>{{challenge.name}}</td>
+                            <td>{{challenge.solves_set.all.count}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
 
 {% block modals %}
