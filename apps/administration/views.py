@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Flag, Hint
-from apps.administration.forms import FlagAddForm, HintAddForm
+from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm
 
 
 class IndexView(UserPassesTestMixin, TemplateView):
@@ -43,6 +43,7 @@ class AddChallengeView(UserPassesTestMixin, CreateView):
     def test_func(self):
             return self.request.user.is_staff
 
+
 class UpdateChallengeView(UserPassesTestMixin, UpdateView):
     model = Challenge
     fields = '__all__'
@@ -52,6 +53,7 @@ class UpdateChallengeView(UserPassesTestMixin, UpdateView):
     def test_func(self):
             return self.request.user.is_staff
 
+
 class DeleteChallengeView(UserPassesTestMixin, DeleteView):
     model = Challenge
     template_name = 'administration/settings/challenge/delete_challenge.html'
@@ -59,6 +61,7 @@ class DeleteChallengeView(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
             return self.request.user.is_staff
+
 
 class AddCategoryView(UserPassesTestMixin, CreateView):
     model = Category
@@ -69,6 +72,7 @@ class AddCategoryView(UserPassesTestMixin, CreateView):
     def test_func(self):
             return self.request.user.is_staff
 
+
 class UpdateCategoryView(UserPassesTestMixin, UpdateView):
     model = Category
     fields = '__all__'
@@ -77,6 +81,7 @@ class UpdateCategoryView(UserPassesTestMixin, UpdateView):
 
     def test_func(self):
             return self.request.user.is_staff
+
 
 class DeleteCategoryView(UserPassesTestMixin, DeleteView):
     model = Category
@@ -93,6 +98,7 @@ class FlagsView(UserPassesTestMixin, DetailView):
 
         def test_func(self):
                 return self.request.user.is_staff
+
 
 class FlagAddView(UserPassesTestMixin, FormView):
         form_class = FlagAddForm
@@ -118,12 +124,14 @@ class FlagAddView(UserPassesTestMixin, FormView):
         def test_func(self):
                 return self.request.user.is_staff
 
+
 class HintsView(UserPassesTestMixin, DetailView):
         model = Challenge
         template_name = 'administration/settings/challenge/hints.html'
 
         def test_func(self):
                 return self.request.user.is_staff
+
 
 class HintAddView(UserPassesTestMixin, View):
         form_class = HintAddForm
@@ -144,5 +152,25 @@ class HintAddView(UserPassesTestMixin, View):
                 else:
                         return HttpResponse(status=400)
                         
+        def test_func(self):
+                return self.request.user.is_staff
+
+
+class HintDeleteView(UserPassesTestMixin, View):
+        form_class = HintDeleteForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                        hint = form.cleaned_data['hint']
+                        hint = Hint.objects.get(
+                                pk=hint
+                        )
+                        hint.delete()
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+
         def test_func(self):
                 return self.request.user.is_staff

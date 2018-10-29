@@ -1,7 +1,8 @@
 from django.urls import path
 
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
-                                         AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, HintAddView
+                                         AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
+                                         HintAddView, HintDeleteView
 
 app_name = 'administration'
 urlpatterns = [
@@ -28,5 +29,7 @@ urlpatterns = [
     # Hint urls
     path('ctf/challenge/<int:pk>/hints', HintsView.as_view(), name="hints"),
     path('ctf/challenge/<int:pk>/hints/add', HintAddView.as_view(), name="add-hint"),
+    path('ctf/hints/delete', HintDeleteView.as_view(), name="delete-hint"),
+
 
 ]

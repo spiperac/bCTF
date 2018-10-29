@@ -8,3 +8,6 @@ class FlagAddForm(forms.Form):
 class HintAddForm(forms.Form):
     challenge_id = forms.IntegerField()
     hint = forms.CharField(max_length=1024)
+
+class HintDeleteForm(forms.Form):
+    hint = forms.IntegerField()

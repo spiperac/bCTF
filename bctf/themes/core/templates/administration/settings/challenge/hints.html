@@ -7,13 +7,13 @@
         </button>
         </div>
         <div class="modal-body">
-            <form method="POST" id="new-hint-form" action="{% url 'administration:add-hint' object.pk %}">
+            <form method="POST" id="new-hint-form">
                 {% csrf_token %}
                 <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
                 <div class="input-group mb-3">
                     <input id="id_hint" name="hint" type="text" class="form-control" placeholder="Hint ..." required><br />
                     <div class="input-group-append">
-                        <button id="submit" type="submit" class="btn btn-primary">Add</button>
+                        <button id="hint-button" type="button" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </form>
@@ -31,8 +31,7 @@
                             <td>{{hint.pk}}</td>
                             <td>{{hint.text}}</td>
                             <td>
-                                <i class="fas fa-edit"></i>
-                                <i class="fas fa-trash"></i>
+                                <button href="#" class="btn btn-default delete-hint" value="{{hint.pk}}"><i class="fas fa-trash"></i></button> 
                             </td>
                         </tr>
                     {% endfor %}
@@ -46,13 +45,55 @@
 <script>
 $('document').ready( function() {
     
-    $("#new-hint-form").submit(function(event) {
-        console.log('submited');
-        $('#hintsModal').hide().show();
+    $( "#hint-button" ).click(function() {
+        var URL=`{% url 'administration:add-hint' object.pk %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: $("#id_challenge_id").val(),
+            hint: $("#id_hint").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadHints();
+            },
+            dataType: 'json'
+        });
+    
     });
 
-    $('#hintsModal').on('show.bs.modal', function (event) {
-        $(e.target).removeData('bs.modal');
+    $(".delete-hint" ).click(function() {
+        var URL=`{% url 'administration:delete-hint' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            hint: $(this).val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadHints();
+            },
+            dataType: 'json'
+        });
+    
     });
+
+    function reloadHints() {
+        var modal = $("#hintsModal").modal();
+        var formURL = `challenge/{{challenge.pk}}/hints`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    }
+
 })
 </script>
