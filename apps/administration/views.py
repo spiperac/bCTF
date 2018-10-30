@@ -240,12 +240,12 @@ class AccountsView(UserIsAdminMixin, ListView):
 
 class UpdateAccountView(UserIsAdminMixin, UpdateView):
         model = Account
-        fields = '__all__'
+        fields = ['username', 'password', 'is_staff', 'is_superuser', 'is_active', 'banned']
         template_name = 'administration/settings/account/update_account.html'
         success_url = reverse_lazy('administration:list-accounts')
 
 
 class DeleteAccountView(UserIsAdminMixin, DeleteView):
-        model = Challenge
+        model = Account
         template_name = 'administration/settings/account/delete_account.html'
-        success_url = reverse_lazy('administration:accounts')
+        success_url = reverse_lazy('administration:list-accounts')

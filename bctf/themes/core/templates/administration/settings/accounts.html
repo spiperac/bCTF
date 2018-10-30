@@ -3,7 +3,8 @@
 
 {% block extra_js %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
-    
+
+    <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
 
@@ -31,7 +32,7 @@
                 <td>Banned</td>
             {% endif %}
             <td>
-                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#editAccountModal">
+                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#updateAccountModal">
                     <i class="fas fa-edit fa-lg"></i>
                 </a>
                 <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#deleteAccountModal">
@@ -44,7 +45,7 @@
 </table>
 
 <!-- Edit Account Modal -->
-<div class="modal fade" tabindex="-1" id="editAccountModal">
+<div class="modal fade" tabindex="-1" id="updateAccountModal">
     <!-- Hack to close modal from inside another view -->
     <div class="modal-dialog modal-dialog-centered" role="document">
     </div>
@@ -62,7 +63,7 @@
 $('document').ready(function() {
     $('#id_accounts_table').DataTable();
 
-    $('#editAccountModal').on('show.bs.modal', function (event) {
+    $('#updateAccountModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var accountID = $(event.relatedTarget).data('account-id');
         var formURL = `/administration/accounts/${accountID}/update`

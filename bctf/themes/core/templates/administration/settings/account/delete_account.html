@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <form method="POST" action="{% url 'administration:delete-account' object.pk %}" id="delete-account-from">
                     {% csrf_token %}
-                    <p>Are you sure you want to delete <h4>{{object.name}}</h4> acount?</p>
+                    <p>Are you sure you want to delete <h4>{{object.username}}</h4> acount?</p>
                     <button id="submit" type="submit" class="btn btn-primary">Delete</button>
                 </form>
             </div>
