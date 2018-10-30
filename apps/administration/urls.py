@@ -3,7 +3,7 @@ from django.urls import path
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
                                          HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-                                         AccountsView
+                                         AccountsView, UpdateAccountView, DeleteAccountView
 
 app_name = 'administration'
 urlpatterns = [
@@ -40,5 +40,7 @@ urlpatterns = [
 
     # Account urls
     path('accounts/', AccountsView.as_view(), name='list-accounts'),
+    path('accounts/<int:pk>/update', UpdateAccountView.as_view(), name="update-account"),
+    path('accounts/<int:pk>/delete', DeleteAccountView.as_view(), name="delete-account"),
 
 ]

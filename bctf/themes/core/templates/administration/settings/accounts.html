@@ -25,17 +25,68 @@
             <td>{{account.pk}}</td>
             <td>{{account.username}}</td>
             <td>{{account.email}}</td>
-            <td>{{account.status}}</td>
-            <td>Edit</td>
+            {% if account.is_active %}
+                <td>Active</td>
+            {% else %}
+                <td>Banned</td>
+            {% endif %}
+            <td>
+                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#editAccountModal">
+                    <i class="fas fa-edit fa-lg"></i>
+                </a>
+                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#deleteAccountModal">
+                    <i class="fas fa-trash fa-lg"></i>
+                </a>
+            </td>
         </tr>
         {% endfor %}
 
 </table>
 
+<!-- Edit Account Modal -->
+<div class="modal fade" tabindex="-1" id="editAccountModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" tabindex="-1" id="deleteAccountModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
 <script>
 
 $('document').ready(function() {
     $('#id_accounts_table').DataTable();
+
+    $('#editAccountModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var accountID = $(event.relatedTarget).data('account-id');
+        var formURL = `/administration/accounts/${accountID}/update`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#deleteAccountModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var accountID = $(event.relatedTarget).data('account-id');
+        var formURL = `/administration/accounts/${accountID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+
 } );
 </script>
 {% endblock %}
