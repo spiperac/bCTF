@@ -7,9 +7,8 @@
         </button>
         </div>
         <div class="modal-body">
-            <form method="POST" id="new-hint-form">
+            <form method="POST" id="new-flag-form">
                 {% csrf_token %}
-                <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
                 <div class="input-group mb-3">
                     <input id="id_flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
                     <div class="input-group-append">
@@ -45,12 +44,15 @@
 
 <script>
 $('document').ready( function() {
-    
+    $("#new-flag-form").submit(function(e) {
+        e.preventDefault();
+    });
+
     $( "#flag-button" ).click(function() {
         var URL=`{% url 'administration:add-flag' object.pk %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            challenge_id: $("#id_challenge_id").val(),
+            challenge_id: `{{object.pk}}`,
             flag: $("#id_flag").val()
         }
 

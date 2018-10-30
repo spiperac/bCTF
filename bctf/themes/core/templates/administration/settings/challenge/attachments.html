@@ -29,7 +29,7 @@
                     {% for attachment in object.attachment_set.all %}
                         <tr>
                             <td>{{attachment.pk}}</td>
-                            <td>{{attachment.filename}}</td>
+                            <td><a href="/{{attachment.data.url}}">{{attachment.filename}}</a></td>
                             <td>
                                 <i class="fas fa-edit"></i>
                                 <button href="#" class="btn btn-default delete-attachment" value="{{attachment.pk}}"><i class="fas fa-trash"></i></button> 
@@ -45,7 +45,10 @@
 
 <script>
 $('document').ready( function() {
-    
+    $("#new-attachment-form").submit(function(e) {
+        e.preventDefault();
+    });
+
     $( "#attachment-button" ).click(function() {
         var URL=`{% url 'administration:add-attachment' object.pk %}`;
         var file = $("#id_attachment")[0].files
@@ -54,7 +57,6 @@ $('document').ready( function() {
         DATA.append("csrfmiddlewaretoken", '{{ csrf_token }}');
         DATA.append("challenge_id", `{{object.pk}}`);
         DATA.append("data", file[0]);
-        console.log(DATA);
         $.ajax({
             type: "POST",
             url: URL,

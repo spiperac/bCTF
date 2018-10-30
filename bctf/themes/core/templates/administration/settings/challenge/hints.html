@@ -43,12 +43,15 @@
 
 <script>
 $('document').ready( function() {
-    
+    $("#new-hint-form").submit(function(e) {
+        e.preventDefault();
+    });
+
     $( "#hint-button" ).click(function() {
         var URL=`{% url 'administration:add-hint' object.pk %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            challenge_id: $("#id_challenge_id").val(),
+            challenge_id: `{{object.pk}}`,
             hint: $("#id_hint").val()
         }
 

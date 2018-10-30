@@ -209,8 +209,6 @@ class AttachmentAddView(UserPassesTestMixin, View):
 
         def post(self, request, *args, **kwargs):
                 form = self.form_class(data=request.POST, files=request.FILES)
-                print(request.FILES)
-                print(request.POST)
                 if form.is_valid():
                         challenge_id = form.cleaned_data['challenge_id']
                         attachment = form.cleaned_data['data']
