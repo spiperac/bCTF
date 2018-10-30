@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from apps.challenges.models import Challenge, Category, Flag, Hint
-from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm
+from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
+from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
 
 
 class IndexView(UserPassesTestMixin, TemplateView):
@@ -187,6 +187,59 @@ class HintDeleteView(UserPassesTestMixin, View):
                                 pk=hint
                         )
                         hint.delete()
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+
+class AttachmentsView(UserPassesTestMixin, DetailView):
+        model = Challenge
+        template_name = 'administration/settings/challenge/attachments.html'
+
+        def test_func(self):
+                return self.request.user.is_staff
+
+
+class AttachmentAddView(UserPassesTestMixin, View):
+        form_class = AttachmentAddForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(data=request.POST, files=request.FILES)
+                print(request.FILES)
+                print(request.POST)
+                if form.is_valid():
+                        challenge_id = form.cleaned_data['challenge_id']
+                        attachment = form.cleaned_data['data']
+                        challenge = Challenge.objects.get(pk=challenge_id)
+
+                        new_attachment = Attachment.objects.create(
+                                challenge=challenge,
+                                data=attachment
+                        )
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+                        
+        def test_func(self):
+                return self.request.user.is_staff
+
+
+class AttachmentDeleteView(UserPassesTestMixin, View):
+        form_class = AttachmentDeleteForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(request.POST)
+                if form.is_valid():
+                        attachment = form.cleaned_data['attachment']
+                        attachment = Attachment.objects.get(
+                                pk=attachment
+                        )
+                        attachment.delete()
 
                         return HttpResponse(status=204)
                 else:

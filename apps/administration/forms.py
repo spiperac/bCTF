@@ -17,3 +17,12 @@ class HintAddForm(forms.Form):
 
 class HintDeleteForm(forms.Form):
     hint = forms.IntegerField()
+
+
+class AttachmentAddForm(forms.Form):
+    challenge_id = forms.IntegerField()
+    data = forms.FileField()
+
+
+class AttachmentDeleteForm(forms.Form):
+    attachment = forms.IntegerField()

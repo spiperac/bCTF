@@ -1,19 +1,19 @@
 <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="challenge-modal-title">Flags {{object.name}}</h5>
+        <h5 class="modal-title" id="challenge-modal-title">Attachments {{object.name}}</h5>
         <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         </div>
         <div class="modal-body">
-            <form method="POST" id="new-hint-form">
+            <form method="POST" id="new-attachment-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
                 <div class="input-group mb-3">
-                    <input id="id_flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                    <input id="id_attachment" name="attachment" type="file" class="form-control" required><br />
                     <div class="input-group-append">
-                        <button id="flag-button" type="button" class="btn btn-primary">Add</button>
+                        <button id="attachment-button" type="button" class="btn btn-primary">Upload</button>
                     </div>
                 </div>
             </form>
@@ -21,18 +21,18 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Flag</th>
+                        <th>File</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for flag in object.flag_set.all %}
+                    {% for attachment in object.attachment_set.all %}
                         <tr>
-                            <td>{{flag.pk}}</td>
-                            <td>{{flag.text}}</td>
+                            <td>{{attachment.pk}}</td>
+                            <td>{{attachment.filename}}</td>
                             <td>
                                 <i class="fas fa-edit"></i>
-                                <button href="#" class="btn btn-default delete-flag" value="{{flag.pk}}"><i class="fas fa-trash"></i></button> 
+                                <button href="#" class="btn btn-default delete-attachment" value="{{attachment.pk}}"><i class="fas fa-trash"></i></button> 
                             </td>
                         </tr>
                     {% endfor %}
@@ -46,12 +46,34 @@
 <script>
 $('document').ready( function() {
     
-    $( "#flag-button" ).click(function() {
-        var URL=`{% url 'administration:add-flag' object.pk %}`;
+    $( "#attachment-button" ).click(function() {
+        var URL=`{% url 'administration:add-attachment' object.pk %}`;
+        var file = $("#id_attachment")[0].files
+
+        var DATA = new FormData();
+        DATA.append("csrfmiddlewaretoken", '{{ csrf_token }}');
+        DATA.append("challenge_id", `{{object.pk}}`);
+        DATA.append("data", file[0]);
+        console.log(DATA);
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                reloadAttachments();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    $(".delete-attachment" ).click(function() {
+        var URL=`{% url 'administration:delete-attachment' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            challenge_id: $("#id_challenge_id").val(),
-            flag: $("#id_flag").val()
+            attachment: $(this).val()
         }
 
         $.ajax({
@@ -59,36 +81,17 @@ $('document').ready( function() {
             url: URL,
             data: DATA,
             success: function (data) {
-                reloadFlags();
+                reloadAttachments();
             },
             dataType: 'json'
         });
     
     });
 
-    $(".delete-flag" ).click(function() {
-        var URL=`{% url 'administration:delete-flag' %}`;
-        var DATA = {
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            flag: $(this).val()
-        }
-
-        $.ajax({
-            type: "POST",
-            url: URL,
-            data: DATA,
-            success: function (data) {
-                reloadFlags();
-            },
-            dataType: 'json'
-        });
-    
-    });
-
-    function reloadFlags() {
-        var modal = $('#flagsModal').modal();
+    function reloadAttachments() {
+        var modal = $('#attachmentsModal').modal();
         var challengeID = `{{challenge.pk}}`;
-        var formURL = `challenge/${challengeID}/flags`
+        var formURL = `challenge/${challengeID}/attachments`
         $.ajax({
             url: formURL,
             context: document.body
