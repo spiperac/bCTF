@@ -1,3 +1,5 @@
+{% load crispy_forms_tags %}
+
 <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +11,7 @@
             <div class="modal-body">
                 <form method="POST" action="{% url 'administration:update-challenge' object.pk %}" id="challenge-category-from">
                     {% csrf_token %}
-                    {{form.as_p}}
+                    {{form|crispy}}
                     <button id="submit" type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>

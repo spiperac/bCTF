@@ -24,6 +24,10 @@
     <form class="form-signin" method="POST">
       {% csrf_token %}
       {{form|crispy}}
+      <div>
+        <input type="checkbox" id="soul" name="soul" value="scales" checked /> <br />
+        <label for="soul">I promise i'll come to next BalCCon!</label>
+      </div>
       <button type="submit" class="btn btn-success">Register Team</button>
     </form>
   </body>

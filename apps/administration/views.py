@@ -1,9 +1,12 @@
+import json
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
+from apps.accounts.models import Account
+from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood
 from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -17,6 +20,40 @@ class IndexView(UserIsAdminMixin, TemplateView):
 class InformationsView(UserIsAdminMixin, TemplateView):
         template_name = 'administration/settings/informations.html'
 
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                context['challenges'] = Challenge.objects.all()
+                context['categories'] = Category.objects.all()
+
+                chall_stats = []
+                total_challs = context['challenges'].count()
+                solved_challs = Solves.objects.values('challenge__pk').distinct().count()
+                unsolved_challs = int(total_challs) - int(solved_challs)
+
+                accounts = Account.objects.all()
+                account_stats = []
+                total_accounts = accounts.count()
+                accounts_with_points = [x for x in accounts if x.points > 0]
+                accounts_with_zero = total_accounts - len(accounts_with_points)
+                account_stats.append(len(accounts_with_points))
+                account_stats.append(accounts_with_zero)
+
+                first_bloods = FirstBlood.objects.all().values_list('account__username', flat=True).distinct()
+                first_blood_accounts = [x for x in first_bloods]
+                first_blood_data = []
+                for account in first_blood_accounts:
+                        solved = FirstBlood.objects.filter(account__username=account).count()
+                        first_blood_data.append(solved)
+
+                chall_stats.append(solved_challs)
+                chall_stats.append(unsolved_challs)
+                context['first_bloods_labels'] = first_blood_accounts
+                context['first_bloods_data'] = first_blood_data
+                context['chall_stats'] = chall_stats
+                context['account_stats'] = account_stats
+                context['accounts'] = accounts
+                context['challenges'] = Challenge.objects.all()
+                return context
 
 class CTFView(UserIsAdminMixin, TemplateView):
         template_name = 'administration/settings/ctf.html'
@@ -193,3 +230,9 @@ class AttachmentDeleteView(UserIsAdminMixin, View):
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
+
+
+class AccountsView(UserIsAdminMixin, ListView):
+        model = Account
+        context_object_name = 'accounts'
+        template_name = 'administration/settings/accounts.html'

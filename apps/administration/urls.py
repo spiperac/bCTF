@@ -2,7 +2,8 @@ from django.urls import path
 
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
-                                         HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView
+                                         HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
+                                         AccountsView
 
 app_name = 'administration'
 urlpatterns = [
@@ -36,5 +37,8 @@ urlpatterns = [
     path('ctf/challenge/<int:pk>/attachments', AttachmentsView.as_view(), name="attachments"),
     path('ctf/challenge/<int:pk>/attachments/add', AttachmentAddView.as_view(), name="add-attachment"),
     path('ctf/attachments/delete', AttachmentDeleteView.as_view(), name="delete-attachment"),
+
+    # Account urls
+    path('accounts/', AccountsView.as_view(), name='list-accounts'),
 
 ]

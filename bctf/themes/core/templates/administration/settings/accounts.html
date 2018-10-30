@@ -1,0 +1,41 @@
+{% extends 'administration/index.html' %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
+    
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+
+{% endblock %}
+
+{% block settings %}
+
+<table class="table table-borderless" id="id_accounts_table">
+    <thead>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for account in accounts %}
+        <tr>
+            <td>{{account.pk}}</td>
+            <td>{{account.username}}</td>
+            <td>{{account.email}}</td>
+            <td>{{account.status}}</td>
+            <td>Edit</td>
+        </tr>
+        {% endfor %}
+
+</table>
+
+<script>
+
+$('document').ready(function() {
+    $('#id_accounts_table').DataTable();
+} );
+</script>
+{% endblock %}
