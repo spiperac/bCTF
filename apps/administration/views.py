@@ -6,101 +6,73 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
 from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
 
-
-class IndexView(UserPassesTestMixin, TemplateView):
-    template_name = 'administration/index.html'
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class InformationsView(UserPassesTestMixin, TemplateView):
-    template_name = 'administration/settings/informations.html'
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class CTFView(UserPassesTestMixin, TemplateView):
-    template_name = 'administration/settings/ctf.html'
-
-    def test_func(self):
-            return self.request.user.is_staff
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['challenges'] = Challenge.objects.all()
-        context['categories'] = Category.objects.all()
-        return context
-
-
-class AddChallengeView(UserPassesTestMixin, CreateView):
-    model = Challenge
-    fields = '__all__'
-    template_name = 'administration/settings/challenge/add_challenge.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class UpdateChallengeView(UserPassesTestMixin, UpdateView):
-    model = Challenge
-    fields = '__all__'
-    template_name = 'administration/settings/challenge/update_challenge.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class DeleteChallengeView(UserPassesTestMixin, DeleteView):
-    model = Challenge
-    template_name = 'administration/settings/challenge/delete_challenge.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class AddCategoryView(UserPassesTestMixin, CreateView):
-    model = Category
-    fields = '__all__'
-    template_name = 'administration/settings/category/add_category.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class UpdateCategoryView(UserPassesTestMixin, UpdateView):
-    model = Category
-    fields = '__all__'
-    template_name = 'administration/settings/category/update_category.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class DeleteCategoryView(UserPassesTestMixin, DeleteView):
-    model = Category
-    template_name = 'administration/settings/category/delete_category.html'
-    success_url = reverse_lazy('administration:ctf')
-
-    def test_func(self):
-            return self.request.user.is_staff
-
-
-class FlagsView(UserPassesTestMixin, DetailView):
-        model = Challenge
-        template_name = 'administration/settings/challenge/flags.html'
-
+class UserIsAdminMixin(UserPassesTestMixin):
         def test_func(self):
                 return self.request.user.is_staff
 
+class IndexView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/index.html'
 
-class FlagAddView(UserPassesTestMixin, FormView):
+
+class InformationsView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/settings/informations.html'
+
+
+class CTFView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/settings/ctf.html'
+        
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                context['challenges'] = Challenge.objects.all()
+                context['categories'] = Category.objects.all()
+                return context
+
+
+class AddChallengeView(UserIsAdminMixin, CreateView):
+        model = Challenge
+        fields = '__all__'
+        template_name = 'administration/settings/challenge/add_challenge.html'
+        success_url = reverse_lazy('administration:ctf')
+
+class UpdateChallengeView(UserIsAdminMixin, UpdateView):
+        model = Challenge
+        fields = '__all__'
+        template_name = 'administration/settings/challenge/update_challenge.html'
+        success_url = reverse_lazy('administration:ctf')
+
+
+class DeleteChallengeView(UserIsAdminMixin, DeleteView):
+        model = Challenge
+        template_name = 'administration/settings/challenge/delete_challenge.html'
+        success_url = reverse_lazy('administration:ctf')
+
+
+class AddCategoryView(UserIsAdminMixin, CreateView):
+        model = Category
+        fields = '__all__'
+        template_name = 'administration/settings/category/add_category.html'
+        success_url = reverse_lazy('administration:ctf')
+
+
+class UpdateCategoryView(UserIsAdminMixin, UpdateView):
+        model = Category
+        fields = '__all__'
+        template_name = 'administration/settings/category/update_category.html'
+        success_url = reverse_lazy('administration:ctf')
+
+
+class DeleteCategoryView(UserIsAdminMixin, DeleteView):
+        model = Category
+        template_name = 'administration/settings/category/delete_category.html'
+        success_url = reverse_lazy('administration:ctf')
+
+
+class FlagsView(UserIsAdminMixin, DetailView):
+        model = Challenge
+        template_name = 'administration/settings/challenge/flags.html'
+
+
+class FlagAddView(UserIsAdminMixin, FormView):
         form_class = FlagAddForm
         template_name = 'administration/settings/challenge/add_flag.html'
 
@@ -121,11 +93,8 @@ class FlagAddView(UserPassesTestMixin, FormView):
 
                 return HttpResponse(status=204)
 
-        def test_func(self):
-                return self.request.user.is_staff
 
-
-class FlagDeleteView(UserPassesTestMixin, View):
+class FlagDeleteView(UserIsAdminMixin, View):
         form_class = FlagDeleteForm
 
         def post(self, request, *args, **kwargs):
@@ -141,19 +110,13 @@ class FlagDeleteView(UserPassesTestMixin, View):
                 else:
                         return HttpResponse(status=400)
 
-        def test_func(self):
-                return self.request.user.is_staff
 
-
-class HintsView(UserPassesTestMixin, DetailView):
+class HintsView(UserIsAdminMixin, DetailView):
         model = Challenge
         template_name = 'administration/settings/challenge/hints.html'
 
-        def test_func(self):
-                return self.request.user.is_staff
 
-
-class HintAddView(UserPassesTestMixin, View):
+class HintAddView(UserIsAdminMixin, View):
         form_class = HintAddForm
 
         def post(self, request, *args, **kwargs):
@@ -171,12 +134,9 @@ class HintAddView(UserPassesTestMixin, View):
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
-                        
-        def test_func(self):
-                return self.request.user.is_staff
 
 
-class HintDeleteView(UserPassesTestMixin, View):
+class HintDeleteView(UserIsAdminMixin, View):
         form_class = HintDeleteForm
 
         def post(self, request, *args, **kwargs):
@@ -192,19 +152,13 @@ class HintDeleteView(UserPassesTestMixin, View):
                 else:
                         return HttpResponse(status=400)
 
-        def test_func(self):
-                return self.request.user.is_staff
 
-
-class AttachmentsView(UserPassesTestMixin, DetailView):
+class AttachmentsView(UserIsAdminMixin, DetailView):
         model = Challenge
         template_name = 'administration/settings/challenge/attachments.html'
 
-        def test_func(self):
-                return self.request.user.is_staff
 
-
-class AttachmentAddView(UserPassesTestMixin, View):
+class AttachmentAddView(UserIsAdminMixin, View):
         form_class = AttachmentAddForm
 
         def post(self, request, *args, **kwargs):
@@ -222,12 +176,9 @@ class AttachmentAddView(UserPassesTestMixin, View):
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
-                        
-        def test_func(self):
-                return self.request.user.is_staff
 
 
-class AttachmentDeleteView(UserPassesTestMixin, View):
+class AttachmentDeleteView(UserIsAdminMixin, View):
         form_class = AttachmentDeleteForm
 
         def post(self, request, *args, **kwargs):
@@ -242,6 +193,3 @@ class AttachmentDeleteView(UserPassesTestMixin, View):
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
-
-        def test_func(self):
-                return self.request.user.is_staff
