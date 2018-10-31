@@ -3,7 +3,8 @@ from django.urls import path
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
                                          HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-                                         AccountsView, UpdateAccountView, DeleteAccountView
+                                         AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, \
+                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView
 
 app_name = 'administration'
 urlpatterns = [
@@ -42,5 +43,13 @@ urlpatterns = [
     path('accounts/', AccountsView.as_view(), name='list-accounts'),
     path('accounts/<int:pk>/update', UpdateAccountView.as_view(), name="update-account"),
     path('accounts/<int:pk>/delete', DeleteAccountView.as_view(), name="delete-account"),
+    path('accounts/<int:pk>/toggle', ToggleAccountStateView.as_view(), name="toggle-account"),
+
+    # Docker urls
+    path('docker/', DockerView.as_view(), name='docker'),
+    path('docker/<slug:id>/logs', DockerLogsView.as_view(), name="logs-docker"),
+    path('docker/action', DockerActionsView.as_view(), name="action-docker"),
+    path('docker/image/action', DockerImageActionsView.as_view(), name="action-image"),
+
 
 ]

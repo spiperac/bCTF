@@ -1,0 +1,12 @@
+#id_search_area {
+    width: 100%;
+    clear: both;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#id_search_area input {
+    width: 600px;
+    font-size: 20px;
+    padding: 20px;
+}

@@ -26,3 +26,11 @@ class AttachmentAddForm(forms.Form):
 
 class AttachmentDeleteForm(forms.Form):
     attachment = forms.IntegerField()
+
+class DockerActionForm(forms.Form):
+    container_id = forms.CharField(max_length=1024)
+    action = forms.CharField(max_length=64)
+
+class DockerImageActionForm(forms.Form):
+    image_id = forms.CharField(max_length=1024)
+    action = forms.CharField(max_length=64)

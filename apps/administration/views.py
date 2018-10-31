@@ -7,7 +7,10 @@ from django.views.generic import TemplateView, CreateView, UpdateView, DeleteVie
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.accounts.models import Account
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood
-from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
+from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm, \
+                                        DockerActionForm, DockerImageActionForm
+from apps.administration.docker_utils import DockerTool
+
 
 class UserIsAdminMixin(UserPassesTestMixin):
         def test_func(self):
@@ -240,8 +243,14 @@ class AccountsView(UserIsAdminMixin, ListView):
 
 class UpdateAccountView(UserIsAdminMixin, UpdateView):
         model = Account
-        fields = ['username', 'password', 'is_staff', 'is_superuser', 'is_active', 'banned']
+        fields = ['username', 'email', 'password', 'is_staff', 'is_superuser', 'is_active', 'banned']
         template_name = 'administration/settings/account/update_account.html'
+        success_url = reverse_lazy('administration:list-accounts')
+
+
+class ToggleAccountStateView(UserIsAdminMixin, UpdateView):
+        model = Account
+        fields = ['is_active']
         success_url = reverse_lazy('administration:list-accounts')
 
 
@@ -249,3 +258,77 @@ class DeleteAccountView(UserIsAdminMixin, DeleteView):
         model = Account
         template_name = 'administration/settings/account/delete_account.html'
         success_url = reverse_lazy('administration:list-accounts')
+
+
+class DockerView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/settings/docker.html'
+
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                dt = DockerTool()
+                context['docker_containers'] = dt.list_containers()
+                context['docker_images'] = dt.list_images()
+                return context
+
+class DockerLogsView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/settings/docker/logs.html'
+
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                dt = DockerTool()
+                container = dt.get_container(self.kwargs['id'])
+                context['logs'] = container.logs()
+                return context
+
+
+class DockerActionsView(UserIsAdminMixin, View):
+        form_class = DockerActionForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(data=request.POST)
+                if form.is_valid():
+                        container_id = form.cleaned_data['container_id']
+                        action = form.cleaned_data['action']
+                        dt = DockerTool()
+                        container = dt.get_container(container_id)
+
+                        if action == "restart":
+                                container.restart()
+                        elif action == "stop":
+                                container.stop()
+                        elif action == "pause":
+                                if container.status == "paused":
+                                        container.unpause()
+                                else:
+                                        container.pause()
+                        elif action == "start":
+                                container.start()
+                        elif action == "remove":
+                                container.remove()
+                        else:
+                                return HttpResponse(status=400)
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+
+class DockerImageActionsView(UserIsAdminMixin, View):
+        form_class = DockerImageActionForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(data=request.POST)
+                if form.is_valid():
+                        image_id = form.cleaned_data['image_id']
+                        action = form.cleaned_data['action']
+                        dt = DockerTool()
+
+                        if action == "create":
+                                dt.create_container(image_id)
+                        elif action == "remove":
+                                image.remove()
+                        else:
+                                return HttpResponse(status=400)
+
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)

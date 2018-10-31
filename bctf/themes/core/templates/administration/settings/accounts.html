@@ -11,12 +11,14 @@
 {% endblock %}
 
 {% block settings %}
-
+<div id="id_search_area" class="id_search_area">
+</div>
 <table class="table table-borderless" id="id_accounts_table">
     <thead>
         <th>ID</th>
         <th>Username</th>
         <th>Email</th>
+        <th>Admin</th>
         <th>Status</th>
         <th></th>
     </thead>
@@ -24,12 +26,19 @@
         {% for account in accounts %}
         <tr>
             <td>{{account.pk}}</td>
-            <td>{{account.username}}</td>
+            <td><a href="{% url 'profile' account.pk %}">{{account.username}}</a></td>
             <td>{{account.email}}</td>
-            {% if account.is_active %}
-                <td>Active</td>
+            {% if account.is_superuser %}
+                <td style="color:red">Admin</td>
+            {% elif account.is_staff %}
+                <td>Staff</td>
             {% else %}
-                <td>Banned</td>
+                <td>Normal</td>
+            {% endif %}
+            {% if account.is_active %}
+                <td><button class="btn btn-success deactivate" data-account-id="{{account.pk}}">Active</button></td>
+            {% else %}
+                <td><button class="btn btn-danger activate" data-account-id="{{account.pk}}">Banned</button></td>
             {% endif %}
             <td>
                 <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#updateAccountModal">
@@ -61,7 +70,16 @@
 <script>
 
 $('document').ready(function() {
-    $('#id_accounts_table').DataTable();
+    $('#id_accounts_table').DataTable({
+    "bLengthChange": false,
+    "ordering": false,
+    language: {
+        searchPlaceholder: "Search accounts..."
+    },
+    initComplete : function() {
+        $("#id_accounts_table_filter").detach().appendTo('#id_search_area');
+    }
+    });
 
     $('#updateAccountModal').on('show.bs.modal', function (event) {
         var modal = $(this)
@@ -87,6 +105,41 @@ $('document').ready(function() {
         });
     })
 
+    $('.deactivate').on('click', function() {
+        var accountID = $(this).data('account-id');
+        var URL=`/administration/accounts/${accountID}/toggle`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            is_active: 'False'
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+
+    $('.activate').on('click', function() {
+        var accountID = $(this).data('account-id');
+        var URL=`/administration/accounts/${accountID}/toggle`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            is_active: 'True'
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });    
+        });
 
 } );
 </script>

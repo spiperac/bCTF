@@ -21,7 +21,7 @@
             <tbody>
                 {% for category in categories %}
                 <tr>
-                    <td style="color:grey">{{category.name}}</td>
+                    <td><b>{{category.name}}</b></td>
                     <td>
                         <a data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryUpdateModal">
                             <i class="fas fa-edit fa-lg"></i>
@@ -59,7 +59,7 @@
             <tbody>
                 {% for challenge in challenges %}
                 <tr>
-                    <td style="color:grey"></i>- {{challenge.name}}</td>
+                    <td><b>{{challenge.name}}</b></td>
                     <td>{{challenge.category}}</td>
                     <td>{{challenge.visible}}</td>
                     <td>
