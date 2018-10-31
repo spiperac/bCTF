@@ -24,6 +24,6 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['solved'] = Solves.objects.filter(account=self.request.user.pk)
-        context['first_bloods'] = FirstBlood.objects.filter(account=self.request.user.pk)
+        context['solved'] = Solves.objects.filter(account=self.object.pk)
+        context['first_bloods'] = FirstBlood.objects.filter(account=self.object.pk)
         return context
