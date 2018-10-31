@@ -12,11 +12,22 @@
     </div>
     <div class="content">
         <div class="row">
+            <div class="col-12 text-center">
+                Timer {{settings.ctf.title}}
+            </div>
+        </div>
+        <div class="row">
             <div class="col-8">
-                Haj
+                <ul>
+                    {% for article in news %}
+                        <li>
+                            <span style="color:yellow">[{{article.created_at}}]</span> <i class="fas fa-angle-double-right fa-lg"></i> {{article.text}}
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <div class="col-4">
-                Hoj
+                <h5>Events</h5>
             </div>
         </div>
     </div>

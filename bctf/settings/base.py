@@ -1,16 +1,20 @@
 import os
-import json
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
+SITE_INSTALLED = True
 # Load configuration
-config_file_path = os.path.join(BASE_DIR, '../config/config.json')
+config_file_path = os.path.join(BASE_DIR, '../config/config.yml')
 with open(config_file_path) as f:
-    config_file = json.load(f)
+    cfg = yaml.load(f)
 
+if cfg['ctf']['title'] == None:
+    SITE_INSTALLED = False
+    
 # Application definition
 
 INSTALLED_APPS = [
@@ -20,9 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     # 3rd party apps
-    'crispy_forms',
-    
+    'crispy_forms',    
 
     # apps
     'apps.accounts',
