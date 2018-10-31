@@ -11,10 +11,11 @@ SITE_INSTALLED = True
 config_file_path = os.path.join(BASE_DIR, '../config/config.yml')
 with open(config_file_path) as f:
     cfg = yaml.load(f)
+CONFIG_FILE = cfg
 
 if cfg['ctf']['title'] == None:
     SITE_INSTALLED = False
-    
+
 # Application definition
 
 INSTALLED_APPS = [

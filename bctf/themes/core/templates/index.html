@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load config_extras %}
+{% config as cfg %}
+
 {% block content %}
 
 <!-- Jumbotron -->
@@ -13,7 +16,11 @@
     <div class="content">
         <div class="row">
             <div class="col-12 text-center">
-                Timer {{settings.ctf.title}}
+               {% if cfg.ctf.start_time == None or cfg.ctf.end_time == None %}
+
+                {% else %}
+                    {{cfg.ctf.start_time}} - {{cfg.ctf.end_time}}
+                {% endif %}
             </div>
         </div>
         <div class="row">

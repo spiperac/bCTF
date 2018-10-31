@@ -1,0 +1,61 @@
+{% extends 'administration/index.html' %}
+{% load static %}
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block settings %}
+
+<div class="content">
+    <form class="form" id="configuration-form">
+        <div class="form-group">
+            <label for="title">CTF Title/Name</label>
+            <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{config.ctf.title}}">
+            <small id="titleHelp" class="form-text text-muted">CTF Title.</small>
+        </div>
+        <div class="form-group row">
+            <label for="start-time" class="col-2 col-form-label">Start time</label>
+            <div class="col-10">
+                <input class="form-control" type="datetime-local" value="{{config.ctf.start_time}}" id="start-time">
+            </div>
+            </div>
+            <div class="form-group row">
+            <label for="end-time" class="col-2 col-form-label">End time</label>
+            <div class="col-10">
+                <input class="form-control" type="date" value="{{config.ctf.end_time}}" id="end-time">
+            </div>
+        </div>
+        <button type="button" id="update-config" class="btn btn-primary">Save</button>
+    </form>
+
+</div>
+
+
+<script>
+
+$('document').ready(function() {
+    $("#configuration-form").on('submit', function(event) {
+        event.preventDefault();
+    });
+    
+    $("#update-config" ).click(function() {
+        var URL=`{% url 'administration:update-general' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            title: $("#id_title").val(),
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+})
+</script>
+
+{% endblock %}

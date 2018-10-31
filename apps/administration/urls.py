@@ -4,7 +4,7 @@ from apps.administration.views import IndexView, InformationsView, CTFView, AddC
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
                                          HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
                                          AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, \
-                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView
+                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView
 
 app_name = 'administration'
 urlpatterns = [
@@ -13,6 +13,10 @@ urlpatterns = [
     
     # CTF urls
     path('ctf/', CTFView.as_view(), name='ctf'),
+
+    # General urls
+    path('general/', GeneralView.as_view(), name='general'),
+    path('general/update', GeneralUpdateView.as_view(), name='update-general'),
 
     # Category urls
     path('ctf/category/add', AddCategoryView.as_view(), name="add-category"),

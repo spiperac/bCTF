@@ -8,9 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.accounts.models import Account
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood
 from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm, \
-                                        DockerActionForm, DockerImageActionForm
+                                        DockerActionForm, DockerImageActionForm, ConfigUpdateForm
 from apps.administration.docker_utils import DockerTool
-
+from config.config import read_config, update_config, reload_settings
 
 class UserIsAdminMixin(UserPassesTestMixin):
         def test_func(self):
@@ -329,6 +329,31 @@ class DockerImageActionsView(UserIsAdminMixin, View):
                         else:
                                 return HttpResponse(status=400)
 
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
+
+
+class GeneralView(UserIsAdminMixin, TemplateView):
+        template_name = 'administration/settings/general.html'
+
+        def get_context_data(self, **kwargs):
+                context = super().get_context_data(**kwargs)
+                context['config'] = read_config()
+                return context
+
+class GeneralUpdateView(UserIsAdminMixin, View):
+        form_class = ConfigUpdateForm
+
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(data=request.POST)
+                if form.is_valid():
+                        title = form.cleaned_data['title']
+                        config = read_config()
+                        config['ctf']['title'] = title
+                        update_config(config)
+                        reload_settings()
+                        
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
