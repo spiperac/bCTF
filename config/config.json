@@ -1,0 +1,15 @@
+{
+  "ctf_name": "",
+  "logo": "",
+  "timer": {
+    "start": "",
+    "end": ""
+  },
+  "docker": {
+    "name": "",
+    "host": "",
+    "username": "",
+    "password": "",
+    "driver": ""
+  }
+}

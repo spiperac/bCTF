@@ -1,9 +1,15 @@
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Load configuration
+config_file_path = os.path.join(BASE_DIR, '../config/config.json')
+with open(config_file_path) as f:
+    config_file = json.load(f)
 
 # Application definition
 
