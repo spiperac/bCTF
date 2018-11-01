@@ -87,6 +87,22 @@ class DeleteChallengeView(UserIsAdminMixin, DeleteView):
         success_url = reverse_lazy('administration:ctf')
 
 
+class ToggleChallengeVisibility(UserIsAdminMixin, View):
+
+        def post(self, request, *args, **kwargs):
+                challenge_id = request.POST.get('challenge_id')
+                if challenge_id == None:
+                        return HttpResponse(status=400)
+                else:
+                        challenge = Challenge.objects.get(pk=challenge_id)
+                        if challenge.visible:
+                                challenge.visible =False
+                        else:
+                                challenge.visible = True
+                        challenge.save()
+                        return  HttpResponse(status=204)
+
+
 class AddCategoryView(UserIsAdminMixin, CreateView):
         model = Category
         fields = '__all__'

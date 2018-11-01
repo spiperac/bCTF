@@ -21,7 +21,7 @@
             <tbody>
                 {% for category in categories %}
                 <tr>
-                    <td><b>{{category.name}}</b></td>
+                    <td style="color:#b5e853"><b>{{category.name}}</b></td>
                     <td>
                         <a data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryUpdateModal">
                             <i class="fas fa-edit fa-lg"></i>
@@ -59,9 +59,15 @@
             <tbody>
                 {% for challenge in challenges %}
                 <tr>
-                    <td><b>{{challenge.name}}</b></td>
+                    <td style="color:#b5e853"><b>{{challenge.name}}</b></td>
                     <td>{{challenge.category}}</td>
-                    <td>{{challenge.visible}}</td>
+                    <td>
+                        {% if challenge.visible %}
+                            <button class="btn btn-success toggle-challenge" data-challenge-id="{{challenge.pk}}">Visible</button>
+                        {% else %}
+                            <button class="btn btn-danger toggle-challenge" data-challenge-id="{{challenge.pk}}">Hidden</button>
+                        {% endif %}
+                    </td>
                     <td>
                         <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeUpdateModal">
                             <i class="fas fa-edit fa-lg"></i> 
@@ -259,6 +265,25 @@ $('document').ready(function() {
             modal.html(response);
         });
     })
+
+    $('.toggle-challenge').on('click', function() {
+        var challengeID = $(this).data('challenge-id');
+        var URL=`{% url 'administration:toggle-visibility-challenge' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: challengeID
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+
 });
 </script>
 {% endblock %}

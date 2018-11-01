@@ -3,7 +3,7 @@ from django.urls import path
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
                                          HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-                                         AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, \
+                                         AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, ToggleChallengeVisibility, \
                                          DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView
 
 app_name = 'administration'
@@ -25,6 +25,7 @@ urlpatterns = [
 
     # Challenge urls
     path('ctf/challenge/add', AddChallengeView.as_view(), name="add-challenge"),
+    path('ctf/challenge/togglevisibility', ToggleChallengeVisibility.as_view(), name="toggle-visibility-challenge"),
     path('ctf/challenge/<int:pk>/update', UpdateChallengeView.as_view(), name="update-challenge"),
     path('ctf/challenge/<int:pk>/delete', DeleteChallengeView.as_view(), name="delete-challenge"),
 
