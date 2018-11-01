@@ -16,11 +16,10 @@
     <div class="content">
         <div class="row">
             <div class="col-12 text-center">
-               {% if cfg.ctf.start_time == None or cfg.ctf.end_time == None %}
 
-                {% else %}
-                    {{cfg.ctf.start_time}} - {{cfg.ctf.end_time}}
-                {% endif %}
+                <div id="countDownTimer">
+                </div>
+
             </div>
         </div>
         <div class="row">
@@ -40,4 +39,51 @@
     </div>
 </div>
 
+<script>
+    $('document').ready(function() {
+        var countDownTime = `{{cfg.ctf.end_time}}`;
+        var startingTime = `{{cfg.ctf.start_time}}`;
+        var now = moment().unix();
+        
+        if (startingTime == 'None' || countDownTime == 'None') {
+            document.getElementById("countDownTimer").innerHTML = "Timer not set!"
+        } else {
+            if (now < startingTime) {
+                var distance = startingTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = "CTF Starting in: " + duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+                }, 1000);
+
+            } else {
+                var distance = countDownTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+
+                }, 1000);
+            }
+        }
+       
+    
+
+    })
+
+</script>
 {% endblock %}

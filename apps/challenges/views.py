@@ -21,7 +21,7 @@ class CtfNotEnded(UserPassesTestMixin):
                         return False
 
 
-class ChallengesListView(CtfNotEnded, LoginRequiredMixin, ListView):
+class ChallengesListView( LoginRequiredMixin, ListView):
     model = Challenge
     context_object_name = 'challenges'
     template_name = 'challenge/list_hexagon_challenges.html'

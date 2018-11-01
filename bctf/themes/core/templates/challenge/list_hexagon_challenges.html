@@ -118,6 +118,21 @@
                 context: document.body
             }).done(function(response) {
                 modal.html(response);
+            }).fail(function(err){
+                if (err.status == 403) {
+                    modal.html(`
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                CTF Ended
+                            </div>
+                            <div class="modal-body">
+                                Be faster next year!
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }
             });
         })
 
