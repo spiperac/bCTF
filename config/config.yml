@@ -1,6 +1,6 @@
 ctf:
   end_time: null
-  logo: null
+  logo: "https://2k18.balccon.org/images/d/d8/Logo_2k18.png"
   start_time: null
   title: hacking
 docker:
