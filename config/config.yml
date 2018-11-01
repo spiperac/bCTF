@@ -1,7 +1,7 @@
 ctf:
-  end_time: null
+  end_time: '1541088540'
   logo: null
-  start_time: null
+  start_time: '1541088060'
   title: hacking
 docker:
   driver: null
