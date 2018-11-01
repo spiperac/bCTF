@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.accounts.models import Account
+from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood
 from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm, \
                                         DockerActionForm, DockerImageActionForm, ConfigUpdateForm
@@ -373,3 +374,26 @@ class GeneralUpdateView(UserIsAdminMixin, View):
                         return HttpResponse(status=204)
                 else:
                         return HttpResponse(status=400)
+
+
+class NewListView(UserIsAdminMixin, ListView):
+        model = News
+        ordering = '-created_at'
+        template_name = 'administration/settings/news.html'
+
+
+class NewsCreateView(UserIsAdminMixin, CreateView):
+        model = News
+        fields = ['text']
+        template_name = 'administration/settings/news/create_news.html'
+        success_url = reverse_lazy('administration:news')
+
+class NewsUpdateView(UserIsAdminMixin, UpdateView):
+        model = News
+        fields = ['text']
+        template_name = 'administration/settings/news/update_news.html'
+        success_url = reverse_lazy('administration:news')
+
+class NewsDeleteView(UserIsAdminMixin, DeleteView):
+        model = News
+        success_url = reverse_lazy('administration:news')

@@ -4,7 +4,8 @@ from apps.administration.views import IndexView, InformationsView, CTFView, AddC
                                          AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
                                          HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
                                          AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, ToggleChallengeVisibility, \
-                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView
+                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView, \
+                                         NewListView, NewsCreateView, NewsUpdateView, NewsDeleteView
 
 app_name = 'administration'
 urlpatterns = [
@@ -17,6 +18,12 @@ urlpatterns = [
     # General urls
     path('general/', GeneralView.as_view(), name='general'),
     path('general/update', GeneralUpdateView.as_view(), name='update-general'),
+
+    # News urls
+    path('news/', NewListView.as_view(), name="news"),
+    path('news/add', NewsCreateView.as_view(), name="add-news"),
+    path('news/<int:pk>/update', NewsUpdateView.as_view(), name="update-news"),
+    path('news/<int:pk>/delete', NewsDeleteView.as_view(), name="delete-news"),
 
     # Category urls
     path('ctf/category/add', AddCategoryView.as_view(), name="add-category"),
