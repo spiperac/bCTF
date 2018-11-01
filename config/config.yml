@@ -2,7 +2,7 @@ ctf:
   end_time: null
   logo: null
   start_time: null
-  title: haxer
+  title: hacking
 docker:
   driver: null
   host: null

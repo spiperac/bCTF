@@ -12,10 +12,13 @@ from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, 
                                         DockerActionForm, DockerImageActionForm, ConfigUpdateForm
 from apps.administration.docker_utils import DockerTool
 from config.config import read_config, update_config, reload_settings
+from datetime import datetime
+
 
 class UserIsAdminMixin(UserPassesTestMixin):
         def test_func(self):
                 return self.request.user.is_staff
+
 
 class IndexView(UserIsAdminMixin, TemplateView):
         template_name = 'administration/index.html'
@@ -367,6 +370,19 @@ class GeneralUpdateView(UserIsAdminMixin, View):
                 if form.is_valid():
                         title = form.cleaned_data['title']
                         config = read_config()
+                        if 'start_time' in request.POST:
+                                print(request.POST['start_time'])
+                                if request.POST['start_time']:
+                                        config['ctf']['start_time'] = request.POST['start_time']
+                                else:
+                                        config['ctf']['start_time'] = None
+
+                        if 'end_time' in request.POST:
+                                if request.POST['end_time']:
+                                        config['ctf']['end_time'] = request.POST['end_time']  
+                                else:
+                                        config['ctf']['end_time'] = None    
+
                         config['ctf']['title'] = title
                         update_config(config)
                         reload_settings()

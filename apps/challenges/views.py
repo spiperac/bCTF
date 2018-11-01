@@ -1,14 +1,30 @@
 import json
+import time
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, FormView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Solves, FirstBlood
 from apps.challenges.forms import SubmitFlagForm
+from apps.challenges.decorators import ctf_ended
+from config.config import read_config
 
 
-class ChallengesListView(LoginRequiredMixin, ListView):
+class CtfNotEnded(UserPassesTestMixin):
+        def test_func(self):
+                cfg = read_config()
+                print(time.time())
+                if cfg['ctf']['start_time'] or cfg['ctf']['end_time'] == None:
+                        return True
+                elif time.time() > cfg['ctf']['end_time']:
+                        return False
+                else:
+                        return True
+
+
+class ChallengesListView(CtfNotEnded, LoginRequiredMixin, ListView):
     model = Challenge
     context_object_name = 'challenges'
     template_name = 'challenge/list_hexagon_challenges.html'
@@ -21,7 +37,7 @@ class ChallengesListView(LoginRequiredMixin, ListView):
         context['first_bloods'] = FirstBlood.objects.all()
         return context
 
-class SubmitFlagView(LoginRequiredMixin, FormView):
+class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
     form_class = SubmitFlagForm
     template_name = 'challenge/challenge.html'
 

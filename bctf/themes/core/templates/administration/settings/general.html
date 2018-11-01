@@ -2,7 +2,10 @@
 {% load static %}
 
 {% block extra_js %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}">
 
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/tempusdominus-bootstrap-4.min.js' %}"></script>
 {% endblock %}
 
 {% block settings %}
@@ -10,22 +13,27 @@
 <div class="content">
     <form class="form" id="configuration-form">
         <div class="form-group">
-            <label for="title">CTF Title/Name</label>
+            <label for="id_title">CTF Title/Name</label>
             <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{config.ctf.title}}" required>
             <small id="titleHelp" class="form-text text-muted">CTF Title.</small>
         </div>
-        <div class="form-group row">
-            <label for="start-time" class="col-2 col-form-label">Start time</label>
-            <div class="col-10">
-                <input class="form-control" type="datetime-local" value="{{config.ctf.start_time}}" id="start-time">
-            </div>
-            </div>
-            <div class="form-group row">
-            <label for="end-time" class="col-2 col-form-label">End time</label>
-            <div class="col-10">
-                <input class="form-control" type="date" value="{{config.ctf.end_time}}" id="end-time">
+        <div class="form-group">
+            <div class="input-group date" id="id_start_time" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#id_start_time"/>
+                <div class="input-group-append" data-target="#id_start_time" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="input-group date" id="id_end_time" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#id_end_time"/>
+                <div class="input-group-append" data-target="#id_end_time" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+
         <button type="submit" id="update-config" class="btn btn-primary">Save</button>
     </form>
 
@@ -35,13 +43,52 @@
 <script>
 
 $('document').ready(function() {
+        $(function () {
+            var default_start_timestamp = null
+            var default_end_timestamp = null
+            if (`{{config.ctf.start_time}}` != 'None' && `{{config.ctf.end_time}}` != 'None') {
+                var default_start_timestamp = moment.unix(`{{config.ctf.start_time}}`);
+                var default_end_timestamp = moment.unix(`{{config.ctf.end_time}}`);
+            }
+
+            $('#id_start_time').datetimepicker({
+                defaultDate: default_start_timestamp
+            });
+            $('#id_end_time').datetimepicker({
+                defaultDate: default_end_timestamp,
+                useCurrent: false
+            });
+
+            $("#id_start_time").on("change.datetimepicker", function (e) {
+                $('#id_end_time').datetimepicker('minDate', e.date);
+            });
+            $("#id_end_time").on("change.datetimepicker", function (e) {
+                $('#id_start_time').datetimepicker('maxDate', e.date);
+            });
+        });
     $("#configuration-form").on('submit', function(event) {
         event.preventDefault();
- 
+        var start_datetime = $("#id_start_time").data('date');
+        var end_datetime = $("#id_end_time").data('date');
+
+        if (start_datetime) {
+            var start_timestamp = moment(start_datetime).unix();
+        }   else {
+            start_timestamp = null;
+        }
+        
+        if (end_datetime) {
+            var end_timestamp = moment(end_datetime).unix();
+        } else {
+            end_timestamp = null;
+        }
+
         var URL=`{% url 'administration:update-general' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            title: $("#id_title").val(),
+            title: $('#id_title').val(),
+            start_time: start_timestamp,
+            end_time: end_timestamp
         }
 
         $.ajax({
