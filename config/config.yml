@@ -1,8 +1,8 @@
 ctf:
   end_time: null
-  logo: "https://2k18.balccon.org/images/d/d8/Logo_2k18.png"
+  logo: https://2k18.balccon.org/images/d/d8/Logo_2k18.png
   start_time: null
-  title: hacking
+  title: BalCCon2k19
 docker:
   driver: null
   host: null

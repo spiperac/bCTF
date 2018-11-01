@@ -1,0 +1,37 @@
+{% extends 'administration/index.html' %}
+{% load static %}
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block settings %}
+<a role="button" class="btn btn-default rounded-circle" href="{% url 'pages:create-page' %}"><i class="fas fa-plus fa-2x"></i></a>
+<table class="table table-borderless">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Slug</th>
+            <th>Created At</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for page in object_list %}
+        <tr>
+            <td>{{page.title}}</td>
+            <td>{{page.slug}}</td>
+            <td>{{page.created_on}}</td>
+            <td>
+                <a href="{% url 'pages:update-page' page.pk %}">
+                    <i class="fas fa-edit fa-lg"></i>
+                </a>
+                <a href="{% url 'pages:delete-page' page.pk %}">
+                    <i class="fas fa-trash fa-lg"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

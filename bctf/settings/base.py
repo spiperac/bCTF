@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.challenges',
     'apps.scoreboard',
+    'apps.pages',
     'apps.administration',
 ]
 

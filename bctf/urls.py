@@ -18,5 +18,6 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('administration/', include('apps.administration.urls')),
     path('challenges/', include('apps.challenges.urls')),
+    path('pages/', include('apps.pages.urls')),
 
 ]

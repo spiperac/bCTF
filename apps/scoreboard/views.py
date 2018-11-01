@@ -3,6 +3,7 @@ from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
+
 from config.config import read_config
 
 class IndexView(TemplateView):

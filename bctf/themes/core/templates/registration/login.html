@@ -6,7 +6,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     {% load static %}
-
+    {% load config_extras %}
+    {% config as cfg %}
     <title>bCTF Registration</title>
 
     <!-- Bootstrap core CSS -->
@@ -23,7 +24,7 @@
   <body class="text-center">
     <form class="form-signin" method="POST">
       {% csrf_token %}
-      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <img class="mb-4" src="{{cfg.ctf.logo}}" alt="">
       <h1 class="h3 mb-3 font-weight-normal">Login</h1>
       <label for="username" class="sr-only">Username</label>
       <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
@@ -34,6 +35,7 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
+      <a href="{% url 'registration' %}">Register?</a>
       {% if form.errors %}
         <div class="alert alert-danger alert-dismissible fade show">
             Your username and password didn't match. 

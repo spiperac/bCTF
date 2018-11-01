@@ -7,7 +7,8 @@
     <meta name="author" content="">
     {% load static %}
     {% load crispy_forms_tags %}
-
+    {% load config_extras %}
+    {% config as cfg %}
     <title>bCTF Registration</title>
 
     <!-- Bootstrap core CSS -->
@@ -22,12 +23,14 @@
   </head>
   <body class="text-center">
     <form class="form-signin" method="POST">
+      <img class="mb-4" src="{{cfg.ctf.logo}}" alt="">
       {% csrf_token %}
       {{form|crispy}}
       <div>
         <input type="checkbox" id="soul" name="soul" value="scales" checked /> <br />
         <label for="soul">I promise i'll come to next BalCCon!</label>
       </div>
+      <a href="{% url 'login' %}">Already registred?</a><br />
       <button type="submit" class="btn btn-success">Register Team</button>
     </form>
   </body>

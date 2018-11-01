@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="POST" action="{% url 'pages:update-page' object.pk %}" id="update-page-from">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button id="submit" type="submit" class="btn btn-primary">Update</button>
+
+</form> 
+{% endblock %}
