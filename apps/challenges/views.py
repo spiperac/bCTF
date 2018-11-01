@@ -15,10 +15,12 @@ from config.config import read_config
 class CtfNotEnded(UserPassesTestMixin):
         def test_func(self):
                 cfg = read_config()
-                if int(cfg['ctf']['start_time']) < int(time.time()) < int(cfg['ctf']['end_time']):
-                        return True
+                if cfg['ctf']['start_time'] == None or cfg['ctf']['end_time'] == None:
+                    return True
+                elif int(cfg['ctf']['start_time']) < int(time.time()) < int(cfg['ctf']['end_time']):
+                    return True
                 else:
-                        return False
+                    return False
 
 
 class ChallengesListView( LoginRequiredMixin, ListView):
