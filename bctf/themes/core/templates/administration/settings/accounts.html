@@ -26,7 +26,7 @@
         {% for account in accounts %}
         <tr>
             <td>{{account.pk}}</td>
-            <td><a href="{% url 'profile' account.pk %}">{{account.username}}</a></td>
+            <td><a href="{% url 'profile' account.pk %}" style="color:#b5e853">{{account.username}}</a></td>
             <td>{{account.email}}</td>
             {% if account.is_superuser %}
                 <td style="color:red">Admin</td>
