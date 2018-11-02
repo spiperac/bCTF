@@ -3,6 +3,10 @@
 {% load config_extras %}
 {% config as cfg %}
 
+{% block extra_js %}
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <!-- Jumbotron -->
@@ -23,17 +27,34 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-8">
-                <ul>
-                    {% for article in news %}
-                        <li>
-                            <span style="color:yellow">[{{article.created_at}}]</span> <i class="fas fa-angle-double-right fa-lg"></i> {{article.text}}
-                        </li>
-                    {% endfor %}
-                </ul>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                            <h5>[News]</h5>
+                    </div>
+                    <div class="card-body">
+                            <ul>
+                                {% for article in news %}
+                                    <li style="margin-bottom:5px;">
+                                        <span style="color:yellow">[{{article.created_at|date:"SHORT_DATETIME_FORMAT"}}]</span><br />
+                                        {{article.text}}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                    </div>
+                </div>
             </div>
-            <div class="col-4">
-                <h5>Events</h5>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Events</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul id="events">
+
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

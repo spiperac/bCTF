@@ -45,3 +45,18 @@ def top_scores(request):
             return JsonResponse(response)
         else:
             return JsonResponse(response)
+
+def events(request):
+    if request.method == 'GET':
+        response = {}
+        response['events'] = []
+
+        latest_events = Solves.objects.all().order_by('-created_at')[:10]
+        for event in latest_events:
+            new_event = {}
+            new_event['team'] = event.account.username
+            new_event['challenge'] = event.challenge.name
+            new_event['time'] = event.created_at.strftime("%Y-%m-%d %H:%M")
+            response['events'].append(new_event)
+        
+        return JsonResponse(response)
