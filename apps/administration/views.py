@@ -297,7 +297,7 @@ class DockerLogsView(UserIsAdminMixin, TemplateView):
                 context = super().get_context_data(**kwargs)
                 dt = DockerTool()
                 container = dt.get_container(self.kwargs['id'])
-                context['logs'] = container.logs()
+                context['logs'] = container.logs().decode('utf-8')
                 return context
 
 
