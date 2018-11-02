@@ -20,7 +20,7 @@ function randomColors(data_length) {
     data = {
         datasets: [{
             data: data,
-            backgroundColor: randomColors(data.length)
+            backgroundColor: ['green', 'red']
         }],
 
         labels: [
@@ -38,7 +38,7 @@ function randomColors(data_length) {
     }
 
     var solvedChart = new Chart(ctx,{
-        type: 'pie',
+        type: 'doughnut',
         data: data,
         options: options
     });
@@ -51,7 +51,7 @@ function randomColors(data_length) {
     data = {
         datasets: [{
             data: data,
-            backgroundColor: randomColors(data.length)
+            backgroundColor: ['green', 'red']
         }],
 
         labels: [
@@ -69,7 +69,7 @@ function randomColors(data_length) {
     }
 
     var solvedChart = new Chart(ctx,{
-        type: 'pie',
+        type: 'doughnut',
         data: data,
         options: options
     });
