@@ -33,7 +33,15 @@ function randomColors(data_length) {
         maintainAspectRatio : false,
         title: {
             display: true,
-            text: 'Solved stats'
+            text: 'Challenges solved',
+            fontSize: 30,
+            fontColor: 'white'
+        },
+        legend: {
+            labels: {
+                fontColor: "white",
+                fontSize: 15
+            }
         }
     }
 
@@ -64,7 +72,15 @@ function randomColors(data_length) {
         maintainAspectRatio : false,
         title: {
             display: true,
-            text: 'Accounts that solved at least one!'
+            text: 'Teams scored!',
+            fontSize: 30,
+            fontColor: 'white'
+        },
+        legend: {
+            labels: {
+                fontColor: "white",
+                fontSize: 15
+            }
         }
     }
 
@@ -91,7 +107,15 @@ function randomColors(data_length) {
 
         title: {
             display: true,
-            text: 'First Bloods!'
+            text: 'First Bloods!',
+            fontSize: 30,
+            fontColor: 'white'
+        },
+        legend: {
+            labels: {
+                fontColor: "white",
+                fontSize: 15
+            }
         }
     }
 
