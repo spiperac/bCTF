@@ -60,3 +60,16 @@ def events(request):
             response['events'].append(new_event)
         
         return JsonResponse(response)
+
+def teams(request):
+    if request.method == 'GET':
+        response = {}
+        response['teams'] = []
+        
+        teams = Account.objects.all().order_by('created_at')
+        for team in teams:
+            new_team['name'] = team.username
+            
+            response['teams'].append(new_team)
+
+        return JsonResponse(response)
