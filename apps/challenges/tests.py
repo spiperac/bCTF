@@ -14,6 +14,7 @@ class ChallengeTest(TestCase):
         self.account.set_password("hacker123")
         self.account.save()
 
+        self.test_title = "Challenges TEST"
         category = Category.objects.create(
             name="pwn"
         )
@@ -68,6 +69,12 @@ class ChallengeTest(TestCase):
         Try to submit correct flag.
         """
         client = self.login_client()
+        response = client.post(reverse('administration:update-general'), {
+            'title': self.test_title,
+            'start_time': "",
+            'end_time': ""
+        })
+
         challenge = Challenge.objects.get(name="pwn1")
         flag = Flag.objects.create(
             challenge=challenge,
@@ -83,6 +90,11 @@ class ChallengeTest(TestCase):
         Try to submit wrong flag.
         """
         client = self.login_client()
+        response = client.post(reverse('administration:update-general'), {
+            'title': self.test_title,
+            'start_time': "",
+            'end_time': ""
+        })
         challenge = Challenge.objects.get(name="pwn1")
         flag = Flag.objects.create(
             challenge=challenge,
@@ -99,6 +111,11 @@ class ChallengeTest(TestCase):
         Try to resubmit flag for already solved task.
         """
         client = self.login_client()
+        response = client.post(reverse('administration:update-general'), {
+            'title': self.test_title,
+            'start_time': "",
+            'end_time': ""
+        })
         challenge = Challenge.objects.get(name="pwn1")
         flag = Flag.objects.create(
             challenge=challenge,

@@ -1,7 +1,7 @@
 ctf:
-  end_time: '1541331911'
+  end_time: '1541332053'
   logo: https://2k18.balccon.org/images/d/d8/Logo_2k18.png
-  start_time: '1541331891'
+  start_time: '1541332033'
   title: Example CTF NEW!
 docker:
   driver: null
