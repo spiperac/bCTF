@@ -23,7 +23,6 @@ class AccountTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(Account.objects.filter(username=self.test_username).count() == 1)
 
-
     def test_login(self):
         client = Client()
         request_data = {
@@ -53,7 +52,7 @@ class AccountTests(TestCase):
         )
 
         account.set_password(self.test_password)
-        account.save() 
+        account.save()
 
         category = Category.objects.create(
             name="pwn"

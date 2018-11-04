@@ -7,7 +7,7 @@ class Account(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
     @property
     def points(self):
         if self.solves_set.all().count() > 0:
@@ -20,6 +20,6 @@ class Account(AbstractUser):
         else:
             points = 0
             return points
-            
+
     def rank(self):
         pass

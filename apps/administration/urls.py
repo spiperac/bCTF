@@ -1,17 +1,17 @@
 from django.urls import path
 
 from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
-                                         AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
-                                         HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-                                         AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, ToggleChallengeVisibility, \
-                                         DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView, \
-                                         NewListView, NewsCreateView, NewsUpdateView, NewsDeleteView
+    AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
+    HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
+    AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, ToggleChallengeVisibility, \
+    DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView, \
+    NewListView, NewsCreateView, NewsUpdateView, NewsDeleteView
 
 app_name = 'administration'
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('informations/', InformationsView.as_view(), name='informations'),
-    
+
     # CTF urls
     path('ctf/', CTFView.as_view(), name='ctf'),
 

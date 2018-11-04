@@ -6,8 +6,8 @@ from apps.pages.models import Page
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
-        def test_func(self):
-                return self.request.user.is_staff
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 class PageView(DetailView):
@@ -21,11 +21,13 @@ class PageCreateView(UserIsAdminMixin, LoginRequiredMixin, CreateView):
     template_name = 'pages/create_page.html'
     success_url = reverse_lazy('pages:list-pages')
 
+
 class PageUpdateView(UserIsAdminMixin, LoginRequiredMixin, UpdateView):
     model = Page
     fields = '__all__'
     template_name = 'pages/update_page.html'
     success_url = reverse_lazy('pages:list-pages')
+
 
 class PageListView(UserIsAdminMixin, LoginRequiredMixin, ListView):
     model = Page

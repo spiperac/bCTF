@@ -16,10 +16,11 @@ class Challenge(models.Model):
     description = models.TextField(max_length=8192, null=False, blank=False)
     points = models.IntegerField()
     visible = models.BooleanField(default=True)
-    
+
     @property
     def sorted_by_solves_set(self):
         return self.solves_set.order_by('points')
+
 
 class Hint(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)

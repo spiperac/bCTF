@@ -1,5 +1,6 @@
 import docker
 
+
 class DockerTool(object):
 
     def __init__(self):
@@ -8,7 +9,7 @@ class DockerTool(object):
 
         self.client = None
         self.connect()
-    
+
     def connect(self):
         self.client = docker.from_env()
 

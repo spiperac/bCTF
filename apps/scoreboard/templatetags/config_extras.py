@@ -4,9 +4,11 @@ from apps.pages.models import Page
 from config.config import read_config
 register = template.Library()
 
+
 @register.simple_tag
 def config():
     return getattr(settings, "CONFIG_FILE", None)
+
 
 @register.simple_tag
 def get_pages():

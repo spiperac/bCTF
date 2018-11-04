@@ -5,20 +5,26 @@ from apps.challenges.models import Category, Challenge, Flag, Attachment, Hint, 
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+
 class ChallengeAdmin(admin.ModelAdmin):
     pass
+
 
 class FlagAdmin(admin.ModelAdmin):
     pass
 
+
 class AttachmentAdmin(admin.ModelAdmin):
     pass
+
 
 class HintAdmin(admin.ModelAdmin):
     pass
 
+
 class SolvesAdmin(admin.ModelAdmin):
     pass
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Challenge, ChallengeAdmin)

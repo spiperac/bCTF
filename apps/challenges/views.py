@@ -12,17 +12,17 @@ from config.config import read_config
 
 
 class CtfNotEnded(UserPassesTestMixin):
-        def test_func(self):
-                cfg = read_config()
-                if cfg['ctf']['start_time'] == None or cfg['ctf']['end_time'] == None:
-                    return True
-                elif int(cfg['ctf']['start_time']) < int(time.time()) < int(cfg['ctf']['end_time']):
-                    return True
-                else:
-                    return False
+    def test_func(self):
+        cfg = read_config()
+        if cfg['ctf']['start_time'] is None or cfg['ctf']['end_time'] is None:
+            return True
+        elif int(cfg['ctf']['start_time']) < int(time.time()) < int(cfg['ctf']['end_time']):
+            return True
+        else:
+            return False
 
 
-class ChallengesListView( LoginRequiredMixin, ListView):
+class ChallengesListView(LoginRequiredMixin, ListView):
     model = Challenge
     context_object_name = 'challenges'
     template_name = 'challenge/list_hexagon_challenges.html'
@@ -35,6 +35,7 @@ class ChallengesListView( LoginRequiredMixin, ListView):
         context['first_bloods'] = FirstBlood.objects.all()
         return context
 
+
 class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
     form_class = SubmitFlagForm
     template_name = 'challenge/challenge.html'
@@ -45,7 +46,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
         context['solvers'] = Solves.objects.filter(challenge=context['challenge'])
         context['solved_by_user'] = Solves.objects.filter(account=self.request.user.pk).values_list('challenge', flat=True)
         return context
-        
+
     def form_valid(self, form):
         challenge_id = form.cleaned_data['challenge_id']
         flag = form.cleaned_data['flag']
@@ -56,7 +57,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                 if Solves.objects.filter(challenge=challenge).count() == 0:
                     new_first_blood = FirstBlood.objects.create(
                         challenge=challenge,
-                        account=self.request.user,                       
+                        account=self.request.user,
                     )
 
                 new_solve = Solves.objects.create(
@@ -68,5 +69,3 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                 return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
             return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
-        
- 

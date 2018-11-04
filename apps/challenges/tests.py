@@ -3,6 +3,7 @@ from django.urls import reverse
 from apps.accounts.models import Account
 from apps.challenges.models import Category, Challenge, Flag
 
+
 class ChallengeTest(TestCase):
 
     def setUp(self):
@@ -39,7 +40,7 @@ class ChallengeTest(TestCase):
         challenge = Challenge.objects.get(name="pwn1")
         category = Category.objects.get(name="pwn")
         self.assertEqual(challenge.category.name, category.name)
-    
+
     def test_challenge_list(self):
         """
         Check if challenge actually showd up on challenges list page.
@@ -50,7 +51,7 @@ class ChallengeTest(TestCase):
         response = client.get(reverse('challenge:list-challenges'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, challenge.name)
-    
+
     def test_hidden_challenge(self):
         """
         Set challenge visibility to false, and check if it's still shown on the challenges list page.
@@ -80,11 +81,11 @@ class ChallengeTest(TestCase):
             challenge=challenge,
             text="ctf{flag_one}"
         )
-        
+
         response = client.post(reverse('challenge:flag-submit', args=[challenge.pk]), {'challenge_id': challenge.pk, 'flag': flag.text})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "The flag is captured!")
-    
+
     def test_submiting_wrong_flag(self):
         """
         Try to submit wrong flag.
@@ -130,5 +131,3 @@ class ChallengeTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "The flag is captured!")
         self.assertContains(response, "Already solved!")
-    
-

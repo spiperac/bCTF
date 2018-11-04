@@ -6,10 +6,11 @@ from django.urls import reverse
 
 from apps.accounts.models import Account
 
+
 class ScoreboardTest(TestCase):
 
     def setUp(self):
-        for x in range(0,10):
+        for x in range(0, 10):
             team_name = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
             new_account = Account.objects.create(
                 username=team_name,

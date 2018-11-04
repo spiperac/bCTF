@@ -39,7 +39,6 @@ class AdministrationTest(TestCase):
         self.admin_account.save()
         self.test_title = "Example CTF"
 
-    
     def login_as_admin(self):
         """
         Login client as admin user.
@@ -49,7 +48,7 @@ class AdministrationTest(TestCase):
         response = client.post(reverse('login'), {'username': self.admin_account.username, 'password': 'administrator123'})
         self.assertEqual(response.status_code, 302)
         return client
-    
+
     def test_informations_view(self):
         """
         Just load informations menu page.
@@ -100,8 +99,7 @@ class AdministrationTest(TestCase):
         self.assertFalse(Challenge.objects.get(pk=challenge.pk).visible)
 
         response = client.post(reverse('administration:toggle-visibility-challenge'), {'challenge_id': challenge.pk})
-        self.assertTrue(Challenge.objects.get(pk=challenge.pk).visible)   
-
+        self.assertTrue(Challenge.objects.get(pk=challenge.pk).visible)
 
     def test_general_change_title(self):
         """
@@ -149,7 +147,7 @@ class AdministrationTest(TestCase):
         self.assertContains(response, 'ctf{second_flag}')
 
         response = client.post(reverse('administration:delete-flag'), {'flag': 2})
-        self.assertEqual(response.status_code, 204)        
+        self.assertEqual(response.status_code, 204)
 
         response = client.get(reverse('administration:flags', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
@@ -161,7 +159,7 @@ class AdministrationTest(TestCase):
         """
 
         client = self.login_as_admin()
-        
+
         response = client.post(reverse('administration:update-general'), {
             'title': self.test_title,
             'start_time': "",
@@ -177,7 +175,7 @@ class AdministrationTest(TestCase):
             name="pwn1",
             description="Test pwn",
             points=1000
-        )   
+        )
 
         hint = Hint.objects.create(
             challenge=challenge,
@@ -186,7 +184,7 @@ class AdministrationTest(TestCase):
 
         response = client.get(reverse('administration:hints', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, hint.text)    
+        self.assertContains(response, hint.text)
 
         response = client.post(reverse('administration:add-hint', args=[challenge.pk, ]), {'challenge_id': challenge.pk, 'hint': 'This is second hint!'})
         self.assertEqual(response.status_code, 204)
@@ -210,8 +208,7 @@ class AdministrationTest(TestCase):
 
         response = client.get(reverse('challenge:flag-submit', args=[challenge.pk]))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "This is second hint!")    
-
+        self.assertNotContains(response, "This is second hint!")
 
     def test_attachment_add_delete(self):
         """
@@ -227,7 +224,7 @@ class AdministrationTest(TestCase):
             name="pwn1",
             description="Test pwn",
             points=1000
-        )   
+        )
 
         # set up form data
         attachment = create_image(None, 'attachment_image.png')
@@ -267,9 +264,9 @@ class AdministrationTest(TestCase):
 
         response = client.get(reverse('scoreboard:home'))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response,'var startingTime = `None`;')
+        self.assertNotContains(response, 'var startingTime = `None`;')
         self.assertNotContains(response, 'var countDownTime = `None`;')
-    
+
     def test_ctf_time_check_challenges_after_end(self):
         """
         Test if you are able to see challenges after CTF end time pass.
@@ -300,9 +297,9 @@ class AdministrationTest(TestCase):
 
         response = client.get(reverse('scoreboard:home'))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response,'var startingTime = `None`;')
+        self.assertNotContains(response, 'var startingTime = `None`;')
         self.assertNotContains(response, 'var countDownTime = `None`;')
-        
+
         response = client.get(reverse('challenge:list-challenges'))
         self.assertContains(response, challenge.name)
         time.sleep(1)
@@ -313,5 +310,3 @@ class AdministrationTest(TestCase):
 
         response = client.get(reverse('challenge:flag-submit', args=[challenge.pk]))
         self.assertEqual(response.status_code, 403)
-    
-
