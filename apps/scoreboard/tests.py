@@ -23,3 +23,5 @@ class ScoreboardTest(TestCase):
 
         response = client.get(reverse('scoreboard:scoreboard'))
         self.assertEqual(response.status_code, 200)
+        for account in Account.objects.all():
+            self.assertContains(response, account.username)
