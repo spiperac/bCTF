@@ -68,14 +68,14 @@ class AdministrationTest(TestCase):
         response = client.get(reverse('administration:ctf'))
         self.assertEqual(response.status_code, 200)
 
-    # def test_docker_view(self):
-    #     """
-    #     Just load ctf menu page.
-    #     """
-    #     client = self.login_as_admin()
+    def test_docker_view(self):
+        """
+        Just load ctf menu page.
+        """
+        client = self.login_as_admin()
 
-    #     response = client.get(reverse('administration:docker'))
-    #     self.assertEqual(response.status_code, 200)
+        response = client.get(reverse('administration:docker'))
+        self.assertEqual(response.status_code, 200)
 
     def test_toggle_challenge_visibility(self):
         """
