@@ -5,7 +5,7 @@ pipelines:
     - step:
         caches:
           - pip
-	services:
+	      services:
           - docker
         script: # Modify the commands below to build your repository.
           - pip install -r requirements.txt
