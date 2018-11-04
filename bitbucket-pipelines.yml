@@ -5,10 +5,11 @@ pipelines:
     - step:
         caches:
           - pip
-	      services:
-          - docker
+
         script: # Modify the commands below to build your repository.
           - pip install -r requirements.txt
           - coverage run manage.py test -v 2
           - coverage report
-	
+
+	      services:
+          - docker
