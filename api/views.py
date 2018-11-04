@@ -66,8 +66,9 @@ def teams(request):
         response = {}
         response['teams'] = []
         
-        teams = Account.objects.all().order_by('created_at')
+        teams = Account.objects.all().order_by('date_joined')
         for team in teams:
+            new_team = {}
             new_team['name'] = team.username
             
             response['teams'].append(new_team)

@@ -53,3 +53,14 @@ class APITest(TestCase):
         top = response.json()
         top_length = len(top['ranks'])
         self.assertEqual(top_length, 0)       
+
+    def test_events(self):
+        client = self.login_as_admin()
+        response = client.get(reverse('api:events'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_teams(self):
+        client = self.login_as_admin()
+        response = client.get(reverse('api:teams'))
+        self.assertEqual(response.status_code, 200)
+        teams = response.json()
