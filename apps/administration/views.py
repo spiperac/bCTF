@@ -100,7 +100,7 @@ class ToggleChallengeVisibility(UserIsAdminMixin, View):
                 else:
                         challenge = Challenge.objects.get(pk=challenge_id)
                         if challenge.visible:
-                                challenge.visible =False
+                                challenge.visible = False
                         else:
                                 challenge.visible = True
                         challenge.save()
