@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from apps.accounts.models import Account
+from apps.challenges.models import Category, Challenge, Solves
 
 
 class AccountTests(TestCase):
@@ -54,9 +55,25 @@ class AccountTests(TestCase):
         account.set_password(self.test_password)
         account.save() 
 
+        category = Category.objects.create(
+            name="pwn"
+        )
+
+        challenge = Challenge.objects.create(
+            category=category,
+            name="pwn1",
+            description="Test pwn",
+            points=1000
+        )
+        Solves.objects.create(
+            account=account,
+            challenge=challenge
+        )
+
         login = client.login(username=self.test_username, password=self.test_password)
         self.assertTrue(login)
 
         response = client.get(reverse('profile', args=[account.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.test_username)
+        self.assertContains(response, Account.objects.get(pk=account.pk).points)
