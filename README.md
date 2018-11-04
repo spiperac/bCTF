@@ -6,11 +6,11 @@ easier challenge deployment, controll small set of docker containers, more inter
 
 ## Getting Started
 
-Installation is dead simple, and you'll have few options. You can run bCTF from host machine, or a docker.
+Installation is dead simple, and you have few options. You can run bCTF from host machine, or a docker. Or whatever you came up with.
 
 ### Prerequisites for host 
 
-If you want to run it on your machine, you'll need:
+If you want to run it on your machine/server, you'll need to install:
 
 ```
 python3
@@ -41,26 +41,23 @@ python3 manage.py runserver 0.0.0.0:8080
 
 And point your browser of choice to http://localhost:8080
 
+## Deployment with Docker
+
+If you want to  use our supplied Dockerfile, keep in mind that it comes in production ready state, with Nginx running alongside with bCTF in supervisord inside container.
+
+### Built With
+
+docker build -t bCTF .
+
+### Run 
+docker run -p 80:80 bCTF
+
 ## Running the tests
 
 Run:
 ```
 python3 manage.py test
 ```
-
-
-## Deployment with Docker
-
-If you want to  use our supplied Dockerfile, keep in mind that it comes in production ready state, with Nginx running alongside with bCTF in supervisord inside container.
-
-## Built With
-
-docker build -t bCTF .
-
-## Run 
-docker run -p 80:80 bCTF
-
-
 
 ## Contributing
 
