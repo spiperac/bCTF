@@ -8,7 +8,6 @@ from django.views.generic import TemplateView, ListView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Solves, FirstBlood
 from apps.challenges.forms import SubmitFlagForm
-from apps.challenges.decorators import ctf_ended
 from config.config import read_config
 
 

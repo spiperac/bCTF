@@ -44,7 +44,7 @@ class APITest(TestCase):
         self.assertEqual(scores_length, num_of_accounts)       
 
         for score in scores['ranks']:
-            self.assertEqual(score['points'], 0)
+            self.assertEqual(score['points'], Account.objects.get(username=score['name']).points)
     
     def test_top10_endpoint(self):
         client = self.login_as_admin()
