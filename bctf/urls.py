@@ -1,12 +1,11 @@
 from django.contrib import admin
+from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from apps.accounts.views import RegistrationView, ProfileView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
     # accounts
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html', redirect_authenticated_user=True), name="login"),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name="logout"),
@@ -21,3 +20,8 @@ urlpatterns = [
     path('pages/', include('apps.pages.urls')),
 
 ]
+
+
+print(settings.DEBUG)
+if settings.DEBUG == True:
+    urlpatterns += [ path('super-secret/', admin.site.urls),]
