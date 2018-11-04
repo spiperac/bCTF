@@ -46,7 +46,7 @@ urlpatterns = [
     path('ctf/challenge/<int:pk>/hints/add', HintAddView.as_view(), name="add-hint"),
     path('ctf/hints/delete', HintDeleteView.as_view(), name="delete-hint"),
 
-    # Hint urls
+    # Attachments urls
     path('ctf/challenge/<int:pk>/attachments', AttachmentsView.as_view(), name="attachments"),
     path('ctf/challenge/<int:pk>/attachments/add', AttachmentAddView.as_view(), name="add-attachment"),
     path('ctf/attachments/delete', AttachmentDeleteView.as_view(), name="delete-attachment"),

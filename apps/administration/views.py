@@ -132,27 +132,24 @@ class FlagsView(UserIsAdminMixin, DetailView):
         template_name = 'administration/settings/challenge/flags.html'
 
 
-class FlagAddView(UserIsAdminMixin, FormView):
+class FlagAddView(UserIsAdminMixin, View):
         form_class = FlagAddForm
-        template_name = 'administration/settings/challenge/add_flag.html'
 
-        def get_context_data(self, **kwargs):
-                context = super(FlagAddView, self).get_context_data(**kwargs)
-                context['challenge'] = Challenge.objects.get(pk=self.kwargs['pk'])
-                return context
+        def post(self, request, *args, **kwargs):
+                form = self.form_class(data=request.POST)
+                if form.is_valid():
+                        challenge_id = form.cleaned_data['challenge_id']
+                        flag = form.cleaned_data['flag']
+                        challenge = Challenge.objects.get(pk=challenge_id)
 
-        def form_valid(self, form):
-                challenge_id = form.cleaned_data['challenge_id']
-                flag = form.cleaned_data['flag']
-                challenge = Challenge.objects.get(pk=challenge_id)
+                        new_flag = Flag.objects.create(
+                                challenge=challenge,
+                                text=flag
+                        )
 
-                new_flag = Flag.objects.create(
-                        challenge=challenge,
-                        text=flag
-                )
-
-                return HttpResponse(status=204)
-
+                        return HttpResponse(status=204)
+                else:
+                        return HttpResponse(status=400)
 
 class FlagDeleteView(UserIsAdminMixin, View):
         form_class = FlagDeleteForm
@@ -371,7 +368,6 @@ class GeneralUpdateView(UserIsAdminMixin, View):
                         title = form.cleaned_data['title']
                         config = read_config()
                         if 'start_time' in request.POST:
-                                print(request.POST['start_time'])
                                 if request.POST['start_time']:
                                         config['ctf']['start_time'] = request.POST['start_time']
                                 else:

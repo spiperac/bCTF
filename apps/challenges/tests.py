@@ -32,12 +32,17 @@ class ChallengeTest(TestCase):
         return client
 
     def test_add_challenge_and_verify_category(self):
-        """Just verify if challenge is created, and in correct category"""
+        """
+        Just verify if challenge is created, and put into correct category
+        """
         challenge = Challenge.objects.get(name="pwn1")
         category = Category.objects.get(name="pwn")
         self.assertEqual(challenge.category.name, category.name)
     
     def test_challenge_list(self):
+        """
+        Check if challenge actually showd up on challenges list page.
+        """
         client = self.login_client()
         challenge = Challenge.objects.get(name="pwn1")
 
@@ -46,6 +51,9 @@ class ChallengeTest(TestCase):
         self.assertContains(response, challenge.name)
     
     def test_hidden_challenge(self):
+        """
+        Set challenge visibility to false, and check if it's still shown on the challenges list page.
+        """
         client = self.login_client()
         challenge = Challenge.objects.get(name="pwn1")
         challenge.visible = False
@@ -55,7 +63,10 @@ class ChallengeTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, challenge.name)
 
-    def test_submit_flag(self):
+    def test_submit_correct_flag(self):
+        """
+        Try to submit correct flag.
+        """
         client = self.login_client()
         challenge = Challenge.objects.get(name="pwn1")
         flag = Flag.objects.create(
@@ -67,7 +78,26 @@ class ChallengeTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "The flag is captured!")
     
+    def test_submiting_wrong_flag(self):
+        """
+        Try to submit wrong flag.
+        """
+        client = self.login_client()
+        challenge = Challenge.objects.get(name="pwn1")
+        flag = Flag.objects.create(
+            challenge=challenge,
+            text="ctf{flag_one}"
+        )
+
+        response = client.post(reverse('challenge:flag-submit', args=[challenge.pk]), {'challenge_id': challenge.pk, 'flag': "wrong"})
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "The flag is captured!")
+        self.assertContains(response, "Wrong flag!")
+
     def test_resubmiting_flag(self):
+        """
+        Try to resubmit flag for already solved task.
+        """
         client = self.login_client()
         challenge = Challenge.objects.get(name="pwn1")
         flag = Flag.objects.create(
@@ -85,15 +115,3 @@ class ChallengeTest(TestCase):
         self.assertContains(response, "Already solved!")
     
 
-    def test_submiting_wrong_flag(self):
-        client = self.login_client()
-        challenge = Challenge.objects.get(name="pwn1")
-        flag = Flag.objects.create(
-            challenge=challenge,
-            text="ctf{flag_one}"
-        )
-
-        response = client.post(reverse('challenge:flag-submit', args=[challenge.pk]), {'challenge_id': challenge.pk, 'flag': "wrong"})
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "The flag is captured!")
-        self.assertContains(response, "Wrong flag!")
