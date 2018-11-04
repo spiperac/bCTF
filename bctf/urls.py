@@ -21,7 +21,5 @@ urlpatterns = [
 
 ]
 
-
-print(settings.DEBUG)
 if settings.DEBUG == True:
     urlpatterns += [ path('super-secret/', admin.site.urls),]

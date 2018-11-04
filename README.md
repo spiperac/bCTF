@@ -1,4 +1,4 @@
-# bCTF Scoreboard System
+# bCTF
 
 Just another scoreboard system for hosting a CTF style games. 
 We, at the BalCCon\dot\org, were using CTFd for quite some time ( inspiration for styling obvious), and we decided that we need some more features like:
@@ -7,6 +7,9 @@ easier challenge deployment, controll small set of docker containers, more inter
 ## Getting Started
 
 Installation is dead simple, and you have few options. You can run bCTF from host machine, or a docker. Or whatever you came up with.
+
+## Deployment 
+
 
 ### Prerequisites for host 
 
