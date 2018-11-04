@@ -10,6 +10,3 @@ pipelines:
           - pip install -r requirements.txt
           - coverage run manage.py test -v 2
           - coverage report
-
-	      services:
-          - docker
