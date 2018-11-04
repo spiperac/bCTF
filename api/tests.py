@@ -4,6 +4,8 @@ import json
 from django.test import TestCase, Client
 from django.urls import reverse
 from apps.accounts.models import Account
+from apps.challenges.models import Challenge, Category, Solves
+
 
 class APITest(TestCase):
 
@@ -36,8 +38,10 @@ class APITest(TestCase):
     
     def test_scores_endpoint(self):
         client = self.login_as_admin()
+
         response = client.get(reverse('api:score'))
         self.assertEqual(response.status_code, 200)
+
         scores = response.json()
         scores_length = len(scores['ranks'])
         num_of_accounts = Account.objects.all().count()
@@ -48,14 +52,44 @@ class APITest(TestCase):
     
     def test_top10_endpoint(self):
         client = self.login_as_admin()
+        category = Category.objects.create(
+            name="pwn"
+        )
+
+        challenge = Challenge.objects.create(
+            category=category,
+            name="pwn1",
+            description="Test pwn",
+            points=1000
+        )
+        Solves.objects.create(
+            account=self.login_account,
+            challenge=challenge
+        )
+
         response = client.get(reverse('api:top'))
         self.assertEqual(response.status_code, 200)
         top = response.json()
         top_length = len(top['ranks'])
-        self.assertEqual(top_length, 0)       
+        self.assertEqual(top_length, 10)       
 
     def test_events(self):
         client = self.login_as_admin()
+        category = Category.objects.create(
+            name="pwn"
+        )
+
+        challenge = Challenge.objects.create(
+            category=category,
+            name="pwn1",
+            description="Test pwn",
+            points=1000
+        )
+        Solves.objects.create(
+            account=self.login_account,
+            challenge=challenge
+        )
+
         response = client.get(reverse('api:events'))
         self.assertEqual(response.status_code, 200)
 
