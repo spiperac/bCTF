@@ -63,7 +63,8 @@ class PagesTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, page.title)
 
-        response = client.post(reverse('pages:delete-page', args=[page.pk,]),  {'page': page})
+        # use get instead of post
+        response = client.get(reverse('pages:delete-page', args=[page.pk,]),  {'page': page})
         self.assertEqual(response.status_code, 302)
 
         response = client.get(reverse('pages:list-pages'))

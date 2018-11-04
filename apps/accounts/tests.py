@@ -40,3 +40,23 @@ class AccountTests(TestCase):
         response = client.post(reverse('login'), request_data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(int(client.session['_auth_user_id']), account.pk)
+
+        response = client.get(reverse('registration'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_profile(self):
+        client = Client()
+        account = Account.objects.create(
+            username=self.test_username,
+            email=self.test_email
+        )
+
+        account.set_password(self.test_password)
+        account.save() 
+
+        login = client.login(username=self.test_username, password=self.test_password)
+        self.assertTrue(login)
+
+        response = client.get(reverse('profile', args=[account.pk, ]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.test_username)
