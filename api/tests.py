@@ -64,3 +64,6 @@ class APITest(TestCase):
         response = client.get(reverse('api:teams'))
         self.assertEqual(response.status_code, 200)
         teams = response.json()
+
+        for team in teams['teams']:
+            self.assertTrue(Account.objects.filter(username=team['name']).count() > 0)
