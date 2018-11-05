@@ -15,6 +15,7 @@ categories_list = [
     'misc'
 ]
 
+
 class Command(BaseCommand):
     help = 'Populates test database with dummy data'
 
@@ -37,8 +38,8 @@ class Command(BaseCommand):
         for category in categories_list:
             if Category.objects.filter(name=category).count() == 0:
                 Category.objects.create(
-                    name=category
-               )
+                    name=category,
+                )
 
     def create_challenges(self, size):
 
