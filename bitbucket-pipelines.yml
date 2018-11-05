@@ -8,5 +8,6 @@ pipelines:
 
         script: # Modify the commands below to build your repository.
           - pip install -r requirements.txt
+          - pycodestyle --ignore E501 apps
           - coverage run manage.py test -v 2
           - coverage report
