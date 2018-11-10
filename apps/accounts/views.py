@@ -28,6 +28,7 @@ class ProfileView(DetailView):
         context['first_bloods'] = FirstBlood.objects.filter(account=self.object.pk)
         return context
 
+
 class AccountUpdateView(UpdateView):
     form_class = AccountChangeForm
     model = Account
