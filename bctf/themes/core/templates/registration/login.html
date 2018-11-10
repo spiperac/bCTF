@@ -35,7 +35,7 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <a href="{% url 'registration' %}">Register?</a>
+      <a href="{% url 'registration' %}">Register?</a> | <a href="{% url 'password-reset' %}">Forgot password?</a>
       {% if form.errors %}
         <div class="alert alert-danger alert-dismissible fade show">
             Your username and password didn't match. 

@@ -28,7 +28,7 @@ function feed_table(element) {
         `
         <tr>
             <td>${element.rank}</td>
-            <td>${element.name}</td>
+            <td><a href="/accounts/profile/${element.id}">${element.name}</a></td>
             <td>${element.points}</td>
         </tr>
         `

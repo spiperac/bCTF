@@ -14,4 +14,5 @@ class AccountChangeForm(UserChangeForm):
 
     class Meta:
         model = Account
-        fields = ('username', 'email')
+        fields = ('email', 'password')
+
