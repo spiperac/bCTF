@@ -9,22 +9,22 @@ easier challenge deployment, controll small set of docker containers, more inter
 * CTFTime.org compatible scoreboard feed 
 * News and (automatic) Events feed on home page
 * Challenges, categories, hints, flags, files ...
-* * Chhallenges visibility can be toggled
-* * Challenge file uploads work out of box with S3, Docker, or bCTF host
-* * First Blood! List showing teams who scored challenge first
+    * Chhallenges visibility can be toggled
+    * Challenge file uploads work out of box with S3, Docker, or bCTF host
+    * First Blood! List showing teams who scored challenge first
 * Live scoreboard
-* * Graph with top 10 teams
-* * Table with team names, ranks, points, and (optional) country
+    * Graph with top 10 teams
+    * Table with team names, ranks, points, and (optional) country
 * Account management system with captcha (captcha is #TODO atm)
-* * You can ban/unban user accounts
+    * You can ban/unban user accounts
 * Admin interface
 * Backup & Restore 
 * CTF Timer ( start and stop time)
 * Experimental docker controller interface where you can manage you challenge containers ( If you are not running bCTF inside docker)
-* * Start/Stop/Pause container
-* * Delete containers
-* * Create new containers from available images
-* * Change docker host configuration
+    * Start/Stop/Pause container
+    * Delete containers
+    * Create new containers from available images
+    * Change docker host configuration
 * Email support ( for registration, password resets, and optional account activation links)
 * Beta themes customisation
 
