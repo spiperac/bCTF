@@ -11,7 +11,7 @@
 <div class="jumbotron jt-scores">
     <div class="row tall-row text-center">
         <div class="col-lg-12">
-            <h1>#1 {{object.username}}</h1>
+            <h1>#{{object.rank}} {{object.username}}</h1>
             <hr>
         </div>
     </div>
@@ -22,7 +22,7 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
                         {% if object.country %}
-                            Country: <img src="{{object.country.flag}}">
+                            <img src="{{object.country.flag}}">
                         {% endif %}
                     </div>
                     <div class="card-body">

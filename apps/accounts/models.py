@@ -23,5 +23,8 @@ class Account(AbstractUser):
             points = 0
             return points
 
+    @property
     def rank(self):
-        pass
+        sorted_list = sorted(Account.objects.filter(is_active=True), key=lambda t: -t.points)
+        rank = sorted_list.index(self) + 1
+        return rank

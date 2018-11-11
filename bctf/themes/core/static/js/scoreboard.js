@@ -30,7 +30,7 @@ function feed_table(element) {
             <tr>
                 <td>${element.rank}</td>
                 <td><a href="/accounts/profile/${element.id}"> <i class="fas fa-crown fa-lg"></i> ${element.name}</a></td>
-                <td><img src="${element.country}" alt="" /></td>
+                <td><img src="${element.country}" alt="" width="25px" height="15px" /></td>
                 <td>${element.points}</td>
             </tr>
             `

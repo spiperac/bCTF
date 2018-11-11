@@ -9,7 +9,7 @@ def scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = []
-        for (rank, account) in enumerate(sorted(Account.objects.all(), key=lambda t: -t.points), start=1):
+        for (rank, account) in enumerate(sorted(Account.objects.filter(is_active=True), key=lambda t: -t.points), start=1):
             team = {}
             team['id'] = account.pk
             team['name'] = account.username
