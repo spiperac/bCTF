@@ -1,22 +1,26 @@
 # bCTF
 
 Just another scoreboard system for hosting a CTF style games. 
-We, at the BalCCon\dot\org, were using CTFd for quite some time ( inspiration for styling obvious), and we decided that we need some more features like:
-easier challenge deployment, controll small set of docker containers, more interactions and informations feeded to players, etc... Thus bCTF came to existence.
+We, at the BalCCon\dot\org, were using CTFd for quite some time ( that's why that ui looks familiar ...), and we decided that we need some more features like:
+easier challenge deployment, controll small set of docker containers running challenges, more interactions and informations feeded to players, etc... Thus bCTF came to existence.
 
 ## Features
 
-* CTFTime.org compatible scoreboard feed 
-* News and (automatic) Events feed on home page
+* CTFTime.org compatible scoreboard feed
+* News and Events feed on home page
+* Automatic Challenges Importer
 * Challenges, categories, hints, flags, files ...
     * Chhallenges visibility can be toggled
-    * Challenge file uploads work out of box with S3, Docker, or bCTF host
+    * Challenge file uploads work out of box with S3, Dropbox, or bCTF host
     * First Blood! List showing teams who scored challenge first
+    * Points degradation system - optional and off by default - can be configured from admin interface
 * Live scoreboard
     * Graph with top 10 teams
     * Table with team names, ranks, points, and (optional) country
 * Account management system with captcha (captcha is #TODO atm)
     * You can ban/unban user accounts
+    * Accounts are using gravatars
+* Pages interface for creating custom pages ( auto-added to top menu)
 * Admin interface
 * Backup & Restore 
 * CTF Timer ( start and stop time)
@@ -27,6 +31,17 @@ easier challenge deployment, controll small set of docker containers, more inter
     * Change docker host configuration
 * Email support ( for registration, password resets, and optional account activation links)
 * Beta themes customisation
+* Fast and small on deps
+    * bCTF is using django with minimal 3rd party libs
+        * besides django, only pyyaml and django-countries are required
+* Unit tests and selenium tests coverage
+* Bootstrap 4
+
+## Todo
+
+* Plugins interface
+* Theme customisation interface
+
 
 ## Getting Started
 
@@ -35,15 +50,14 @@ Installation is dead simple, and you have few options out of box. You can run bC
 ## Deployment 
 
 
-### Prerequisites for host 
+### Prerequisites for host machine
 
 If you want to run it on your machine/server, you'll need to install:
 
-```
-python3
-pip
-docker - (optional)
-```
+* python3
+* pip
+* docker - (optional)
+
 
 ### Installing
 
@@ -79,7 +93,7 @@ docker build -t bCTF .
 ### Run 
 docker run -p 80:80 bCTF
 
-## Running the tests
+## Running tests
 
 Run:
 ```
