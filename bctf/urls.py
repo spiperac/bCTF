@@ -22,6 +22,7 @@ urlpatterns = [
     path('administration/', include('apps.administration.urls')),
     path('challenges/', include('apps.challenges.urls')),
     path('pages/', include('apps.pages.urls')),
+    path('importer/', include('apps.tasksimporter.urls')),
 
 ]
 

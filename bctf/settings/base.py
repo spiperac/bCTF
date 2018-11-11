@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.scoreboard',
     'apps.pages',
     'apps.administration',
+    'apps.tasksimporter',
 ]
 
 AUTH_USER_MODEL = 'accounts.Account'
