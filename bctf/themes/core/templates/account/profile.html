@@ -1,22 +1,32 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load account_tags %}
+
+{% block extra_js %}
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="jumbotron jt-scores">
     <div class="row tall-row text-center">
         <div class="col-lg-12">
-            <h1>Profile <i class="fas fa-users"></i></h1>
+            <h1>#1 {{object.username}}</h1>
             <hr>
         </div>
     </div>
     <div class="content">
         <div class="row">
-            <div class="col-8">
+            <div class="col-4">
 
                 <div class="card" style="width: 18rem;">
-                    <div class="card-header">Info</div>
+                    <div class="card-header">
+                        {% if object.country %}
+                            Country: <img src="{{object.country.flag}}">
+                        {% endif %}
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">#1 {{object.username}}</h5>
+                        <img src="{{ object|gravatar:150 }}" />
                     </div>
                     <div class="card-footer">
                         Points: {{object.points}}
@@ -25,7 +35,14 @@
 
             </div>
             <div class="col-4">
+                    <div style="height: 300px">
+                        <canvas id="id_solved_chart" width="300px"></canvas>
+                    </div>
+                    <hr />
+            </div>
+            <div class="col-4">
                 <h4>History</h4>
+                <hr />
                 <h6>Solved</h6>
                 {% if solved.count == 0 %}
                     <p>Nothing solved yet!</p>
@@ -52,4 +69,11 @@
     </div>
 </div>
 
+<script>
+$('document').ready(function() {
+        var ctx = document.getElementById('id_solved_chart').getContext('2d');
+        var stats = {{solved_stats|safe}};
+        solvedChart(ctx, stats)
+});
+</script>
 {% endblock %}

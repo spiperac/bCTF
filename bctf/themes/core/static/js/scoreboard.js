@@ -24,15 +24,30 @@ function clean_table() {
 }
 
 function feed_table(element) {
-    $('#scores-body').append(
-        `
-        <tr>
-            <td>${element.rank}</td>
-            <td><a href="/accounts/profile/${element.id}">${element.name}</a></td>
-            <td>${element.points}</td>
-        </tr>
-        `
-    )
+    if (element.rank == 1 ) {
+        $('#scores-body').append(
+            `
+            <tr>
+                <td>${element.rank}</td>
+                <td><a href="/accounts/profile/${element.id}"> <i class="fas fa-crown fa-lg"></i> ${element.name}</a></td>
+                <td><img src="${element.country}" alt="" /></td>
+                <td>${element.points}</td>
+            </tr>
+            `
+        )
+    } else {
+        $('#scores-body').append(
+            `
+            <tr>
+                <td>${element.rank}</td>
+                <td><a href="/accounts/profile/${element.id}">${element.name}</a></td>
+                <td><img src="${element.country}" alt="" /></td>
+                <td>${element.points}</td>
+            </tr>
+            `
+        )
+    }
+
 }
 
 function cumulativesum (arr) {

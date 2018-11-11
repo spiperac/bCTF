@@ -6,7 +6,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from django.contrib.auth.hashers import check_password
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
-from apps.challenges.models import Solves, FirstBlood
+from apps.challenges.models import Solves, FirstBlood, Challenge
 
 
 class RegistrationView(CreateView):
@@ -26,8 +26,15 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        solved_stats = []
         context['solved'] = Solves.objects.filter(account=self.object.pk)
         context['first_bloods'] = FirstBlood.objects.filter(account=self.object.pk)
+
+        solved = context['solved'].count()
+        not_solved = Challenge.objects.all().count() - solved
+        solved_stats.append(solved)
+        solved_stats.append(not_solved)
+        context['solved_stats'] = solved_stats
         return context
 
 

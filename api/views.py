@@ -13,6 +13,7 @@ def scores(request):
             team = {}
             team['id'] = account.pk
             team['name'] = account.username
+            team['country'] = account.country.flag
             team['points'] = account.points
             team['rank'] = rank
             response['ranks'].append(team)

@@ -8,7 +8,7 @@ class AccountCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = Account
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'country', 'password1', 'password2')
 
 
 class AccountChangeForm(forms.ModelForm):
@@ -18,7 +18,7 @@ class AccountChangeForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('email', )
+        fields = ('email', 'country', )
 
     def clean(self):
         cleaned_data = super(AccountChangeForm, self).clean()
