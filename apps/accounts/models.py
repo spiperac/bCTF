@@ -37,19 +37,10 @@ class Account(AbstractUser):
 
     @property
     def get_avatar(self):
-        if self.avatar is None:
+        if not self.avatar:
                 email = str(self.email.strip().lower()).encode('utf-8')
                 email_hash = md5(email).hexdigest()
                 url = "//www.gravatar.com/avatar/{0}?s={1}&d=identicon&r=PG"
                 return url.format(email_hash, 35)
-        else:
-            return self.avatar.url
-
-    def get_avatar_size(self, size):
-        if self.avatar is None:
-                email = str(self.email.strip().lower()).encode('utf-8')
-                email_hash = md5(email).hexdigest()
-                url = "//www.gravatar.com/avatar/{0}?s={1}&d=identicon&r=PG"
-                return url.format(email_hash, size)
         else:
             return self.avatar.url
