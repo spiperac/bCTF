@@ -54,8 +54,9 @@ def locate_tasks(base_path):
     for folder in tasks_list:
         if folder.startswith("."):
             tasks_list.remove(folder)
-    
+
     return tasks_list
+
 
 def validate_task_file(task_data):
     schema = [
@@ -72,6 +73,7 @@ def validate_task_file(task_data):
             valid = False
 
     return valid
+
 
 def parse_task_yaml(task_dir):
     with open("{0}/{1}".format(task_dir, "task.yml")) as data_file:
@@ -97,6 +99,7 @@ def parse_task_yaml(task_dir):
     else:
         return False
 
+
 def feed_tasks(base_path):
     task_list = locate_tasks(base_path)
 
@@ -104,9 +107,9 @@ def feed_tasks(base_path):
     for task_dir_name in task_list:
         print("Trying to add {}".format(task_dir_name))
         task_full_path = "{0}/{1}".format(base_path, task_dir_name)
-        if os.path.isfile("{0}/task.yml".format(task_full_path)): 
+        if os.path.isfile("{0}/task.yml".format(task_full_path)):
             new_task = parse_task_yaml(task_full_path)
             if new_task:
                 tasks.append(new_task)
-    
+
     return tasks

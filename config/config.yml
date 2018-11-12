@@ -3,7 +3,7 @@ ctf:
   logo: https://2k18.balccon.org/images/d/d8/Logo_2k18.png
   start_time: null
   theme: core
-  title: baracuda
+  title: bCTF
 docker:
   driver: null
   host: null
