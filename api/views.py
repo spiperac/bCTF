@@ -17,7 +17,7 @@ def scores(request):
             team['name'] = account.username
             team['country'] = account.country.flag
             team['points'] = account.points
-            team['precentage'] = str(round((account.number_solved * 100) / number_challenges, 2))
+            team['precentage'] = str(round((account.number_solved * 100) / number_challenges if account.number_solved or number_challenges else 0, 2))
             team['avatar'] = account.get_avatar
             team['rank'] = rank
             response['ranks'].append(team)
