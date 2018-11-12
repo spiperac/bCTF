@@ -44,6 +44,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="navbar-nav navbar-left">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home fa-lg"></i></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">Scoreboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}"><span class="glyphicon glyphicon-screenshot"></span> Challenges</a></li>
                     {% for page in pages %}
