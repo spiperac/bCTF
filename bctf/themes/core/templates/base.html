@@ -28,11 +28,11 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <div class="navbar-header">
                 {% if cfg.ctf.logo %}
-                <a class="navbar-brand" href="/" aria-label="CTF">
+                <a class="navbar-brand navbar-left" href="/" aria-label="CTF">
                     <img src="{{cfg.ctf.logo}}" style="width:120px;height:50px">
                 </a>
                 {% else %}
@@ -59,7 +59,7 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Profile({{user.username}})
+                                    Profile({{user.username|safe}})
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'profile' user.pk %}">Profile</a>
@@ -86,7 +86,11 @@
     {% block modals %}
 
     {% endblock %}
-
+    <div id="footer" class="text-center">
+        <p>
+            Powered by <a href="https://github.com/spiperac/bctf/">bCTF</a>.
+        </p>
+    </div>
 <!-- JavaScript files -->
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>

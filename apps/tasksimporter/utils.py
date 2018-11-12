@@ -1,4 +1,5 @@
-import json
+import yaml
+import os
 from django.core.files import File
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
@@ -48,23 +49,64 @@ class Task:
                 new_attachment.data.save(file_obj.name.split("/")[-1], file_obj)
 
 
-def parse_tasks_yaml(base_path, yaml_data):
-    if 'tasks' in yaml_data:
-        tasks = []
-        for task in yaml_data['tasks']:
-            attachments = []
-            if 'attachments' in task:
-                if task['attachments']:
-                    for attachment in task['attachments']:
-                        attachments.append("{0}/{1}/files/{2}".format(base_path, task['dir_name'], attachment['file']))
+def locate_tasks(base_path):
+    tasks_list = next(os.walk(base_path))[1]
+    for folder in tasks_list:
+        if folder.startswith("."):
+            tasks_list.remove(folder)
+    
+    return tasks_list
 
-            new_task = Task(
-                name=task['name'],
-                category=task['category'],
-                description=task['description'],
-                flag=task['flag'],
-                points=task['points'],
-                attachments=attachments
-            )
-            tasks.append(new_task)
-        return tasks
+def validate_task_file(task_data):
+    schema = [
+        'name',
+        'category',
+        'description',
+        'flag',
+        'points',
+        'attachments'
+    ]
+    valid = True
+    for item in schema:
+        if item not in task_data:
+            valid = False
+
+    return valid
+
+def parse_task_yaml(task_dir):
+    with open("{0}/{1}".format(task_dir, "task.yml")) as data_file:
+        task = yaml.load(data_file)
+    if validate_task_file(task):
+        attachments = []
+        if 'attachments' in task:
+            if task['attachments']:
+                for attachment in task['attachments']:
+                    attachment_file = "{0}/files/{1}".format(task_dir, attachment)
+                    if os.path.isfile(attachment_file):
+                        attachments.append(attachment_file)
+
+        new_task = Task(
+            name=task['name'],
+            category=task['category'],
+            description=task['description'],
+            flag=task['flag'],
+            points=task['points'],
+            attachments=attachments
+        )
+        return new_task
+    else:
+        return False
+
+def feed_tasks(base_path):
+    task_list = locate_tasks(base_path)
+
+    tasks = []
+    for task_dir_name in task_list:
+        print("Trying to add {}".format(task_dir_name))
+        task_full_path = "{0}/{1}".format(base_path, task_dir_name)
+        if os.path.isfile("{0}/task.yml".format(task_full_path)): 
+            new_task = parse_task_yaml(task_full_path)
+            if new_task:
+                tasks.append(new_task)
+    
+    return tasks

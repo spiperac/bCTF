@@ -7,7 +7,7 @@ from django.conf import settings
 from django.views.generic import View
 from apps.tasksimporter.forms import ImportTasksForm
 from django.core.files.storage import FileSystemStorage
-from apps.tasksimporter.utils import parse_tasks_yaml
+from apps.tasksimporter.utils import feed_tasks
 
 
 class ImportTasksView(View):
@@ -31,18 +31,11 @@ class ImportTasksView(View):
             zip_ref.extractall(directory_extract)
             zip_ref.close()
 
-            # Read tasks file
+            # Parsing tasks
             tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
-            tasks_file_path = "{0}/{1}".format(tasks_base_dir, "tasks.yml")
-
-            if os.path.isfile(tasks_file_path):
-                with open(tasks_file_path, 'r') as tasks_file:
-                    tasks_data_yaml = yaml.load(tasks_file)
-
-                # Parsing tasks
-                tasks = parse_tasks_yaml(base_path=tasks_base_dir, yaml_data=tasks_data_yaml)
-                for task in tasks:
-                    task.create()
+            tasks = feed_tasks(base_path=tasks_base_dir)
+            for task in tasks:
+                task.create()
 
             else:
                 print("File does not exist!")
