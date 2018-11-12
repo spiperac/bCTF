@@ -48,25 +48,22 @@ class Task:
                 new_attachment.data.save(file_obj.name.split("/")[-1], file_obj)
 
 
-def parse_tasks(base_path, json_data):
-    if 'tasks' in json_data:
+def parse_tasks_yaml(base_path, yaml_data):
+    if 'tasks' in yaml_data:
         tasks = []
-        for task in json_data['tasks']:
-            task_config = "{0}/{1}".format(base_path, task['task_file'])
-            with open(task_config, 'r') as task_file:
-                task_data = json.load(task_file)
+        for task in yaml_data['tasks']:
             attachments = []
-            if 'attachments' in task_data:
-                if task_data['attachments']:
-                    for attachment in task_data['attachments']:
-                        attachments.append("{0}/{1}/files/{2}".format(base_path, task['task_file'].split("/")[0], attachment['file']))
+            if 'attachments' in task:
+                if task['attachments']:
+                    for attachment in task['attachments']:
+                        attachments.append("{0}/{1}/files/{2}".format(base_path, task['dir_name'], attachment['file']))
 
             new_task = Task(
-                name=task_data['name'],
-                category=task_data['category'],
-                description=task_data['description'],
-                flag=task_data['flag'],
-                points=task_data['points'],
+                name=task['name'],
+                category=task['category'],
+                description=task['description'],
+                flag=task['flag'],
+                points=task['points'],
                 attachments=attachments
             )
             tasks.append(new_task)

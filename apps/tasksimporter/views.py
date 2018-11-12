@@ -1,12 +1,13 @@
 import zipfile
 import os
 import json
+import yaml
 from django.shortcuts import render
 from django.conf import settings
 from django.views.generic import View
 from apps.tasksimporter.forms import ImportTasksForm
 from django.core.files.storage import FileSystemStorage
-from apps.tasksimporter.utils import parse_tasks
+from apps.tasksimporter.utils import parse_tasks_yaml
 
 
 class ImportTasksView(View):
@@ -32,14 +33,14 @@ class ImportTasksView(View):
 
             # Read tasks file
             tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
-            tasks_file_path = "{0}/{1}".format(tasks_base_dir, "tasks.json")
+            tasks_file_path = "{0}/{1}".format(tasks_base_dir, "tasks.yml")
 
             if os.path.isfile(tasks_file_path):
                 with open(tasks_file_path, 'r') as tasks_file:
-                    tasks_json = json.load(tasks_file)
+                    tasks_data_yaml = yaml.load(tasks_file)
 
                 # Parsing tasks
-                tasks = parse_tasks(base_path=tasks_base_dir, json_data=tasks_json)
+                tasks = parse_tasks_yaml(base_path=tasks_base_dir, yaml_data=tasks_data_yaml)
                 for task in tasks:
                     task.create()
 
