@@ -34,7 +34,7 @@ class Flag(models.Model):
 
 class Attachment(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
-    data = models.FileField(upload_to='media/attachments/')
+    data = models.FileField(upload_to='media/attachments/', max_length=500)
 
     def filename(self):
         return os.path.basename(self.data.name)

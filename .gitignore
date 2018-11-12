@@ -90,3 +90,5 @@ db.sqlite3
 media/*
 .vscode/*
 bctf/sent_emails/*
+media/*
+bctf/media/*

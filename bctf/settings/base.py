@@ -125,3 +125,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'themes/core/static'),
 )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+ZIP_STORAGE_ROOT =  os.path.join(MEDIA_ROOT, 'tmp')
