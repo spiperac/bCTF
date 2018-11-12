@@ -3,18 +3,22 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 from apps.accounts.models import Account
-from apps.challenges.models import Solves
+from apps.challenges.models import Solves, Challenge
 
 def scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = []
+        number_challenges = Challenge.objects.all().count()
+
         for (rank, account) in enumerate(sorted(Account.objects.filter(is_active=True), key=lambda t: -t.points), start=1):
             team = {}
             team['id'] = account.pk
             team['name'] = account.username
             team['country'] = account.country.flag
             team['points'] = account.points
+            team['precentage'] = str(round((account.number_solved * 100) / number_challenges, 2))
+            team['avatar'] = account.get_avatar
             team['rank'] = rank
             response['ranks'].append(team)
         
@@ -24,7 +28,7 @@ def top_scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = {}
-
+        
         if Solves.objects.all().count() > 0:
             for (rank, account) in enumerate(sorted(Account.objects.all(), key=lambda t: -t.points)[:10], start=1):
                 team = {}

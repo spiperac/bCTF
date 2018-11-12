@@ -28,8 +28,16 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}</td>
-                <td><a href="/accounts/profile/${element.id}"> <i class="fas fa-crown fa-lg"></i> ${element.name}</a></td>
+                <td>${element.rank}  <i class="fas fa-crown" style="color:gold"></i> </td>
+                <td>
+                    <div id="avatar" style="float:left">
+                        <img src="${element.avatar}" height="50px" width="50px">
+                    </div>
+                    <div id="team_info" style="margin-left: 70px;">
+                        <a href="/accounts/profile/${element.id}">${element.name}</a>
+                        <p>Solved ${element.precentage}%</p>
+                    </div>
+                </td>
                 <td><img src="${element.country}" alt="" width="25px" height="15px" /></td>
                 <td>${element.points}</td>
             </tr>
@@ -40,7 +48,15 @@ function feed_table(element) {
             `
             <tr>
                 <td>${element.rank}</td>
-                <td><a href="/accounts/profile/${element.id}">${element.name}</a></td>
+                <td>
+                    <div id="avatar" style="float:left">
+                        <img src="${element.avatar}" height="50px" width="50px">
+                    </div>
+                    <div id="team_info" style="margin-left: 70px;">
+                        <a href="/accounts/profile/${element.id}">${element.name}</a>
+                        <p>Solved ${element.precentage}%</p>
+                    </div>
+                </td>
                 <td><img src="${element.country}" alt="" /></td>
                 <td>${element.points}</td>
             </tr>

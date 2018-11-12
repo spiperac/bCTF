@@ -18,7 +18,7 @@ class AccountChangeForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('email', 'country', )
+        fields = ('email', 'country', 'avatar', )
 
     def clean(self):
         cleaned_data = super(AccountChangeForm, self).clean()

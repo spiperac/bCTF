@@ -13,7 +13,7 @@
     <div class="content">
         <div class="row">
             <div class="col-12">
-                <form method="POST" action="">
+                <form method="POST" action="" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{form|crispy}}
                         <button id='submit' class="btn btn-success" type="submit">Save</button>
