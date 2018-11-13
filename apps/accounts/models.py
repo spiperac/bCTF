@@ -8,12 +8,17 @@ class Account(AbstractUser):
     banned = models.BooleanField(default=False)
     country = CountryField(null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-
+    points = models.IntegerField(default=0)
+    
     def __str__(self):
         return self.username
 
     @property
     def points(self):
+        return 123
+
+    @property
+    def pointss(self):
         sovles_set = self.solves_set.prefetch_related('challenges')
         if sovles_set.count() > 0:
             points = sovles_set.values("challenge__points").aggregate(total_points=models.Sum('challenge__points'))
