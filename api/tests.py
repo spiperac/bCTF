@@ -44,8 +44,8 @@ class APITest(TestCase):
 
         scores = response.json()
         scores_length = len(scores['ranks'])
-        num_of_accounts = Account.objects.all().count()
-        self.assertEqual(scores_length, num_of_accounts)       
+        accounts_scored = [account for account in Account.objects.prefetch_related('solves_set').iterator() if account.points > 0 and account.is_active is True]
+        self.assertEqual(scores_length, len(accounts_scored))       
 
         for score in scores['ranks']:
             self.assertEqual(score['points'], Account.objects.get(username=score['name']).points)
