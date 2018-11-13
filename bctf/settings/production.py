@@ -9,6 +9,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*', ]
 
 STATIC_ROOT = "/var/tmp/static"
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media/')
 
 # Security
 
