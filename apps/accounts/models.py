@@ -9,7 +9,7 @@ class Account(AbstractUser):
     country = CountryField(null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     points = models.IntegerField(default=0)
-    
+
     def __str__(self):
         return self.username
 
