@@ -29,3 +29,10 @@ body {
 h1 {
     color: white;
 }
+
+hr {
+    border: none;
+    height: 1px;
+    color: black;
+    background-color: black;
+}

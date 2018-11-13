@@ -8,10 +8,12 @@
 
 {% block content %}
 <div class="jumbotron jt-scores">
-    <div class="row tall-row text-center">
+    <div class="row tall-row ">
         <div class="col-lg-12">
-            <h1><i class="fas fa-trophy"></i> Scoreboard</h1>
-            <hr>
+            <img style="float:right" src="{% static 'img/live_icon_alt.png' %}" width="60px" height="30px">
+            <h1 class="text-center" style="margin-left:60px;"><i class="fas fa-trophy"></i> Scoreboard</h1>
+
+            <hr />
         </div>
     </div>
     <div id="score-graph" class="row">
