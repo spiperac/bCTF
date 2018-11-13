@@ -11,7 +11,19 @@
 <div class="jumbotron jt-scores">
     <div class="row tall-row text-center">
         <div class="col-lg-12">
-            <h1>#{{object.rank}} {{object.username|safe}}</h1>
+            <div class="d-flex justify-content-between bd-highlight mb-3">
+                <div class="p-2 bd-highlight">
+                    <h1>#{{object.rank}} </h1>
+                </div>
+                <div class="p-2 bd-highlight">
+                    <h1>{{object.username|safe}}</h1>
+                </div>
+                <div class="p-2 bd-highlight">
+                    {% if object.country %}
+                        <img src="{{object.country.flag}}" width="25" height="20">
+                    {% endif %}
+                </div>
+            </div>
             <hr>
         </div>
     </div>
@@ -20,11 +32,6 @@
             <div class="col-4">
 
                 <div class="card" style="width: 18rem;">
-                    <div class="card-header">
-                        {% if object.country %}
-                            <img src="{{object.country.flag}}">
-                        {% endif %}
-                    </div>
                     <div class="card-body">
                         <img src="{{ object|get_avatar:250 }}" height="250px" width="250px" />
                     </div>
@@ -38,10 +45,9 @@
                     <div style="height: 300px">
                         <canvas id="id_solved_chart" width="300px"></canvas>
                     </div>
-                    <hr />
             </div>
             <div class="col-4">
-                <h4>History</h4>
+                <h3>History</h3>
                 <hr />
                 <h6>Solved</h6>
                 {% if solved|length == 0 %}

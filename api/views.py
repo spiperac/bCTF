@@ -11,9 +11,9 @@ def scores(request):
         response['ranks'] = []
         number_challenges = Challenge.objects.count()
         
-        accounts_scored = [account for account in Account.objects.prefetch_related('solves_set').iterator() if account.points > 0 and account.is_active is True]
+        accounts_scored = Account.objects.prefetch_related('solves_set').filter(points__gt=0).filter(is_active=True).order_by('-points')
 
-        for (rank, account) in enumerate(sorted(accounts_scored, key=lambda t: -t.points), start=1):
+        for (rank, account) in enumerate(accounts_scored, start=1):
             team = {}
             team['id'] = account.pk
             team['name'] = account.username
