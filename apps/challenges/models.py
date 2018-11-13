@@ -50,3 +50,10 @@ class FirstBlood(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class BadSubmission(models.Model):
+    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    flag = models.CharField(max_length=1024)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -7,28 +7,22 @@ easier challenge deployment, controll small set of docker containers running cha
 ## Features
 
 * CTFTime.org compatible scoreboard feed
-* News and Events feed on home page
-* Automatic Challenges Importer
+* News & Events feed on home page
+* CTF Timer ( start and stop time)
+* Challenges Importer ( from .zip file)
 * Challenges, categories, hints, flags, files ...
-    * Chhallenges visibility can be toggled
-    * Challenge file uploads work out of box with S3, Dropbox, or bCTF host
+    * Challenge visibility can be toggled
+    * Challenge files upload work out of box with S3, Dropbox, or bCTF host
     * First Blood! List showing teams who scored challenge first
     * Points degradation system - optional and off by default - can be configured from admin interface
 * Live scoreboard
     * Graph with top 10 teams
-    * Table with team names, ranks, points, and (optional) country
+    * Table with team names, gr/avatars, ranks, points, and (optional) country
 * Account management system with captcha (captcha is #TODO atm)
     * You can ban/unban user accounts
-    * Accounts are using gravatars
-* Pages interface for creating custom pages ( auto-added to top menu)
+* Pages interface for creating custom pages for eg. rules or faq ( auto-added to top menu)
 * Admin interface
 * Backup & Restore 
-* CTF Timer ( start and stop time)
-* Experimental docker controller interface where you can manage you challenge containers ( If you are not running bCTF inside docker)
-    * Start/Stop/Pause container
-    * Delete containers
-    * Create new containers from available images
-    * Change docker host configuration
 * Email support ( for registration, password resets, and optional account activation links)
 * Beta themes customisation
 * Fast and small on deps
@@ -36,11 +30,17 @@ easier challenge deployment, controll small set of docker containers running cha
         * besides django, only pyyaml and django-countries are required
 * Unit tests and selenium tests coverage
 * Bootstrap 4
+* Experimental docker controller interface where you can manage you challenge containers ( If you are not running bCTF inside docker)
+    * Start/Stop/Restart/Pause/Reset container
+    * Read logs
+    * Delete containers
+    * Create new containers from available images
+    * Change docker host configuration
 
 ## Todo
 
 * Plugins interface
-* Theme customisation interface
+* Theme customisation/changing interface
 
 
 ## Getting Started

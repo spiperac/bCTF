@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from apps.challenges.models import Challenge, Category, Solves, FirstBlood
+from apps.challenges.models import Challenge, Category, Solves, FirstBlood, BadSubmission
 from apps.challenges.forms import SubmitFlagForm
 from config.config import read_config
 
@@ -66,6 +66,11 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                 )
                 return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
             else:
+                new_bad_submission = BadSubmission.objects.create(
+                    challenge=challenge,
+                    account=self.request.user,
+                    flag=flag
+                )
                 return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
             return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})

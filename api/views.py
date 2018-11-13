@@ -56,7 +56,7 @@ def events(request):
         response = {}
         response['events'] = []
 
-        latest_events = Solves.objects.all().order_by('-created_at')[:10]
+        latest_events = Solves.objects.all().order_by('-created_at')[:5]
         for event in latest_events:
             new_event = {}
             new_event['team'] = event.account.username

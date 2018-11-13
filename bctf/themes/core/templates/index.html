@@ -13,19 +13,33 @@
 <div class="jumbotron jt-scores">
     <div class="row tall-row text-center">
         <div class="col-lg-12">
-            <h1>Welcome!</h1>
+            <div id="countDownTimer">
+            </div>
             <hr>
         </div>
     </div>
     <div class="content">
         <div class="row">
-            <div class="col-12 text-center">
-
-                <div id="countDownTimer">
-                </div>
-
+            <div class="col-3 text-center">
+                <p><i class="fas fa-users"></i> Total Teams</p>
+                <h2>{{teams_number}}</h2>
+            </div>
+            <div class="col-3 text-center">
+                <p><i class="fas fa-flag"></i> Total Challenges</p>
+                <h2>{{challenges_number}}</h2>
+            </div>
+            <div class="col-3 text-center">
+                <p><i class="fas fa-crosshairs"></i> Total Points Available</p>
+                <h2>{{total_points_available}} pts</h2>
+            </div>
+            <div class="col-3 text-center">
+                <p><i class="fas fa-key"></i> Wrong flag submission</p>
+                <h2>
+                    <span style="color:red">{{number_bad_submission}}</span>
+                </h2>
             </div>
         </div>
+        <hr />
         <div class="row">
             <div class="col-6">
                 <div class="card">
