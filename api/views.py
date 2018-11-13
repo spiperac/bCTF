@@ -32,7 +32,7 @@ def top_scores(request):
         response['ranks'] = {}
         
         if Solves.objects.all().count() > 0:
-            for (rank, account) in enumerate(sorted(Account.objects.all(), key=lambda t: -t.points)[:10], start=1):
+            for (rank, account) in enumerate(sorted(Account.objects.prefetch_related('solves_set'), key=lambda t: -t.points)[:10], start=1):
                 team = {}
                 team['id'] = account.pk
                 team['name'] = account.username

@@ -63,10 +63,13 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                         account=self.request.user,
                     )
 
-                new_solve = Solves.objects.create(
+                new_solve = Solves(
                     challenge=challenge,
                     account=self.request.user,
                 )
+                new_solve.account.points += new_solve.challenge.points
+                new_solve.account.save()
+                new_solve.save()
                 return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
             else:
                 new_bad_submission = BadSubmission.objects.create(
