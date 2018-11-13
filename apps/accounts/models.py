@@ -14,8 +14,9 @@ class Account(AbstractUser):
 
     @property
     def points(self):
-        if self.solves_set.all().count() > 0:
-            points = self.solves_set.all().aggregate(total_points=models.Sum('challenge__points'))
+        sovles_set = self.solves_set.prefetch_related('challenges')
+        if sovles_set.count() > 0:
+            points = sovles_set.values("challenge__points").aggregate(total_points=models.Sum('challenge__points'))
             if points is None:
                 points = 0
                 return points

@@ -9,9 +9,9 @@ def scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = []
-        number_challenges = Challenge.objects.all().count()
+        number_challenges = Challenge.objects.count()
         
-        accounts_scored = [account for account in Account.objects.all() if account.points > 0 and account.is_active is True]
+        accounts_scored = [account for account in Account.objects.prefetch_related('solves_set').iterator() if account.points > 0 and account.is_active is True]
 
         for (rank, account) in enumerate(sorted(accounts_scored, key=lambda t: -t.points), start=1):
             team = {}

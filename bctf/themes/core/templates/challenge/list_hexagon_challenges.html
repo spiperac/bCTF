@@ -31,7 +31,7 @@
                         data-toggle="modal"
                         data-target="#challengeModals"
                         data-challenge-id="{{challenge.pk}}">
-                        {% if challenge.pk in solved_by_user.all %}
+                        {% if challenge.pk in solved_by_user %}
                             <span class="hb hb-md hb-custom success">
                         {% else %}
                             <span class="hb hb-md hb-custom">
@@ -63,7 +63,7 @@
                         <tbody>
                             {% for first_blood in first_bloods %}
                             <tr>
-                                <td><a href="{% url 'profile' first_blood.account.pk %}" style="color:green">{{first_blood.account.username}}</a></td>
+                                <td><a href="{% url 'profile' first_blood.account_id %}" style="color:green">{{first_blood.account.username}}</a></td>
                                 <td>{{first_blood.challenge.name}}</td>
                                 <td>{{first_blood.created_at}}</td>
                             </tr>
@@ -79,13 +79,11 @@
                         <th>Solved</th>
                     </thead>
                     <tbody>
-                        {% for challenge in challenges %}
-                            {% if challenge.solves_set.all.count > 0 %}
+                        {% for solve in solves %}
                                 <tr>
-                                    <td>{{challenge.name}}</td>
-                                    <td>{{challenge.solves_set.all.count}}</td>
+                                    <td>{{solve.challenge__name}}</td>
+                                    <td>{{solve.c}}</td>
                                 </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

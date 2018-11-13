@@ -29,7 +29,7 @@ class InformationsView(UserIsAdminMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['challenges'] = Challenge.objects.all()
+        context['challenges'] = Challenge.objects.prefetch_related('category')
         context['categories'] = Category.objects.all()
 
         chall_stats = []
@@ -37,16 +37,16 @@ class InformationsView(UserIsAdminMixin, TemplateView):
         solved_challs = Solves.objects.values('challenge__pk').distinct().count()
         unsolved_challs = int(total_challs) - int(solved_challs)
 
-        accounts = Account.objects.all()
+        accounts = Account.objects.prefetch_related('solves_set')
         account_stats = []
         total_accounts = accounts.count()
-        accounts_with_points = [x for x in accounts if x.points > 0]
+        accounts_with_points = [x for x in accounts if x.solves_set.count() > 0]
         accounts_with_zero = total_accounts - len(accounts_with_points)
         account_stats.append(len(accounts_with_points))
         account_stats.append(accounts_with_zero)
 
         first_bloods = FirstBlood.objects.all().values_list('account__username', flat=True).distinct()
-        first_blood_accounts = [x for x in first_bloods]
+        first_blood_accounts = [x for x in first_bloods.prefetch_related('account')]
         first_blood_data = []
         for account in first_blood_accounts:
             solved = FirstBlood.objects.filter(account__username=account).count()
@@ -68,7 +68,7 @@ class CTFView(UserIsAdminMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['challenges'] = Challenge.objects.all()
+        context['challenges'] = Challenge.objects.prefetch_related('category')
         context['categories'] = Category.objects.all()
         return context
 

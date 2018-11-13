@@ -28,5 +28,9 @@ urlpatterns = [
 ]
 
 if settings.DEBUG == True:
-    urlpatterns += [ path('super-secret/', admin.site.urls),]
+    import debug_toolbar
+    urlpatterns += [ 
+        path('super-secret/', admin.site.urls),
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

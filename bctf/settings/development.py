@@ -9,7 +9,18 @@ DEBUG = True
 ALLOWED_HOSTS = ["*", ]
 
 if DEBUG == True:
-    INSTALLED_APPS += ['django.contrib.admin', ]
+    INSTALLED_APPS += [
+        'django.contrib.admin', 
+        'debug_toolbar',                
+    ]
+
+    MIDDLEWARE += [
+        # ...
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        # ...
+    ]
+
+    INTERNAL_IPS = ('127.0.0.1', )
 
 
 # Development settings

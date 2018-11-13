@@ -1,6 +1,7 @@
 import json
 import time
 from django.shortcuts import render
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -23,15 +24,17 @@ class CtfNotEnded(UserPassesTestMixin):
 
 
 class ChallengesListView(LoginRequiredMixin, ListView):
-    model = Challenge
+    queryset = Challenge.objects.prefetch_related('category').prefetch_related('solves_set').all()
     context_object_name = 'challenges'
     template_name = 'challenge/list_hexagon_challenges.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        solves = Solves.objects.prefetch_related('challenge').all()
+
         context['categories'] = Category.objects.all()
-        context['solved_by_user'] = Solves.objects.filter(account=self.request.user.pk).values_list('challenge', flat=True)
-        context['solves'] = Solves.objects.all()
+        context['solved_by_user'] = solves.values_list('challenge', flat=True).filter(account=self.request.user.pk)
+        context['solves'] = solves.values("challenge__name").annotate(c=Count('challenge')).order_by('-c')
         context['first_bloods'] = FirstBlood.objects.all()
         return context
 
