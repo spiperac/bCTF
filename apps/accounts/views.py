@@ -26,15 +26,12 @@ class ProfileView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        solved_stats = []
-        context['solved'] = Solves.objects.filter(account=self.object.pk)
-        context['first_bloods'] = FirstBlood.objects.filter(account=self.object.pk)
+        first_bloods = FirstBlood.objects.prefetch_related('challenge').filter(account=self.object.pk)
+        solves = Solves.objects.prefetch_related('challenge').filter(account=self.object.pk)
 
-        solved = context['solved'].count()
-        not_solved = Challenge.objects.all().count() - solved
-        solved_stats.append(solved)
-        solved_stats.append(not_solved)
-        context['solved_stats'] = solved_stats
+        context['solved'] = solves if solves else 0
+        context['first_bloods'] = first_bloods if first_bloods else 0
+        context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]
         return context
 
 

@@ -58,7 +58,7 @@ def events(request):
         response = {}
         response['events'] = []
 
-        latest_events = Solves.objects.all().order_by('-created_at')[:5]
+        latest_events = Solves.objects.prefetch_related('account').prefetch_related('challenge').order_by('-created_at')[:5]
         for event in latest_events:
             new_event = {}
             new_event['team'] = event.account.username

@@ -16,7 +16,9 @@ class IndexView(TemplateView):
         current_site = read_config()
         challenges = Challenge.objects.all()
         bad_submissions = BadSubmission.objects.all()
-        if bad_submissions.count() > 0:
+        total_points_available = challenges.aggregate(Sum('points'))['points__sum']
+        bad_submissions_number = bad_submissions.count()
+        if bad_submissions_number > 0:
             king_of_wrong_id = bad_submissions.values_list('account').annotate(account_count=Count('account')).order_by('-account_count')[0][0]
             king_of_wrong = Account.objects.get(pk=king_of_wrong_id)
         else:
@@ -25,8 +27,8 @@ class IndexView(TemplateView):
         context['news'] = News.objects.all().order_by('-created_at')
         context['teams_number'] = Account.objects.count()
         context['challenges_number'] = challenges.count()
-        context['total_points_available'] = challenges.aggregate(Sum('points'))['points__sum']
-        context['number_bad_submission'] = bad_submissions.count()
+        context['total_points_available'] = total_points_available if total_points_available else 0
+        context['number_bad_submission'] = bad_submissions_number
         context['kings_of_wrong'] = king_of_wrong
         context['settings'] = current_site
         return context
@@ -38,5 +40,4 @@ class ScoreboardView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['accounts'] = sorted(Account.objects.all(), key=lambda t: -t.points)
         return context

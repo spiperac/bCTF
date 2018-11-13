@@ -44,7 +44,7 @@
                 <h4>History</h4>
                 <hr />
                 <h6>Solved</h6>
-                {% if solved.count == 0 %}
+                {% if solved|length == 0 %}
                     <p>Nothing solved yet!</p>
                 {% else %}
                 <ul>
@@ -55,7 +55,7 @@
                 {% endif %}
 
                 <h6>First bloods</h6>
-                {% if solved.count == 0 %}
+                {% if not first_bloods %}
                     <p>No first bloods!</p>
                 {% else %}
                 <ul>

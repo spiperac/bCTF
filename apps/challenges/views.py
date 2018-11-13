@@ -30,12 +30,12 @@ class ChallengesListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        solves = Solves.objects.prefetch_related('challenge').all()
+        solves = Solves.objects.prefetch_related('challenge').prefetch_related('account')
 
         context['categories'] = Category.objects.all()
         context['solved_by_user'] = solves.values_list('challenge', flat=True).filter(account=self.request.user.pk)
         context['solves'] = solves.values("challenge__name").annotate(c=Count('challenge')).order_by('-c')
-        context['first_bloods'] = FirstBlood.objects.all()
+        context['first_bloods'] = FirstBlood.objects.prefetch_related('account').prefetch_related('challenge')
         return context
 
 
