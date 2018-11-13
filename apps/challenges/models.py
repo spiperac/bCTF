@@ -48,7 +48,15 @@ class Solves(models.Model):
     def save(self, force_insert=False, force_update=False, using=None):
         self.account.points += self.challenge.points
         self.account.save()
-        super(Solves, self).save()
+        super().save()
+
+    def delete(self, *args, **kwargs):
+        if self.account.points > self.challenge.points:
+            self.account.points -= self.challenge.points
+        else:
+            self.account.points = 0
+        self.account.save()
+        super().delete(*args, **kwargs)
 
 
 class FirstBlood(models.Model):
