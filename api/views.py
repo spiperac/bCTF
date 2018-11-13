@@ -10,8 +10,10 @@ def scores(request):
         response = {}
         response['ranks'] = []
         number_challenges = Challenge.objects.all().count()
+        
+        accounts_scored = [account for account in Account.objects.all() if account.points > 0 and account.is_active is True]
 
-        for (rank, account) in enumerate(sorted(Account.objects.filter(is_active=True), key=lambda t: -t.points), start=1):
+        for (rank, account) in enumerate(sorted(accounts_scored, key=lambda t: -t.points), start=1):
             team = {}
             team['id'] = account.pk
             team['name'] = account.username
@@ -39,7 +41,7 @@ def top_scores(request):
 
                 for solve in solved:
                     chall = {}
-                    chall['chal'] = solve.challenge.id
+                    chall['chal'] = solve.challenge_id
                     chall['team'] = account.pk
                     chall['time'] = int(solve.created_at.timestamp())
                     chall['value'] = solve.challenge.points
