@@ -67,7 +67,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                     challenge=challenge,
                     account=self.request.user,
                 )
-                
+
                 return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
             else:
                 new_bad_submission = BadSubmission.objects.create(
