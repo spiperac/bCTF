@@ -45,6 +45,11 @@ class Solves(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, force_insert=False, force_update=False, using=None):
+        self.account.points += self.challenge.points
+        self.account.save()
+        super(Solves, self).save()
+
 
 class FirstBlood(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
