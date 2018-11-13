@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import Account
@@ -15,11 +15,16 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         current_site = read_config()
         challenges = Challenge.objects.all()
+        bad_submissions = BadSubmission.objects.all()
+        king_of_wrong_id = bad_submissions.values_list('account').annotate(account_count=Count('account')).order_by('-account_count')[0][0]
+        king_of_wrong = Account.objects.get(pk=king_of_wrong_id)
+
         context['news'] = News.objects.all().order_by('-created_at')
         context['teams_number'] = Account.objects.count()
         context['challenges_number'] = challenges.count()
         context['total_points_available'] = challenges.aggregate(Sum('points'))['points__sum']
-        context['number_bad_submission'] = BadSubmission.objects.count()
+        context['number_bad_submission'] = bad_submissions.count()
+        context['kings_of_wrong'] = king_of_wrong
         context['settings'] = current_site
         return context
 

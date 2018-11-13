@@ -38,7 +38,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td><img src="${element.country}" alt="" width="25px" height="15px" /></td>
+                <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
                 <td>${element.points}</td>
             </tr>
             `
@@ -57,7 +57,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td><img src="${element.country}" alt="" /></td>
+                <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
                 <td>${element.points}</td>
             </tr>
             `
