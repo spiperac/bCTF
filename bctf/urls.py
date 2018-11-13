@@ -4,6 +4,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.accounts.views import RegistrationView, ProfileView, AccountUpdateView
+from apps.installer.views import InstallView
 
 urlpatterns = [
     # accounts
@@ -24,6 +25,9 @@ urlpatterns = [
     path('challenges/', include('apps.challenges.urls')),
     path('pages/', include('apps.pages.urls')),
     path('importer/', include('apps.tasksimporter.urls')),
+
+    # installer
+    path('install/', InstallView.as_view(), name='installer'),
 
 ]
 

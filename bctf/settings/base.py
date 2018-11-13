@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'apps.pages',
     'apps.administration',
     'apps.tasksimporter',
+
+    # installer
+    'apps.installer',
 ]
 
 AUTH_USER_MODEL = 'accounts.Account'

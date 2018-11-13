@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="content">
+    <div class="row text-center">
+        <div class="col-12 text-center">
+            <h1>Installation successful!</h1>
+            <hr />
+            <h1><i class="fas fa-check-circle"></i></h1>
+            <hr />
+            <h3>Now that installation is done, it's time to setup things and have fun!</h3>
+            <h3><a href="{% url 'scoreboard:home' %}">Home page</a></h3>
+            <h3><a href="{% url 'administration:ctf' %}">Setup CTF</a></h3>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+{% endblock %}
