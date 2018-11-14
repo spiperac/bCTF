@@ -8,72 +8,71 @@
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron jt-scores">
-    <div class="row tall-row text-center">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-between bd-highlight mb-3">
-                <div class="p-2 bd-highlight">
-                    <h1>#{{object.rank}} </h1>
-                </div>
-                <div class="p-2 bd-highlight">
-                    <h1>{{object.username|safe}}</h1>
-                </div>
-                <div class="p-2 bd-highlight">
-                    {% if object.country %}
-                        <img src="{{object.country.flag}}" width="25" height="20">
-                    {% endif %}
-                </div>
+<div class="row tall-row text-center">
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-between bd-highlight mb-3">
+            <div class="p-2 bd-highlight">
+                <h1>#{{object.rank}} </h1>
             </div>
-            <hr>
+            <div class="p-2 bd-highlight">
+                <h1>{{object.username|safe}}</h1>
+            </div>
+            <div class="p-2 bd-highlight">
+                {% if object.country %}
+                    <img src="{{object.country.flag}}" width="25" height="20">
+                {% endif %}
+            </div>
         </div>
+        <hr>
     </div>
-    <div class="content">
-        <div class="row">
-            <div class="col-4">
+</div>
+<div class="content">
+    <div class="row">
+        <div class="col-4">
 
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <img src="{{ object|get_avatar:250 }}" height="250px" width="250px" />
-                    </div>
-                    <div class="card-footer">
-                        Points: {{object.points}}
-                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <img src="{{ object|get_avatar:250 }}" class="img-fluid">
                 </div>
+                <div class="card-footer">
+                    Points: {{object.points}}
+                </div>
+            </div>
 
-            </div>
-            <div class="col-4">
-                    <div style="height: 300px">
-                        <canvas id="id_solved_chart" width="300px"></canvas>
-                    </div>
-            </div>
-            <div class="col-4">
-                <h3>History</h3>
-                <hr />
-                <h6>Solved</h6>
-                {% if solved|length == 0 %}
-                    <p>Nothing solved yet!</p>
-                {% else %}
-                <ul>
-                    {% for solve in solved %}
-                        <li>{{solve.challenge.name}}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+        </div>
+        <div class="col-4">
+                <div style="height: 300px">
+                    <canvas id="id_solved_chart" width="300px"></canvas>
+                </div>
+        </div>
+        <div class="col-4">
+            <h3>History</h3>
+            <hr />
+            <h6>Solved</h6>
+            {% if solved|length == 0 %}
+                <p>Nothing solved yet!</p>
+            {% else %}
+            <ul>
+                {% for solve in solved %}
+                    <li>{{solve.challenge.name}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
 
-                <h6>First bloods</h6>
-                {% if not first_bloods %}
-                    <p>No first bloods!</p>
-                {% else %}
-                <ul>
-                    {% for first_blood in first_bloods %}
-                        <li>{{first_blood.challenge.name}}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
+            <h6>First bloods</h6>
+            {% if not first_bloods %}
+                <p>No first bloods!</p>
+            {% else %}
+            <ul>
+                {% for first_blood in first_bloods %}
+                    <li>{{first_blood.challenge.name}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
     </div>
 </div>
+
 
 <script>
 $('document').ready(function() {

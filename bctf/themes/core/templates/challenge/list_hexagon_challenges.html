@@ -10,85 +10,83 @@
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron jt-scores">
-    <!-- Typography -->
-    <div class="row tall-row text-center">
-        <div class="col-lg-12">
-            <h1> <i class="fas fa-flag-checkered"></i> Challenges</h1>
-            <hr>
-        </div>
+<!-- Typography -->
+<div class="row tall-row text-center">
+    <div class="col-lg-12">
+        <h1> <i class="fas fa-flag-checkered"></i> Challenges</h1>
+        <hr>
     </div>
-    <div class="col-md-12 text-center" id="challenge-loader">
-        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                {% for challenge in challenges %}
-                    {% if challenge.visible %}
-                        <a value="{{challenge}}" 
-                        href="#challengeModals"
-                        data-toggle="modal"
-                        data-target="#challengeModals"
-                        data-challenge-id="{{challenge.pk}}">
-                        {% if challenge.pk in solved_by_user %}
-                            <span class="hb hb-md hb-custom success">
-                        {% else %}
-                            <span class="hb hb-md hb-custom">
-                        {% endif %}
-                                <span class="front-btn">
-                                    <p>{{challenge.category}}</p>
-                                    <p>{{challenge.points}}</p>
-                                </span>
-                                <span class="back-btn">
-                                    <p><b>{{challenge.name}}</b></p>
-                                    <p>Solved: {{challenge.solves_set.all.count}}</p>
-                                </span>
-                            </span>
-                        </a>
+</div>
+<div class="col-md-12 text-center" id="challenge-loader">
+    <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            {% for challenge in challenges %}
+                {% if challenge.visible %}
+                    <a value="{{challenge}}" 
+                    href="#challengeModals"
+                    data-toggle="modal"
+                    data-target="#challengeModals"
+                    data-challenge-id="{{challenge.pk}}">
+                    {% if challenge.pk in solved_by_user %}
+                        <span class="hb hb-md hb-custom success">
+                    {% else %}
+                        <span class="hb hb-md hb-custom">
                     {% endif %}
-                {% endfor %}
-            </div>
-            <div class="col-4">
-                <h4><i class="fas fa-tint fa-danger" style="color:red"></i> First Bloods!</h4>
-                {% if first_bloods.count == 0 %}
-                    <p>No first bloods yet!</p>
-                {% else %}
-                    <table class="table table-borderless">
-                        <thead>
-                            <th>Team</th>
-                            <th>Challenge</th>
-                            <th>Time</th>
-                        </thead>
-                        <tbody>
-                            {% for first_blood in first_bloods %}
-                            <tr>
-                                <td><a href="{% url 'profile' first_blood.account_id %}" style="color:green">{{first_blood.account.username}}</a></td>
-                                <td>{{first_blood.challenge.name}}</td>
-                                <td>{{first_blood.created_at}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            <span class="front-btn">
+                                <p>{{challenge.category}}</p>
+                                <p>{{challenge.points}}</p>
+                            </span>
+                            <span class="back-btn">
+                                <p><b>{{challenge.name}}</b></p>
+                                <p>Solved: {{challenge.solves_set.all.count}}</p>
+                            </span>
+                        </span>
+                    </a>
                 {% endif %}
-
-                <h4><i class="fas fa-crosshairs" style="color:black"></i> Solves stats</h4>
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            <h4><i class="fas fa-tint fa-danger" style="color:red"></i> First Bloods!</h4>
+            {% if first_bloods.count == 0 %}
+                <p>No first bloods yet!</p>
+            {% else %}
                 <table class="table table-borderless">
                     <thead>
+                        <th>Team</th>
                         <th>Challenge</th>
-                        <th>Solved</th>
+                        <th>Time</th>
                     </thead>
                     <tbody>
-                        {% for solve in solves %}
-                                <tr>
-                                    <td>{{solve.challenge__name}}</td>
-                                    <td>{{solve.c}}</td>
-                                </tr>
+                        {% for first_blood in first_bloods %}
+                        <tr>
+                            <td><a href="{% url 'profile' first_blood.account_id %}" style="color:green">{{first_blood.account.username}}</a></td>
+                            <td>{{first_blood.challenge.name}}</td>
+                            <td>{{first_blood.created_at}}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            {% endif %}
 
-            </div>
+            <h4><i class="fas fa-crosshairs" style="color:black"></i> Solves stats</h4>
+            <table class="table table-borderless">
+                <thead>
+                    <th>Challenge</th>
+                    <th>Solved</th>
+                </thead>
+                <tbody>
+                    {% for solve in solves %}
+                            <tr>
+                                <td>{{solve.challenge__name}}</td>
+                                <td>{{solve.c}}</td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
