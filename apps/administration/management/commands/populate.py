@@ -1,4 +1,5 @@
 import string
+import time
 import random
 from django.core.management.base import BaseCommand, CommandError
 from apps.accounts.models import Account
@@ -13,6 +14,42 @@ categories_list = [
     'reversing',
     'recon',
     'misc'
+]
+
+usernames_list = [
+    'Mad_Thrashers',
+    'The_Pace_Makes',
+    'Not_Fast_But_furious',
+    'Attack_of_the_Invisible Binja',
+    'Running_On_Empty',
+    'Corporate_Punishment',
+    'Club_Win',
+    'Big_Dudes_Scared_Shoes',
+    'Fifty_Shdes_of_AwesomeVM',
+    'Hustle_&_Flow',
+    'Game_of_Throjans',
+    'Beer_Pressur',
+    'Game_of_Throw',
+    'Its_Always_Rny_in_Philadelphia',
+    'Heres_Johnny',
+    'Zombie_Warfare',
+    'root',
+    'admin',
+    'test',
+    'guest',
+    'info',
+    'adm',
+    'mysql',
+    'user',
+    'administrator',
+    'oracle',
+    'ftp',
+    'pi',
+    'puppet',
+    'ansible',
+    'ec2-user',
+    'vagrant',
+    'azureuser',
 ]
 
 
@@ -46,7 +83,7 @@ class Command(BaseCommand):
         for x in range(0, size):
             Challenge.objects.create(
                 category=Category.objects.get(name=random.choice(categories_list)),
-                name=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(10)),
+                name=random.choice(usernames_list),
                 description=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + ' ' + string.digits) for _ in range(40)),
                 points=''.join(random.choice(string.digits) for _ in range(3))
             )
@@ -59,6 +96,7 @@ class Command(BaseCommand):
                 challenge=challenge,
                 account=account
             )
+            time.sleep(1.5)
 
     def handle(self, *args, **options):
         self.create_categories()

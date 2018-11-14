@@ -39,7 +39,7 @@ function feed_table(element) {
                     </div>
                 </td>
                 <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
-                <td>${element.points}</td>
+                <td class="td-points">${element.points}</td>
             </tr>
             `
         )
@@ -58,7 +58,7 @@ function feed_table(element) {
                     </div>
                 </td>
                 <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
-                <td>${element.points}</td>
+                <td class="td-points">${element.points}</td>
             </tr>
             `
         )

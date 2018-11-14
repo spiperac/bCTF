@@ -1,9 +1,8 @@
-.jt-scores {
-    margin-top: 10px;
-    padding-top: 10px;
-}
-
 .tr-rank {
     width: 50px;
 }
 
+.td-points {
+    font-size: 18px;
+    color: #fff;
+}

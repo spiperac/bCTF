@@ -3,7 +3,7 @@ ctf:
   logo: null
   start_time: null
   theme: null
-  title: CCC
+  title: tjest
 docker:
   driver: null
   host: null
