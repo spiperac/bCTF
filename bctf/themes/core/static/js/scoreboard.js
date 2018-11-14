@@ -24,6 +24,11 @@ function clean_table() {
 }
 
 function feed_table(element) {
+    if (element.country) {
+        var show_county = `<img src="${element.country}" alt="None" width="25px" height="15px" />`;
+    } else {
+        var show_county = ``;
+    }
     if (element.rank == 1 ) {
         $('#scores-body').append(
             `
@@ -38,7 +43,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
+                <td>${show_county}</td>
                 <td class="td-points">${element.points}</td>
             </tr>
             `
@@ -57,7 +62,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td><img src="${element.country}" alt="" width="35px" height="25px" /></td>
+                <td>${show_county}</td>
                 <td class="td-points">${element.points}</td>
             </tr>
             `

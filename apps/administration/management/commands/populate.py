@@ -63,7 +63,7 @@ class Command(BaseCommand):
 
     def create_teams(self, size):
         for x in range(0, size):
-                team_name = "team" + ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
+                team_name = random.choice(usernames_list)
                 new_account = Account.objects.create(
                     username=team_name,
                     email="{0}@gmail.com".format(team_name),
@@ -83,7 +83,7 @@ class Command(BaseCommand):
         for x in range(0, size):
             Challenge.objects.create(
                 category=Category.objects.get(name=random.choice(categories_list)),
-                name=random.choice(usernames_list),
+                name=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8)),
                 description=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + ' ' + string.digits) for _ in range(40)),
                 points=''.join(random.choice(string.digits) for _ in range(3))
             )

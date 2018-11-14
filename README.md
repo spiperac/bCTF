@@ -1,7 +1,7 @@
 # bCTF
 
-Just another scoreboard system for hosting a CTF style games. 
-We, at the BalCCon\dot\org, were using CTFd for quite some time ( that's why that ui looks familiar ...), and we decided that we need some more features like:
+bCTF is a scoreboard system for hosting and managing CTF style games. 
+We, at the BalCCon.org, were using CTFd for quite some time ( that's why that ui looks familiar ...), and we decided that we need some more features like:
 easier challenge deployment, controll small set of docker containers running challenges, more interactions and informations feeded to players, etc... Thus bCTF came to existence.
 
 ## Features
@@ -26,7 +26,7 @@ easier challenge deployment, controll small set of docker containers running cha
 * Email support ( for registration, password resets, and optional account activation links)
 * Beta themes customisation
 * Fast and small on deps
-    * bCTF is using django with minimal 3rd party libs
+    * bCTF is using django with minimal set of 3rd party libs
         * besides django, only pyyaml and django-countries are required
 * Unit tests and selenium tests coverage
 * Bootstrap 4
