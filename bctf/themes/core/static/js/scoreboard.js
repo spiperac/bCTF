@@ -1,7 +1,7 @@
 $('document').ready(function() {
     update_feed();
     setInterval(update_feed, 120000); // Update scores every 2 minutes
-
+    scores_graph();
 })
 
 function update_feed() {
@@ -36,7 +36,7 @@ function feed_table(element) {
                 <td>${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50px" width="50px">
+                        <img src="${element.avatar}" eight="50px" width="50px" class="img-fluid">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
                         <a href="/accounts/profile/${element.id}">${element.name}</a> <span class="badge badge-secondary"><i class="fas fa-crown" style="color:gold"></i></span>
@@ -55,7 +55,7 @@ function feed_table(element) {
                 <td>${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50px" width="50px">
+                        <img src="${element.avatar}" height="50px" width="50px" class="img-fluid">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
                         <a href="/accounts/profile/${element.id}">${element.name}</a>
@@ -157,6 +157,72 @@ function scoregraph () {
         Plotly.newPlot('score-graph', traces, layout, {
             displayModeBar: false,
             displaylogo: false
+        });
+    });
+}
+
+function scores_graph() {
+    $.get('/api/top', function( data ) {
+        var parsed_data = $.parseJSON(JSON.stringify(data));
+        ranks = parsed_data['ranks'];
+
+        if (Object.keys(ranks).length === 0 ){
+            // If no one scored, set no solves
+            $('#score-graph').html(
+                '<div class="text-center"><h3 class="spinner-error">No solves yet</h3></div>'
+            );
+            return;
+        }
+        var teams = Object.keys(ranks);
+
+        var datasets = []
+
+        for (var x=0; x < teams.length; x++) {
+            var team = ranks[teams[x]];
+            
+            var scores = []
+            var times = []
+            // Organise team data into sets
+            for (i in team.solves){
+                scores.push(team.solves[i].value)
+                var date = moment(team.solves[i].time * 1000);
+                times.push(date.toDate())
+            }
+
+            final_scores = cumulativesum(scores);
+            axes = []
+            for (var c in final_scores) {
+                var tmp_data = {
+                    x: times[c],
+                    y: final_scores[c]
+                }
+                console.log(tmp_data)
+                axes.push(tmp_data);
+            }
+            dataset = {
+                label: team.name,
+                showLine:true,
+                data: axes,
+            }
+
+            datasets.push(dataset);
+
+        }
+
+        var lineChartData = {
+            datasets: datasets
+        }
+        var ctx = document.getElementById('score-graph-live').getContext('2d');
+        var LineChartDemo = new Chart(ctx , {
+            type: "scatter",
+            data: lineChartData, 
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                    }]
+                }
+            }
         });
     });
 }

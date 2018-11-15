@@ -64,6 +64,8 @@ class Command(BaseCommand):
     def create_teams(self, size):
         for x in range(0, size):
                 team_name = random.choice(usernames_list)
+                if Account.objects.filter(username=team_name).count() > 0:
+                    team_name = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8))
                 new_account = Account.objects.create(
                     username=team_name,
                     email="{0}@gmail.com".format(team_name),

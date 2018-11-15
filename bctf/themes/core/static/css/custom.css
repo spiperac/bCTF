@@ -7,6 +7,12 @@
     background-color: #303030; 
 }
 
+#score-graph {
+    height: 450px;
+    display: block;
+    clear: both;
+}
+
 #id_search_area {
     width: 100%;
     clear: both;
