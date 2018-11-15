@@ -28,6 +28,7 @@ class InstallView(UserIsAnonymousMixin, View):
             if form.is_valid():
                 new_admin = Account(
                     username=request.POST['admin_username'],
+                    email=request.POST['admin_email'],
                     is_superuser=True,
                     is_staff=True,
                     is_active=True,
