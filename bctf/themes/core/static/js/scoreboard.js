@@ -1,12 +1,11 @@
 $('document').ready(function() {
     update_feed();
     setInterval(update_feed, 120000); // Update scores every 2 minutes
-    scores_graph();
 })
 
 function update_feed() {
     clean_table();
-    scoregraph();
+    scores_graph();
     populate_scores();
 }
 
@@ -79,88 +78,6 @@ function cumulativesum (arr) {
     return result
 }
 
-function scoregraph () {
-    $.get('/api/top', function( data ) {
-        var places = $.parseJSON(JSON.stringify(data));
-        places = places['ranks'];
-        if (Object.keys(places).length === 0 ){
-            // Replace spinner
-            $('#score-graph').html(
-                '<div class="text-center"><h3 class="spinner-error">No solves yet</h3></div>'
-            );
-            return;
-        }
-
-        var teams = Object.keys(places);
-        var traces = [];
-        for(var i = 0; i < teams.length; i++){
-            var team_score = [];
-            var times = [];
-            for(var j = 0; j < places[teams[i]]['solves'].length; j++){
-                team_score.push(places[teams[i]]['solves'][j].value);
-                var date = moment(places[teams[i]]['solves'][j].time * 1000);
-                times.push(date.toDate());
-            }
-            team_score = cumulativesum(team_score);
-            var trace = {
-                x: times,
-                y: team_score,
-                mode: 'lines+markers',
-                name: places[teams[i]]['name'],
-                marker: {
-                    color: colorhash(places[teams[i]]['name'] + places[teams[i]]['id']),
-                },
-                line: {
-                    color: colorhash(places[teams[i]]['name'] + places[teams[i]]['id']),
-                }
-            };
-            traces.push(trace);
-        }
-
-        traces.sort(function(a, b) {
-            var scorediff = b['y'][b['y'].length - 1] - a['y'][a['y'].length - 1];
-            if(!scorediff) {
-                return a['x'][a['x'].length - 1] - b['x'][b['x'].length - 1];
-            }
-            return scorediff;
-        });
-
-        var layout = {
-            title: 'Top 10 Teams',
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            hovermode: 'closest',
-            height: 400,
-            titlefont:{
-                color: 'white',
-            },
-            xaxis: {
-                showgrid: false,
-                showspikes: true,
-                color: 'white',
-            },
-            yaxis: {
-                showgrid: false,
-                showspikes: true,
-                color: 'white',
-            },
-            legend: {
-                "orientation": "h",
-                font: {
-                    color: 'white',
-                    size: 15,
-                },
-            }
-        };
-
-        $('#score-graph').empty(); // Remove spinners
-        Plotly.newPlot('score-graph', traces, layout, {
-            displayModeBar: false,
-            displaylogo: false
-        });
-    });
-}
-
 function scores_graph() {
     $.get('/api/top', function( data ) {
         var parsed_data = $.parseJSON(JSON.stringify(data));
@@ -179,7 +96,8 @@ function scores_graph() {
 
         for (var x=0; x < teams.length; x++) {
             var team = ranks[teams[x]];
-            
+            var team_color = colorhash(team.name + team.id);
+
             var scores = []
             var times = []
             // Organise team data into sets
@@ -196,13 +114,18 @@ function scores_graph() {
                     x: times[c],
                     y: final_scores[c]
                 }
-                console.log(tmp_data)
                 axes.push(tmp_data);
             }
             dataset = {
                 label: team.name,
                 showLine:true,
                 data: axes,
+                backgroundColor: team_color,
+                borderColor: team_color,
+                showLine: true,
+                pointRadius: 5,
+                pointHoverRadius: 5,
+                fill: false,
             }
 
             datasets.push(dataset);
@@ -210,16 +133,42 @@ function scores_graph() {
         }
 
         var lineChartData = {
-            datasets: datasets
+            datasets: datasets,
         }
         var ctx = document.getElementById('score-graph-live').getContext('2d');
         var LineChartDemo = new Chart(ctx , {
             type: "scatter",
             data: lineChartData, 
             options: {
+                legend: {
+                    labels: {
+                        fontColor: "#fff",
+                        fontSize: 15
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Top 10 Teams',
+                    fontSize: 18,
+                    fontColor: '#fff'
+                },
                 scales: {
                     xAxes: [{
                         type: 'time',
+                        ticks: {
+                            fontColor: "#fff",
+                        },
+                        gridLines: {
+                            display:false
+                        } 
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            fontColor: "#fff", // this here
+                        },
+                        gridLines: {
+                            display:false
+                        }   
                     }]
                 }
             }

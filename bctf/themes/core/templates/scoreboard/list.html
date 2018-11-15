@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block extra_js %}
-    <script src="{% static 'js/plotly.min.js' %}"></script>
     <script src="{% static 'js/Chart.min.js' %}"></script>
     <script src="{% static 'js/scoreboard.js' %}"></script>
     
@@ -26,15 +25,14 @@
     </div>
 </div>
 
-<div style="width:75%;">
-    <canvas id="score-graph-live"></canvas>
+<div>
+    <canvas id="score-graph-live">
+            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+    </canvas>
+    
 </div>
     
-<div id="score-graph" class="row">
-    <div class="col-lg-12 text-center">
-        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-    </div>
-</div>
+
 
 <div class="table-responsive">
     <table class="table table-borderless w-100 d-block d-md-table" id="scores">
