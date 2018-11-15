@@ -160,15 +160,15 @@
                     $(".challengebtn").show();
                 } else {
                     $(`[data-category="${category}"]`).show()
-                    $('a').not(`[data-category="${category}"]`).hide()
+                    $('.challengebtn').not(`[data-category="${category}"]`).hide()
                 }
             } else {
                 if (category == "All") {
                     $(`[data-status-solved="${challenges}"]`).show();
-                    $('a').not(`[data-status-solved="${challenges}"]`).hide();
+                    $('.challengebtn').not(`[data-status-solved="${challenges}"]`).hide();
                 } else {
                     $(`[data-status-solved="${challenges}"][data-category="${category}"]`).show();
-                    $('a').not(`[data-status-solved="${challenges}"][data-category="${category}"]`).hide();                   
+                    $('.challengebtn').not(`[data-status-solved="${challenges}"][data-category="${category}"]`).hide();                   
                 }
             }
             $(this).removeClass('active');
