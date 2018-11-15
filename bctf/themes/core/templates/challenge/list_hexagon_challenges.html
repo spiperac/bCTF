@@ -23,17 +23,65 @@
 <div class="container">
     <div class="row">
         <div class="col-8">
+            <div class="row">
+                    <div class="col-4">
+                        <label for="btnShowChallenges" class="control-label">Challenges</label>
+                        <div>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="btnShowChallenges">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" id="option-all" value="All" checked> All
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" id="option-unsolved" value="Unsolved" > Unsolved
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" id="option-solved" value="Solved"> Solved
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="btnShowCategories">Categories</label>
+                        <div>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="btnShowCategories">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" value="All" checked> All
+                                </label>
+                                {% for category in categories %}
+                                <label class="btn btn-secondary">
+                                    <input type="radio" value="{{category}}" > {{category}}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>           
+                    </div>
+            </div>
+            <br />
             {% for challenge in challenges %}
                 {% if challenge.visible %}
-                    <a value="{{challenge}}" 
-                    href="#challengeModals"
-                    data-toggle="modal"
-                    data-target="#challengeModals"
-                    data-challenge-id="{{challenge.pk}}">
                     {% if challenge.pk in solved_by_user %}
-                        <span class="hb hb-md hb-custom success">
+                        <a value="{{challenge}}"
+                        id="challengeBtn"
+                        href="#challengeModals"
+                        data-toggle="modal"
+                        data-target="#challengeModals"
+                        data-challenge-id="{{challenge.pk}}"
+                        data-category="{{challenge.category}}"
+                        data-status-solved="Solved"
+                        class="challengebtn solved-challenge">
+                        <span class="hb hb-md hb-custom solved-challenge">
                     {% else %}
-                        <span class="hb hb-md hb-custom">
+                        <a value="{{challenge}}" 
+                        id="challengeBtn"
+                        href="#challengeModals"
+                        data-toggle="modal"
+                        data-target="#challengeModals"
+                        data-challenge-id="{{challenge.pk}}"
+                        data-category="{{challenge.category}}"
+                        data-status-solved="Unsolved"
+                        class="challengebtn unsolved-challenge">
+                        <span class="hb hb-md hb-custom unsolved-challenge">
                     {% endif %}
                             <span class="front-btn">
                                 <p>{{challenge.category}}</p>
@@ -102,12 +150,39 @@
 
 <script>
     $('document').ready(function() {
+
+        $('#btnShowChallenges .btn, #btnShowCategories .btn').on('change', function(event) {
+            $(this).addClass('active');
+            var challenges= $('#btnShowChallenges .active :input').val();
+            var category = $('#btnShowCategories .active :input').val();
+            if (challenges == "All") {
+                if (category == "All") {
+                    $(".challengebtn").show();
+                } else {
+                    $(`[data-category="${category}"]`).show()
+                    $('a').not(`[data-category="${category}"]`).hide()
+                }
+            } else {
+                if (category == "All") {
+                    $(`[data-status-solved="${challenges}"]`).show();
+                    $('a').not(`[data-status-solved="${challenges}"]`).hide();
+                } else {
+                    $(`[data-status-solved="${challenges}"][data-category="${category}"]`).show();
+                    $('a').not(`[data-status-solved="${challenges}"][data-category="${category}"]`).hide();                   
+                }
+            }
+            $(this).removeClass('active');
+
+
+        });
+
+
         $('#challenge-loader').hide();
         $('#challenge-table').show();
+
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             var challengeID = $(event.relatedTarget).data('challenge-id')
-            //var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
             var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
                 url: formURL,

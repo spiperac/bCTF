@@ -1,9 +1,9 @@
 ctf:
-  end_time: '1542286800'
-  logo: https://2k18.balccon.org/images/d/d8/Logo_2k18.png
-  start_time: '1542200340'
+  end_time: null
+  logo: null
+  start_time: null
   theme: null
-  title: bCTF
+  title: bCTF Demo
 docker:
   driver: null
   host: null

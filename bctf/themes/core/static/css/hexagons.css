@@ -306,7 +306,7 @@ inv 		= Inverse Behaver of buttons
 	display: none;
 }
 
-.hb-custom.success {
+.hb-custom.solved-challenge {
 	color:green !important;
 }
 /* 5.3 - Custom Button colors End

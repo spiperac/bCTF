@@ -33,13 +33,13 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}  <i class="fas fa-crown" style="color:gold"></i> </td>
+                <td>${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
                         <img src="${element.avatar}" height="50px" width="50px">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
-                        <a href="/accounts/profile/${element.id}">${element.name}</a>
+                        <a href="/accounts/profile/${element.id}">${element.name}</a> <span class="badge badge-secondary"><i class="fas fa-crown" style="color:gold"></i></span>
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
