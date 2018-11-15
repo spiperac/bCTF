@@ -85,7 +85,7 @@ function scores_graph() {
 
         if (Object.keys(ranks).length === 0 ){
             // If no one scored, set no solves
-            $('#score-graph').html(
+            $('#score-graph-placeholder').html(
                 '<div class="text-center"><h3 class="spinner-error">No solves yet</h3></div>'
             );
             return;
@@ -135,6 +135,8 @@ function scores_graph() {
         var lineChartData = {
             datasets: datasets,
         }
+
+        $('#loaderScoreboard').hide();
         var ctx = document.getElementById('score-graph-live').getContext('2d');
         var LineChartDemo = new Chart(ctx , {
             type: "scatter",
