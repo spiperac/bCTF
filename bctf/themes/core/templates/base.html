@@ -16,11 +16,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/challenge.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'fonts/css/all.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
-
-    <!-- Early JS-->
-    <script src="{% static 'js/moment.min.js' %}"></script>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-
+    {% block extra_css%}
+    
+    {% endblock %}
 </head>
 
 <body>
@@ -87,20 +85,29 @@
         {% endblock %}
     </div>
 
-    {% block modals %}
 
-    {% endblock %}
     <div id="footer" class="text-center">
         <p>
             Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
         </p>
     </div>
 <!-- JavaScript files -->
-<script src="{% static 'js/popper.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
 
-{% block extra_js%}
+{% block modals %}
 
 {% endblock %}
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- JavaScript files -->
+{% block extra_js%}
+{% endblock %}
+
+{% block custom_javascript %}
+
+{% endblock %}
+
 </body>
 </html>

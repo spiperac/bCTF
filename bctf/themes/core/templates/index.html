@@ -72,7 +72,9 @@
         </div>
     </div>
 
+{% endblock %}
 
+{% block custom_javascript %}
 <script>
     $('document').ready(function() {
         var countDownTime = `{{cfg.ctf.end_time}}`;

@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block extra_js%}
+{% block extra_css%}
     <link rel="stylesheet" type="text/css" href="{% static 'css/hexagons.css' %}">
+{% endblock %}
 
+{% block extra_js%}
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/hexagons.min.js' %}"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -144,19 +145,19 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block modals %}
 <!-- Modal -->
-<div class="modal fade" tabindex="-1" id="challengeModals" role="dialog">
+<div class="modal inmodal" tabindex="-1" id="challengeModals" role="dialog"  aria-hidden="true">
     <!-- Hack to close modal from inside another view -->
     <div class="modal-dialog" role="document">
     </div>
 </div>
 
+{% endblock %}
+{% block custom_javascript %}
+
 <script>
     $('document').ready(function() {
-
         $('#btnShowChallenges .btn, #btnShowCategories .btn').on('change', function(event) {
             $(this).addClass('active');
             var challenges= $('#btnShowChallenges .active :input').val();
@@ -178,16 +179,16 @@
                 }
             }
             $(this).removeClass('active');
-
-
         });
-
 
         $('#challenge-loader').hide();
         $('#challenge-table').show();
 
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
+            modal.html(
+                `{% include 'challenge/challenge_loading.html' %}`
+            )
             var challengeID = $(event.relatedTarget).data('challenge-id')
             var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
