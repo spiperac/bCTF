@@ -1,4 +1,4 @@
-import pagan
+from plugins import pagan
 import logging
 from hashlib import md5
 from django.db import models
@@ -12,13 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 def create_pagan(sender, instance, **kwargs):
-    try:
-        img = pagan.Avatar(instance.username, pagan.SHA512)
-        avatar_name = str(instance.pk)
-        avatar_folder = "{0}avatars/".format(settings.MEDIA_ROOT)
+    avatar_name = str(instance.pk)
+    avatar_folder = "{0}/avatars/{1}/".format(settings.MEDIA_ROOT, instance.pk)
+    sizes = [32, 128, 256]
+    for size in sizes:
+        img = pagan.Avatar(inpt=instance.username, hashfun=pagan.SHA512, img_size=size)
         img.save(avatar_folder, avatar_name)
-    except Exception as exception:
-        logger.error('Unable to create pagan: {0}'.format(exception))
 
 
 class Account(AbstractUser):
