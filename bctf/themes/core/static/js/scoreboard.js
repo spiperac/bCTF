@@ -10,7 +10,7 @@ function update_feed() {
 }
 
 function populate_scores(){
-    var scoresURL = "/api/scores";
+    var scoresURL = "/api/scores/";
     $.getJSON( scoresURL, function( data ) {
         $.each( data.ranks, function( key, val ) {
             feed_table(val);
@@ -79,7 +79,7 @@ function cumulativesum (arr) {
 }
 
 function scores_graph() {
-    $.get('/api/top', function( data ) {
+    $.get('/api/top/', function( data ) {
         var parsed_data = $.parseJSON(JSON.stringify(data));
         ranks = parsed_data['ranks'];
 
