@@ -20,8 +20,6 @@ def create_pagan(sender, instance, created, **kwargs):
         thumbs = [50, 256]
         img.save(thumbs=thumbs, path=avatar_folder, filename=avatar_name)
 
-        
-
 
 class Account(AbstractUser):
     banned = models.BooleanField(default=False)
@@ -60,6 +58,14 @@ class Account(AbstractUser):
     def get_avatar(self):
         if not self.avatar:
             url = "{0}avatars/{1}/{1}_50.png".format(settings.MEDIA_URL, self.pk)
+            return url
+        else:
+            return self.avatar.url
+
+    @property
+    def get_avatar_big(self):
+        if not self.avatar:
+            url = "{0}avatars/{1}/{1}_256.png".format(settings.MEDIA_URL, self.pk)
             return url
         else:
             return self.avatar.url

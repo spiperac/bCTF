@@ -58,7 +58,8 @@ class Avatar():
         # Cut the .png file ending if one was omitted.
         if filename[-4:] == ".png":
             filename = filename[:-4]
-            
+        
+        original_filename = filename
         filename = "{0}_{1}".format(filename, self.img_size)
         # Saves the image under the given filepath.
         filepath = ("%s%s.png" % (path, filename))
@@ -72,4 +73,5 @@ class Avatar():
                 size = thumb_size, thumb_size
                 thumb_img = Image.open(filepath)
                 thumb_img.thumbnail(size)
-                thumb_img.save("{0}_{1}.png".format(path, thumb_size), "PNG")
+                thumb_path = "{0}{1}".format(path, original_filename)
+                thumb_img.save("{0}_{1}.png".format(thumb_path, thumb_size), "PNG")
