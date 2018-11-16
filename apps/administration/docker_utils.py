@@ -1,4 +1,8 @@
 import docker
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class DockerTool(object):
@@ -11,7 +15,10 @@ class DockerTool(object):
         self.connect()
 
     def connect(self):
-        self.client = docker.from_env()
+        try:
+            self.client = docker.from_env()
+        except Exception as exception:
+            logger.error("Unable to connect to docker host: {0}".format(exception))
 
     def list_containers(self):
         return self.client.containers.list(all=True)

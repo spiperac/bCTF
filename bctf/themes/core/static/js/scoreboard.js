@@ -70,14 +70,6 @@ function feed_table(element) {
 
 }
 
-function cumulativesum (arr) {
-    var result = arr.concat();
-    for (var i = 0; i < arr.length; i++){
-        result[i] = arr.slice(0, i + 1).reduce(function(p, i){ return p + i; });
-    }
-    return result
-}
-
 function scores_graph() {
     $.get('/api/top/', function( data ) {
         var parsed_data = $.parseJSON(JSON.stringify(data));
@@ -185,6 +177,14 @@ function scores_graph() {
     });
 }
 
+function cumulativesum (arr) {
+    var result = arr.concat();
+    for (var i = 0; i < arr.length; i++){
+        result[i] = arr.slice(0, i + 1).reduce(function(p, i){ return p + i; });
+    }
+    return result
+}
+
 function colorhash(str) {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -207,9 +207,4 @@ function colorhash(str) {
         hash |= 0; // Convert to 32bit integer
     }
     return hash;
-};
-
-
-window.onresize = function () {
-    Plotly.Plots.resize(document.getElementById('score-graph'));
 };

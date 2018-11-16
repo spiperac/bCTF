@@ -22,6 +22,24 @@ if DEBUG == True:
 
     INTERNAL_IPS = ('127.0.0.1', )
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/bctf-dev.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 # Development settings
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

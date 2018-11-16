@@ -1,4 +1,5 @@
 import pagan
+import logging
 from hashlib import md5
 from django.db import models
 from django.conf import settings
@@ -7,12 +8,17 @@ from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 
 
+logger = logging.getLogger(__name__)
+
+
 def create_pagan(sender, instance, **kwargs):
-    print(instance)
-    img = pagan.Avatar(instance.username, pagan.SHA512)
-    avatar_name = str(instance.pk)
-    avatar_folder = "{0}/avatars/".format(settings.MEDIA_ROOT)
-    img.save(avatar_folder, avatar_name)
+    try:
+        img = pagan.Avatar(instance.username, pagan.SHA512)
+        avatar_name = str(instance.pk)
+        avatar_folder = "{0}avatars/".format(settings.MEDIA_ROOT)
+        img.save(avatar_folder, avatar_name)
+    except Exception as exception:
+        logger.error('Unable to create pagan: {0}'.format(exception))
 
 
 class Account(AbstractUser):

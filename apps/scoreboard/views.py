@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Sum, Count
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
@@ -34,10 +34,7 @@ class IndexView(TemplateView):
         return context
 
 
-class ScoreboardView(ListView):
-    model = Account
-    template_name = 'scoreboard/list.html'
+class ScoreboardView(View):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'scoreboard/list.html')

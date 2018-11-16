@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login
@@ -6,6 +7,9 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from config import config
 from apps.accounts.models import Account
 from apps.installer.forms import InstallForm
+
+
+logger = logging.getLogger(__name__)
 
 
 class UserIsAnonymousMixin(UserPassesTestMixin):
@@ -36,11 +40,14 @@ class InstallView(UserIsAnonymousMixin, View):
                 new_admin.set_password(request.POST['admin_password'])
                 new_admin.save()
 
-                config.clear_config()
-                configuration = config.read_config()
-                configuration['ctf']['title'] = request.POST['ctf_name']
-                config.update_config(configuration)
-                config.reload_settings()
+                try:
+                    config.clear_config()
+                    configuration = config.read_config()
+                    configuration['ctf']['title'] = request.POST['ctf_name']
+                    config.update_config(configuration)
+                    config.reload_settings()
+                except Exception as exception:
+                    logger.error('Installation failed: {0}'.format(exception))
 
                 new_admin.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, new_admin)
