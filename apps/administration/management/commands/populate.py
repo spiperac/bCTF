@@ -1,5 +1,6 @@
 import string
 import time
+import datetime
 import random
 from django.core.management.base import BaseCommand, CommandError
 from apps.accounts.models import Account
@@ -94,9 +95,11 @@ class Command(BaseCommand):
         for x in range(0, size):
             challenge = random.choice(Challenge.objects.all())
             account = random.choice(Account.objects.all())
+            random_minutes = random.randint(0, 3000)
             Solves.objects.create(
                 challenge=challenge,
-                account=account
+                account=account,
+                created_at=datetime.datetime.now() + datetime.timedelta(minutes=random_minutes)
             )
             time.sleep(1.5)
 

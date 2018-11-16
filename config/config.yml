@@ -3,7 +3,7 @@ ctf:
   logo: null
   start_time: null
   theme: null
-  title: bCTF Demo
+  title: demo
 docker:
   driver: null
   host: null

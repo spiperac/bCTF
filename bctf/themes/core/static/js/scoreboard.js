@@ -132,7 +132,7 @@ function scores_graph() {
 
         }
 
-        var lineChartData = {
+        var chartData = {
             datasets: datasets,
         }
 
@@ -140,12 +140,17 @@ function scores_graph() {
         var ctx = document.getElementById('score-graph-live').getContext('2d');
         var LineChartDemo = new Chart(ctx , {
             type: "scatter",
-            data: lineChartData, 
+            data: chartData, 
+            responsive: true,
+            maintainAspectRatio: true,
+
             options: {
+ 
                 legend: {
+                    position: 'bottom',
                     labels: {
                         fontColor: "#fff",
-                        fontSize: 15
+                        usePointStyle: true,
                     }
                 },
                 title: {
@@ -159,6 +164,7 @@ function scores_graph() {
                         type: 'time',
                         ticks: {
                             fontColor: "#fff",
+                            beginAtZero: false
                         },
                         gridLines: {
                             display:false
@@ -166,7 +172,7 @@ function scores_graph() {
                     }],
                     yAxes: [{
                         ticks: {
-                            fontColor: "#fff", // this here
+                            fontColor: "#fff",
                         },
                         gridLines: {
                             display:false
@@ -175,6 +181,7 @@ function scores_graph() {
                 }
             }
         });
+        
     });
 }
 
