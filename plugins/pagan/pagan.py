@@ -64,13 +64,13 @@ class Avatar():
         filepath = os.path.join(path, "%s.png" % filename)
         # FIXIT: filepath without SUFFIX, print writes false filename
         print ("Saving: %s" % filepath)
-        quality = 75
+        quality = 50
         self.img.save(filepath, 'PNG', optimize=True,quality=quality)
 
         if thumbs:
             for thumb_size in thumbs:
-                size = thumb_size, thumb_size
+                size = (thumb_size, thumb_size)
                 thumb_img = Image.open(filepath)
-                thumb_img.resize(size, Image.ANTIALIAS)
+                new_img = thumb_img.resize(size)
                 thumb_path = "{0}{1}".format(path, original_filename)
-                thumb_img.save("{0}_{1}.png".format(thumb_path, thumb_size), "PNG", optimize=True,quality=quality)
+                new_img.save("{0}_{1}.png".format(thumb_path, thumb_size), "PNG", optimize=True, quality=quality)
