@@ -101,7 +101,24 @@ class Command(BaseCommand):
                 account=account,
                 created_at=datetime.datetime.now() + datetime.timedelta(minutes=random_minutes)
             )
-            time.sleep(1.5)
+
+        top_solvers = []
+        for x in range(0, 15):
+            choice = random.choice(Account.objects.all())
+            if choice in top_solvers:
+                choice = random.choice(Account.objects.all())
+            top_solvers.append(choice)
+
+        for acc in top_solvers:
+            for x in range(0, random.randint(0, 10)):
+                challenge = random.choice(Challenge.objects.all())
+                account = acc
+                random_minutes = random.randint(0, 3000)
+                Solves.objects.create(
+                    challenge=challenge,
+                    account=account,
+                    created_at=datetime.datetime.now() + datetime.timedelta(minutes=random_minutes)
+                )
 
     def handle(self, *args, **options):
         self.create_categories()
