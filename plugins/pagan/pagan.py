@@ -30,8 +30,6 @@ class Avatar():
         else:
             algo = hashfun
 
-        generator.IMAGE_SIZE = (self.img_size, self.img_size)  
-        generator.VIRTUAL_RESOLUTION = (self.img_size/8, self.img_size/8)  
         return generator.generate(inpt, algo, self.img_size)
 
     def show(self):
@@ -66,12 +64,13 @@ class Avatar():
         filepath = os.path.join(path, "%s.png" % filename)
         # FIXIT: filepath without SUFFIX, print writes false filename
         print ("Saving: %s" % filepath)
-        self.img.save(filepath, 'PNG')
+        quality = 75
+        self.img.save(filepath, 'PNG', optimize=True,quality=quality)
 
         if thumbs:
             for thumb_size in thumbs:
                 size = thumb_size, thumb_size
                 thumb_img = Image.open(filepath)
-                thumb_img.thumbnail(size)
+                thumb_img.resize(size, Image.ANTIALIAS)
                 thumb_path = "{0}{1}".format(path, original_filename)
-                thumb_img.save("{0}_{1}.png".format(thumb_path, thumb_size), "PNG")
+                thumb_img.save("{0}_{1}.png".format(thumb_path, thumb_size), "PNG", optimize=True,quality=quality)
