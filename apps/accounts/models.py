@@ -1,7 +1,18 @@
+import pagan
 from hashlib import md5
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
+from django.db.models.signals import post_save
+
+
+def create_pagan(sender, instance, **kwargs):
+    print(instance)
+    img = pagan.Avatar(instance.username, pagan.SHA512)
+    avatar_name = str(instance.pk)
+    avatar_folder = "{0}/avatars/".format(settings.MEDIA_ROOT)
+    img.save(avatar_folder, avatar_name)
 
 
 class Account(AbstractUser):
@@ -40,9 +51,10 @@ class Account(AbstractUser):
     @property
     def get_avatar(self):
         if not self.avatar:
-                email = str(self.email.strip().lower()).encode('utf-8')
-                email_hash = md5(email).hexdigest()
-                url = "//www.gravatar.com/avatar/{0}?s={1}&d=identicon&r=PG"
-                return url.format(email_hash, 35)
+            url = "{0}avatars/{1}.png".format(settings.MEDIA_URL, self.pk)
+            return url
         else:
             return self.avatar.url
+
+
+post_save.connect(create_pagan, sender=Account)
