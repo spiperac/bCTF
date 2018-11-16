@@ -7,10 +7,8 @@
     background-color: #303030; 
 }
 
-#score-graph {
-    height: 450px;
-    display: block;
-    clear: both;
+.navbar {
+    background-color: #222;
 }
 
 #id_search_area {
