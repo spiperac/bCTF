@@ -1,5 +1,6 @@
-from plugins import pagan
 import logging
+from plugins import pagan
+from PIL import Image
 from hashlib import md5
 from django.db import models
 from django.conf import settings
@@ -11,13 +12,15 @@ from django.db.models.signals import post_save
 logger = logging.getLogger(__name__)
 
 
-def create_pagan(sender, instance, **kwargs):
-    avatar_name = str(instance.pk)
-    avatar_folder = "{0}/avatars/{1}/".format(settings.MEDIA_ROOT, instance.pk)
-    sizes = [32, 128, 256]
-    for size in sizes:
-        img = pagan.Avatar(inpt=instance.username, hashfun=pagan.SHA512, img_size=size)
-        img.save(avatar_folder, avatar_name)
+def create_pagan(sender, instance, created, **kwargs):
+    if created:
+        avatar_name = str(instance.pk)
+        avatar_folder = "{0}/avatars/{1}/".format(settings.MEDIA_ROOT, instance.pk)
+        img = pagan.Avatar(inpt=instance.username, hashfun=pagan.SHA512)
+        thumbs = [50, 256]
+        img.save(thumbs=thumbs, path=avatar_folder, filename=avatar_name)
+
+        
 
 
 class Account(AbstractUser):
@@ -56,7 +59,7 @@ class Account(AbstractUser):
     @property
     def get_avatar(self):
         if not self.avatar:
-            url = "{0}avatars/{1}.png".format(settings.MEDIA_URL, self.pk)
+            url = "{0}avatars/{1}/{1}_50.png".format(settings.MEDIA_URL, self.pk)
             return url
         else:
             return self.avatar.url

@@ -273,6 +273,7 @@ def generate(str, alg, img_size):
     """Generates an PIL image avatar based on the given
     input String. Acts as the main accessor to pagan."""
     IMAGE_SIZE = (img_size, img_size)
+    VIRTUAL_RESOLUTION = (img_size/8, img_size/8) 
     img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
     hashcode = hash_input(str, alg)
     pixelmap = setup_pixelmap(hashcode)
