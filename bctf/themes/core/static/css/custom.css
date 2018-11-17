@@ -52,3 +52,12 @@ hr {
     color: black;
     background-color: black;
 }
+
+.challenge-title {
+    padding-top: 10px;
+    color: greenyellow;
+}
+
+.challenge-category {
+    color: greenyellow;
+}
