@@ -29,23 +29,36 @@
 <div class="content">
     <div class="row">
         <div class="col-md-6 col-sm-12">
-
             <div class="card">
-                <div class="card-body">
-                    <img src="{{ object.get_avatar_big }}" width="256" height="256" class="img-fluid">
+                <div class="row no-gutters">
+                    <div class="col-auto">
+                        <img src="{{ object.get_avatar_medium }}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col">
+                        <div class="card-block px-2">
+                            <h4 class="card-title">{{object.username}}</h4>
+                            <p class="card-text">Currently at <b style="color:whitesmoke">{{object.rank|to_word}}</b> place!</p>
+                            <h4>Points: <span class="badge badge-dark">{{object.points}} pts</span></h4>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    Points: {{object.points}}
+                <div class="card-footer w-100 text-muted">
+                    Footer stating cats are CUTE little animals
                 </div>
             </div>
-            <div style="height: 300px">
-                <canvas id="id_solved_chart" width="300px"></canvas>
-            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
             <div style="height: 300px">
                 <canvas id="id_solved_line_chart"></canvas>
             </div>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div style="height: 300px">
+                <canvas id="id_solved_chart" width="300px"></canvas>
+            </div>
+        </div>
         <div class="col-md-6 col-sm-12">
             <h3>History</h3>
             <hr />

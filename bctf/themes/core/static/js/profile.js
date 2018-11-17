@@ -35,19 +35,10 @@ function solvedChart(ctx, data) {
 
 }  
 
-function solvedLineChart(ctx, dataset) {
+function solvedLineChart(ctx, dataset, team_color) {
 
     datasets = []
-    datasets.push($.parseJSON(JSON.stringify(dataset))),
-    options = {
-        maintainAspectRatio : false,
-        title: {
-            display: true,
-            text: 'Solved',
-            fontSize: 30,
-            fontColor: 'white'
-        },
-    }
+    datasets.push($.parseJSON(JSON.stringify(dataset)));
 
     var chartData = {
         datasets: datasets,

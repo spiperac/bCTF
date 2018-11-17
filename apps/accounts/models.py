@@ -70,5 +70,13 @@ class Account(AbstractUser):
         else:
             return self.avatar.url
 
+    @property
+    def get_avatar_medium(self):
+        if not self.avatar:
+            url = "{0}avatars/{1}/{1}_128.png".format(settings.MEDIA_URL, self.pk)
+            return url
+        else:
+            return self.avatar.url
+
 
 post_save.connect(create_pagan, sender=Account)

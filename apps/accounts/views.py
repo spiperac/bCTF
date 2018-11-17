@@ -44,6 +44,8 @@ class ProfileView(DetailView):
         dataset["label"] = self.object.username
         dataset["showLine"] = "true"
         dataset["data"] = axes_data
+        dataset["backgroundColor"] = "greenyellow"
+        dataset["borderColor"] = "greenyellow"
         dataset["showLine"] = "true"
         dataset["pointRadius"] = 5
         dataset["pointHoverRadius"] = 5
