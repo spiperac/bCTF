@@ -1,3 +1,5 @@
+import json
+from itertools import accumulate
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
@@ -29,9 +31,28 @@ class ProfileView(DetailView):
         first_bloods = FirstBlood.objects.prefetch_related('challenge').filter(account=self.object.pk)
         solves = Solves.objects.prefetch_related('challenge').filter(account=self.object.pk)
 
+        accumulated_scores = list(accumulate(list([x.challenge.points for x in solves])))
+        times = list([x.created_at.timestamp() for x in solves])
+        axes_data = []
+        for time, score in zip(times, accumulated_scores):
+            data = {}
+            data["x"] = time
+            data["y"] = score
+            axes_data.append(data)
+
+        dataset = {}
+        dataset["label"] = self.object.username
+        dataset["showLine"] = "true"
+        dataset["data"] = axes_data
+        dataset["showLine"] = "true"
+        dataset["pointRadius"] = 5
+        dataset["pointHoverRadius"] = 5
+        dataset["fill"] = "false"
+
         context['solved'] = solves if solves else 0
         context['first_bloods'] = first_bloods if first_bloods else 0
         context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]
+        context['solved_dataset'] = json.dumps(dataset)
         return context
 
 

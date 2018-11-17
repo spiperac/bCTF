@@ -130,6 +130,7 @@ function scores_graph() {
 
         $('#loaderScoreboard').hide();
         var ctx = document.getElementById('score-graph-live').getContext('2d');
+        console.log(chartData);
         var LineChartDemo = new Chart(ctx , {
             type: "scatter",
             data: chartData, 

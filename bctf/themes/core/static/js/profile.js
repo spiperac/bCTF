@@ -35,6 +35,65 @@ function solvedChart(ctx, data) {
 
 }  
 
+function solvedLineChart(ctx, dataset) {
+
+    datasets = []
+    datasets.push($.parseJSON(JSON.stringify(dataset))),
+    options = {
+        maintainAspectRatio : false,
+        title: {
+            display: true,
+            text: 'Solved',
+            fontSize: 30,
+            fontColor: 'white'
+        },
+    }
+
+    var chartData = {
+        datasets: datasets,
+    }
+    var solvedLineChart = new Chart(ctx,{
+        type: 'scatter',
+        data: chartData,
+        options: {
+ 
+            legend: {
+                position: 'bottom',
+                labels: {
+                    fontColor: "#fff",
+                    usePointStyle: true,
+                }
+            },
+            title: {
+                display: true,
+                text: 'Top 10 Teams',
+                fontSize: 18,
+                fontColor: '#fff'
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    ticks: {
+                        fontColor: "#fff",
+                        beginAtZero: false
+                    },
+                    gridLines: {
+                        display:false
+                    } 
+                }],
+                yAxes: [{
+                    ticks: {
+                        fontColor: "#fff",
+                    },
+                    gridLines: {
+                        display:false
+                    }   
+                }]
+            }
+        }
+    });
+
+}  
 
 
 function cumulativesum (arr) {
