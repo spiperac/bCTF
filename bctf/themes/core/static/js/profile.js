@@ -34,3 +34,37 @@ function solvedChart(ctx, data) {
     });
 
 }  
+
+
+
+function cumulativesum (arr) {
+    var result = arr.concat();
+    for (var i = 0; i < arr.length; i++){
+        result[i] = arr.slice(0, i + 1).reduce(function(p, i){ return p + i; });
+    }
+    return result
+}
+
+function colorhash(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }
+
+  String.prototype.hashCode = function() {
+    var hash = 0, i, chr, len;
+    if (this.length == 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};

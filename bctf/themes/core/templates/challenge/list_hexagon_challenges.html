@@ -23,7 +23,7 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-8 col-sm-12">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-4">
@@ -100,7 +100,8 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="col-4">
+
+        <div class="col-4 d-none d-md-block">
             <h4><i class="fas fa-tint fa-danger" style="color:red"></i> First Bloods!</h4>
             {% if first_bloods.count == 0 %}
                 <p>No first bloods yet!</p>
@@ -124,7 +125,7 @@
                     </table>
                 </div>
             {% endif %}
-
+            
             <h4><i class="fas fa-crosshairs" style="color:black"></i> Solves stats</h4>
             <div class="table-responsive">
                 <table class="table table-borderless">

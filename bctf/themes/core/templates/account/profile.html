@@ -28,24 +28,22 @@
 </div>
 <div class="content">
     <div class="row">
-        <div class="col-4">
+        <div class="col-md-6 col-sm-12">
 
             <div class="card">
                 <div class="card-body">
-                    <img src="{{ object.get_avatar }}" class="img-fluid">
+                    <img src="{{ object.get_avatar_big }}" width="256" height="256" class="img-fluid">
                 </div>
                 <div class="card-footer">
                     Points: {{object.points}}
                 </div>
             </div>
+            <div style="height: 300px">
+                <canvas id="id_solved_chart" width="300px"></canvas>
+            </div>
+        </div>
 
-        </div>
-        <div class="col-4">
-                <div style="height: 300px">
-                    <canvas id="id_solved_chart" width="300px"></canvas>
-                </div>
-        </div>
-        <div class="col-4">
+        <div class="col-md-6 col-sm-12">
             <h3>History</h3>
             <hr />
             <h6>Solved</h6>
@@ -54,7 +52,7 @@
             {% else %}
             <ul>
                 {% for solve in solved %}
-                    <li>{{solve.challenge.name}}</li>
+                    <li>{{solve.challenge.name}} - ({{solve.challenge.category}} - {{solve.challenge.points}})</li>
                 {% endfor %}
             </ul>
             {% endif %}
@@ -73,7 +71,9 @@
     </div>
 </div>
 
+{% endblock %}
 
+{% block custom_javascript %}
 <script>
 $('document').ready(function() {
         var ctx = document.getElementById('id_solved_chart').getContext('2d');

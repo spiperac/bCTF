@@ -31,15 +31,14 @@ def top_scores(request):
         response = {}
         response['ranks'] = {}
         
-        if Solves.objects.all().count() > 0:
-            for (rank, account) in enumerate(sorted(Account.objects.prefetch_related('solves_set'), key=lambda t: -t.points)[:10], start=1):
+        if Solves.objects.count() > 0:
+            for (rank, account) in enumerate(Account.objects.prefetch_related('solves_set').order_by('-points')[:10], start=1):
                 team = {}
                 team['id'] = account.pk
                 team['name'] = account.username
                 team['solves'] = []
-                solved = account.solves_set.all()
 
-                for solve in solved:
+                for solve in account.solves_set.select_related('challenge').iterator():
                     chall = {}
                     chall['chal'] = solve.challenge_id
                     chall['team'] = account.pk
