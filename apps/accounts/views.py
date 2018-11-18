@@ -3,6 +3,7 @@ from itertools import accumulate
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.db.models import Sum, Count
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, DetailView, UpdateView
 from django.contrib.auth.hashers import check_password
@@ -29,8 +30,8 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         first_bloods = FirstBlood.objects.prefetch_related('challenge').filter(account=self.object.pk)
-        solves = Solves.objects.prefetch_related('challenge').filter(account=self.object.pk)
-
+        solves = Solves.objects.prefetch_related('challenge').prefetch_related('challenge__category').filter(account=self.object.pk)
+        total_points_available = Challenge.objects.aggregate(Sum('points'))['points__sum']
         accumulated_scores = list(accumulate(list([x.challenge.points for x in solves])))
         times = list([x.created_at.timestamp() for x in solves])
         axes_data = []
@@ -52,6 +53,7 @@ class ProfileView(DetailView):
         dataset["fill"] = "false"
 
         context['solved'] = solves if solves else 0
+        context['progress'] = str(round((self.object.points * 100) / total_points_available if self.object.points or total_points_available else 0, 2))
         context['first_bloods'] = first_bloods if first_bloods else 0
         context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]
         context['solved_dataset'] = json.dumps(dataset)

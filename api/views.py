@@ -61,6 +61,7 @@ def events(request):
         for event in latest_events:
             new_event = {}
             new_event['team'] = event.account.username
+            new_event['team_id'] = event.account_id
             new_event['challenge'] = event.challenge.name
             new_event['time'] = event.created_at.strftime("%Y-%m-%d %H:%M")
             response['events'].append(new_event)

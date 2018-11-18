@@ -32,7 +32,7 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}</td>
+                <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
                         <img src="${element.avatar}" height="50px" width="50px" class="img-fluid">
@@ -51,7 +51,7 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}</td>
+                <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
                         <img src="${element.avatar}" height="50px" width="50px" class="img-fluid">

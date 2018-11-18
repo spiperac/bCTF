@@ -38,12 +38,18 @@
                         <div class="card-block px-2">
                             <h4 class="card-title">{{object.username}}</h4>
                             <p class="card-text">Currently at <b style="color:whitesmoke">{{object.rank|to_word}}</b> place!</p>
-                            <h4>Points: <span class="badge badge-dark">{{object.points}} pts</span></h4>
+                            <h4>Points: <span class="badge badge-dark"><b>{{object.points}} pts</b></span></h4>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer w-100 text-muted">
-                    Footer stating cats are CUTE little animals
+                        <h6>Progress</h6>
+
+                        <div class="progress bg-default" style="height: 20px;">
+                            <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{progress}}%;" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100">
+                                <span><b>{{progress}}%</b></span>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
