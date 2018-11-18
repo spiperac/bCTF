@@ -24,7 +24,7 @@ function clean_table() {
 
 function feed_table(element) {
     if (element.country) {
-        var show_county = `<img src="${element.country}" alt="None" width="25px" height="15px" />`;
+        var show_county = `<i class="flag2x ${element.country}"></i>`;
     } else {
         var show_county = ``;
     }

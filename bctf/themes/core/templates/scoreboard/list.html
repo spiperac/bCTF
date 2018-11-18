@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+{% endblock %}
+
 {% block extra_js %}
     <script src="{% static 'js/Chart.min.js' %}"></script>
-    <script src="{% static 'js/scoreboard.js' %}"></script>
-    
+    <script src="{% static 'js/scoreboard.js' %}"></script>    
 {% endblock %}
 
 {% block content %}
