@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     {% load config_extras %}
     {% config as cfg %}
     {% get_pages as pages %}
@@ -11,6 +12,8 @@
     <title>{{cfg.ctf.title}}</title>
 
     {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+
     <!-- CSS files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/challenge.css' %}">
@@ -46,7 +49,7 @@
                 <ul class="navbar-nav navbar-left">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home fa-lg"></i></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">Scoreboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}"><span class="glyphicon glyphicon-screenshot"></span> Challenges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}">Challenges</a></li>
                     {% for page in pages %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
                     {% endfor %}
