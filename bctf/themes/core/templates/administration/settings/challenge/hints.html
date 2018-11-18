@@ -48,7 +48,7 @@ $('document').ready( function() {
     });
 
     $( "#hint-button" ).click(function() {
-        var URL=`{% url 'administration:add-hint' object.pk %}`;
+        var URL=`{% url 'challenge:add-hint' object.pk %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             challenge_id: `{{object.pk}}`,
@@ -68,7 +68,7 @@ $('document').ready( function() {
     });
 
     $(".delete-hint" ).click(function() {
-        var URL=`{% url 'administration:delete-hint' %}`;
+        var URL=`{% url 'challenge:delete-hint' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             hint: $(this).val()
@@ -88,7 +88,7 @@ $('document').ready( function() {
 
     function reloadHints() {
         var modal = $("#hintsModal").modal();
-        var formURL = `challenge/{{challenge.pk}}/hints`
+        var formURL = `/challenges/{{challenge.pk}}/hints`
         $.ajax({
             url: formURL,
             context: document.body

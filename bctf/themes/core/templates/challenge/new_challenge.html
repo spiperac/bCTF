@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<a role="button" class="btn btn-primary" href="{% url 'administration:ctf' %}"> <i class="fas fa-arrow-left fa-lg"></i> Back</a>
+<a role="button" class="btn btn-primary" href="{% url 'administration:challenges' %}"> <i class="fas fa-arrow-left fa-lg"></i> Back</a>
 <h1 class="text-center">New Challenge</h1>
 <form method="POST" action="{% url 'challenge:create-challenge' %}" id="new-challenge-from" enctype="multipart/form-data">
     {% csrf_token %}

@@ -53,6 +53,7 @@ class ProfileView(DetailView):
         dataset["fill"] = "false"
 
         context['solved'] = solves if solves else 0
+        context['rank'] = self.object.rank
         context['progress'] = str(round((self.object.points * 100) / total_points_available if self.object.points or total_points_available else 0, 2))
         context['first_bloods'] = first_bloods if first_bloods else 0
         context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]

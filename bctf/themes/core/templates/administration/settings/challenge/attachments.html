@@ -50,7 +50,7 @@ $('document').ready( function() {
     });
 
     $( "#attachment-button" ).click(function() {
-        var URL=`{% url 'administration:add-attachment' object.pk %}`;
+        var URL=`{% url 'challenge:add-attachment' object.pk %}`;
         var file = $("#id_attachment")[0].files
 
         var DATA = new FormData();
@@ -72,7 +72,7 @@ $('document').ready( function() {
     });
 
     $(".delete-attachment" ).click(function() {
-        var URL=`{% url 'administration:delete-attachment' %}`;
+        var URL=`{% url 'challenge:delete-attachment' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             attachment: $(this).val()
@@ -93,7 +93,7 @@ $('document').ready( function() {
     function reloadAttachments() {
         var modal = $('#attachmentsModal').modal();
         var challengeID = `{{challenge.pk}}`;
-        var formURL = `challenge/${challengeID}/attachments`
+        var formURL = `/challenges/${challengeID}/attachments`
         $.ajax({
             url: formURL,
             context: document.body

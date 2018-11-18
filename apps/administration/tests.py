@@ -64,7 +64,7 @@ class AdministrationTest(TestCase):
         """
         client = self.login_as_admin()
 
-        response = client.get(reverse('administration:ctf'))
+        response = client.get(reverse('administration:challenges'))
         self.assertEqual(response.status_code, 200)
 
     # def test_docker_view(self):

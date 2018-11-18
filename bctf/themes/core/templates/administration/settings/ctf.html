@@ -165,7 +165,7 @@ $('document').ready(function() {
 
     $('#categoryModals').on('show.bs.modal', function (event) {
         var modal = $(this)
-        var formURL = `{% url 'administration:add-category' %}`
+        var formURL = `{% url 'challenge:add-category' %}`
         $.ajax({
             url: formURL,
             context: document.body
@@ -177,7 +177,7 @@ $('document').ready(function() {
     $('#categoryUpdateModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var categoryID = $(event.relatedTarget).data('category-id');
-        var formURL = `category/${categoryID}/update`
+        var formURL = `/challenges/category/${categoryID}/update`
         $.ajax({
             url: formURL,
             context: document.body
@@ -189,18 +189,7 @@ $('document').ready(function() {
     $('#categoryDeleteModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var categoryID = $(event.relatedTarget).data('category-id');
-        var formURL = `category/${categoryID}/delete`
-        $.ajax({
-            url: formURL,
-            context: document.body
-        }).done(function(response) {
-            modal.html(response);
-        });
-    })
-
-    $('#challengeAddModal').on('show.bs.modal', function (event) {
-        var modal = $(this)
-        var formURL = `{% url 'administration:add-challenge' %}`
+        var formURL = `/challenges/category/${categoryID}/delete`
         $.ajax({
             url: formURL,
             context: document.body
@@ -212,7 +201,7 @@ $('document').ready(function() {
     $('#challengeUpdateModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
-        var formURL = `challenge/${challengeID}/update`
+        var formURL = `/challenges/${challengeID}/update`
         $.ajax({
             url: formURL,
             context: document.body
@@ -224,7 +213,7 @@ $('document').ready(function() {
     $('#challengeDeleteModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
-        var formURL = `challenge/${challengeID}/delete`
+        var formURL = `/challenges/${challengeID}/delete`
         $.ajax({
             url: formURL,
             context: document.body
@@ -236,7 +225,7 @@ $('document').ready(function() {
     $('#flagsModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
-        var formURL = `challenge/${challengeID}/flags`
+        var formURL = `/challenges/${challengeID}/flags`
         $.ajax({
             url: formURL,
             context: document.body
@@ -249,7 +238,7 @@ $('document').ready(function() {
     $('#hintsModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
-        var formURL = `challenge/${challengeID}/hints`
+        var formURL = `/challenges/${challengeID}/hints`
         $.ajax({
             url: formURL,
             context: document.body
@@ -261,7 +250,7 @@ $('document').ready(function() {
     $('#attachmentsModal').on('show.bs.modal', function (event) {
         var modal = $(this)
         var challengeID = $(event.relatedTarget).data('challenge-id');
-        var formURL = `challenge/${challengeID}/attachments`
+        var formURL = `/challenges/${challengeID}/attachments`
         $.ajax({
             url: formURL,
             context: document.body
@@ -272,7 +261,7 @@ $('document').ready(function() {
 
     $('.toggle-challenge').on('click', function() {
         var challengeID = $(this).data('challenge-id');
-        var URL=`{% url 'administration:toggle-visibility-challenge' %}`;
+        var URL=`{% url 'challenge:toggle-visibility-challenge' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             challenge_id: challengeID

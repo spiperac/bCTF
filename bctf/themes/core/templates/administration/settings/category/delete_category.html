@@ -7,7 +7,7 @@
             </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{% url 'administration:delete-category' object.pk %}" id="delete-category-from">
+                <form method="POST" action="{% url 'challenge:delete-category' object.pk %}" id="delete-category-from">
                     {% csrf_token %}
                     <p>Are you sure you want to delete <b>{{object.name}}</b> category?</p>
                     <button id="submit" type="submit" class="btn btn-primary">Delete</button>

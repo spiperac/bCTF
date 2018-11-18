@@ -9,7 +9,7 @@
         </button>
         </div>
         <div class="modal-body">
-            <form method="POST" action="{% url 'administration:add-category' %}" id="new-category-from">
+            <form method="POST" action="{% url 'challenge:add-category' %}" id="new-category-from">
                 {% csrf_token %}
                 {{form|crispy}}
                 <button id="submit" type="submit" class="btn btn-primary">Create</button>

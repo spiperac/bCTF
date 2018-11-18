@@ -7,10 +7,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView, FormView, View
+from django.views.generic import TemplateView, ListView, FormView, View, UpdateView, DeleteView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.challenges.models import Challenge, Category, Solves, FirstBlood, BadSubmission, Flag, Attachment
-from apps.challenges.forms import SubmitFlagForm, NewChallengeForm
+from apps.challenges.forms import SubmitFlagForm, NewChallengeForm, FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
 from config.config import read_config
 
 
@@ -90,7 +90,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
 class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMixin, FormView):
     form_class = NewChallengeForm
     template_name = 'challenge/new_challenge.html'
-    success_url = reverse_lazy('administration:ctf')
+    success_url = reverse_lazy('administration:challenges')
     success_message = "Challenge %(name)s was created successfully"
 
     def get_context_data(self, **kwargs):
@@ -127,3 +127,178 @@ class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMi
 
         new_flag.save()
         return super(CreateChallengeView, self).form_valid(form)
+
+
+class UpdateChallengeView(UserIsAdminMixin, UpdateView):
+    model = Challenge
+    fields = '__all__'
+    template_name = 'administration/settings/challenge/update_challenge.html'
+    success_url = reverse_lazy('administration:challenges')
+
+
+class DeleteChallengeView(UserIsAdminMixin, DeleteView):
+    model = Challenge
+    template_name = 'administration/settings/challenge/delete_challenge.html'
+    success_url = reverse_lazy('administration:challenges')
+
+
+class ToggleChallengeVisibility(UserIsAdminMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        challenge_id = request.POST.get('challenge_id')
+        if challenge_id is None:
+            return HttpResponse(status=400)
+        else:
+            challenge = Challenge.objects.get(pk=challenge_id)
+            if challenge.visible:
+                challenge.visible = False
+            else:
+                challenge.visible = True
+            challenge.save()
+            return HttpResponse(status=204)
+
+
+class AddCategoryView(UserIsAdminMixin, CreateView):
+    model = Category
+    fields = '__all__'
+    template_name = 'administration/settings/category/add_category.html'
+    success_url = reverse_lazy('administration:challenges')
+
+
+class UpdateCategoryView(UserIsAdminMixin, UpdateView):
+    model = Category
+    fields = '__all__'
+    template_name = 'administration/settings/category/update_category.html'
+    success_url = reverse_lazy('administration:challenges')
+
+
+class DeleteCategoryView(UserIsAdminMixin, DeleteView):
+    model = Category
+    template_name = 'administration/settings/category/delete_category.html'
+    success_url = reverse_lazy('administration:challenges')
+
+
+class FlagsView(UserIsAdminMixin, DetailView):
+    model = Challenge
+    template_name = 'administration/settings/challenge/flags.html'
+
+
+class FlagAddView(UserIsAdminMixin, View):
+    form_class = FlagAddForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            challenge_id = form.cleaned_data['challenge_id']
+            flag = form.cleaned_data['flag']
+            challenge = Challenge.objects.get(pk=challenge_id)
+
+            new_flag = Flag.objects.create(
+                challenge=challenge,
+                text=flag
+            )
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+
+
+class FlagDeleteView(UserIsAdminMixin, View):
+    form_class = FlagDeleteForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            flag = form.cleaned_data['flag']
+            flag = Flag.objects.get(
+                pk=flag
+            )
+            flag.delete()
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+
+
+class HintsView(UserIsAdminMixin, DetailView):
+    model = Challenge
+    template_name = 'administration/settings/challenge/hints.html'
+
+
+class HintAddView(UserIsAdminMixin, View):
+    form_class = HintAddForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            challenge_id = form.cleaned_data['challenge_id']
+            hint = form.cleaned_data['hint']
+            challenge = Challenge.objects.get(pk=challenge_id)
+
+            new_hint = Hint.objects.create(
+                challenge=challenge,
+                text=hint
+            )
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+
+
+class HintDeleteView(UserIsAdminMixin, View):
+    form_class = HintDeleteForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            hint = form.cleaned_data['hint']
+            hint = Hint.objects.get(
+                pk=hint
+            )
+            hint.delete()
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+
+
+class AttachmentsView(UserIsAdminMixin, DetailView):
+    model = Challenge
+    template_name = 'administration/settings/challenge/attachments.html'
+
+
+class AttachmentAddView(UserIsAdminMixin, View):
+    form_class = AttachmentAddForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            challenge_id = form.cleaned_data['challenge_id']
+            attachment = form.cleaned_data['data']
+            challenge = Challenge.objects.get(pk=challenge_id)
+
+            new_attachment = Attachment.objects.create(
+                challenge=challenge,
+                data=attachment
+            )
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)
+
+
+class AttachmentDeleteView(UserIsAdminMixin, View):
+    form_class = AttachmentDeleteForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            attachment = form.cleaned_data['attachment']
+            attachment = Attachment.objects.get(
+                pk=attachment
+            )
+            attachment.delete()
+
+            return HttpResponse(status=204)
+        else:
+            return HttpResponse(status=400)

@@ -49,7 +49,7 @@ $('document').ready( function() {
     });
 
     $( "#flag-button" ).click(function() {
-        var URL=`{% url 'administration:add-flag' object.pk %}`;
+        var URL=`{% url 'challenge:add-flag' object.pk %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             challenge_id: `{{object.pk}}`,
@@ -69,7 +69,7 @@ $('document').ready( function() {
     });
 
     $(".delete-flag" ).click(function() {
-        var URL=`{% url 'administration:delete-flag' %}`;
+        var URL=`{% url 'challenge:delete-flag' %}`;
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             flag: $(this).val()
@@ -90,7 +90,7 @@ $('document').ready( function() {
     function reloadFlags() {
         var modal = $('#flagsModal').modal();
         var challengeID = `{{challenge.pk}}`;
-        var formURL = `challenge/${challengeID}/flags`
+        var formURL = `/challenges/${challengeID}/flags`
         $.ajax({
             url: formURL,
             context: document.body

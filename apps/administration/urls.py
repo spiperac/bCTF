@@ -1,9 +1,7 @@
 from django.urls import path
 
-from apps.administration.views import IndexView, InformationsView, CTFView, AddChallengeView, UpdateChallengeView, DeleteChallengeView, \
-    AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
-    HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-    AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, ToggleChallengeVisibility, \
+from apps.administration.views import IndexView, InformationsView, CTFView, \
+    AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, \
     DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView, \
     NewListView, NewsCreateView, NewsUpdateView, NewsDeleteView
 
@@ -13,7 +11,7 @@ urlpatterns = [
     path('informations/', InformationsView.as_view(), name='informations'),
 
     # CTF urls
-    path('ctf/', CTFView.as_view(), name='ctf'),
+    path('challenges/', CTFView.as_view(), name='challenges'),
 
     # General urls
     path('general/', GeneralView.as_view(), name='general'),
@@ -24,32 +22,6 @@ urlpatterns = [
     path('news/add', NewsCreateView.as_view(), name="add-news"),
     path('news/<int:pk>/update', NewsUpdateView.as_view(), name="update-news"),
     path('news/<int:pk>/delete', NewsDeleteView.as_view(), name="delete-news"),
-
-    # Category urls
-    path('ctf/category/add', AddCategoryView.as_view(), name="add-category"),
-    path('ctf/category/<int:pk>/update', UpdateCategoryView.as_view(), name="update-category"),
-    path('ctf/category/<int:pk>/delete', DeleteCategoryView.as_view(), name="delete-category"),
-
-    # Challenge urls
-    path('ctf/challenge/add', AddChallengeView.as_view(), name="add-challenge"),
-    path('ctf/challenge/togglevisibility', ToggleChallengeVisibility.as_view(), name="toggle-visibility-challenge"),
-    path('ctf/challenge/<int:pk>/update', UpdateChallengeView.as_view(), name="update-challenge"),
-    path('ctf/challenge/<int:pk>/delete', DeleteChallengeView.as_view(), name="delete-challenge"),
-
-    # Flag urls
-    path('ctf/challenge/<int:pk>/flags', FlagsView.as_view(), name="flags"),
-    path('ctf/challenge/<int:pk>/flags/add', FlagAddView.as_view(), name="add-flag"),
-    path('ctf/flags/delete', FlagDeleteView.as_view(), name="delete-flag"),
-
-    # Hint urls
-    path('ctf/challenge/<int:pk>/hints', HintsView.as_view(), name="hints"),
-    path('ctf/challenge/<int:pk>/hints/add', HintAddView.as_view(), name="add-hint"),
-    path('ctf/hints/delete', HintDeleteView.as_view(), name="delete-hint"),
-
-    # Attachments urls
-    path('ctf/challenge/<int:pk>/attachments', AttachmentsView.as_view(), name="attachments"),
-    path('ctf/challenge/<int:pk>/attachments/add', AttachmentAddView.as_view(), name="add-attachment"),
-    path('ctf/attachments/delete', AttachmentDeleteView.as_view(), name="delete-attachment"),
 
     # Account urls
     path('accounts/', AccountsView.as_view(), name='list-accounts'),
