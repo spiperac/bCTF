@@ -2,6 +2,20 @@
 {% load static %}
 
 {% block content %}
+<nav class="navbar navbar-expand-md navbar-dark" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div id="main-navbar" class="navbar-collapse collapse"></div>
+        <ul class="navbar-nav navbar-left">
+            <li class="nav-item"><a class="nav-link"  href="{% url 'administration:informations'%}">Informations</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'administration:general'%}" >General</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'pages:list-pages' %}">Pages</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'administration:news' %}">News</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'administration:ctf' %}">CTF</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'administration:list-accounts' %}">Accounts</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'administration:docker' %}">Docker</a></li>
+        </ul>
+    </nav>
+</nav>
 <div class="jumbotron jt-scores">
     <div class="row tall-row text-center">
         <div class="col-lg-12">
@@ -9,27 +23,16 @@
             <hr>
         </div>
     </div>
+</div>
     <div class="content">
         <div class="row">
-            <div class="col-2" style="border-right:2em blue">
-                <div class="list-group">
-                        <a href="{% url 'administration:informations' %}" class="list-group-item list-group-item-action active">Informations</a>
-                        <a href="{% url 'administration:general' %}" class="list-group-item list-group-item-action">General</a>
-                        <a href="{% url 'pages:list-pages' %}" class="list-group-item list-group-item-action">Pages</a>
-                        <a href="{% url 'administration:news' %}" class="list-group-item list-group-item-action">News</a>
-                        <a href="{% url 'administration:ctf' %}" class="list-group-item list-group-item-action">CTF</a>
-                        <a href="{% url 'administration:list-accounts' %}" class="list-group-item list-group-item-action">Accounts</a>
-                        <a href="{% url 'administration:docker' %}" class="list-group-item list-group-item-action">Docker</a>
-                        </div>
-            </div>
-            <div class="col-10">
+            <div class="col-lg-12">
                 {% block settings %}
 
                 {% endblock %}
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 

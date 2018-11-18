@@ -35,7 +35,7 @@ function feed_table(element) {
                 <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50px" width="50px" class="img-fluid">
+                        <img src="${element.avatar}" height="50" width="50" class="img-fluid">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
                         <a href="/accounts/profile/${element.id}">${element.name}</a> <span class="badge badge-secondary"><i class="fas fa-crown" style="color:gold"></i></span>
@@ -54,7 +54,7 @@ function feed_table(element) {
                 <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50px" width="50px" class="img-fluid">
+                        <img src="${element.avatar}" height="50" width="50" class="img-fluid">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
                         <a href="/accounts/profile/${element.id}">${element.name}</a>

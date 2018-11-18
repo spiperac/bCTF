@@ -2,13 +2,15 @@ import json
 import time
 from django.shortcuts import render
 from django.db.models import Count
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from apps.challenges.models import Challenge, Category, Solves, FirstBlood, BadSubmission
-from apps.challenges.forms import SubmitFlagForm
+from apps.challenges.models import Challenge, Category, Solves, FirstBlood, BadSubmission, Flag, Attachment
+from apps.challenges.forms import SubmitFlagForm, NewChallengeForm
 from config.config import read_config
 
 
@@ -78,3 +80,45 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                 return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
             return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
+
+
+class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, FormView):
+    form_class = NewChallengeForm
+    template_name = 'challenge/new_challenge.html'
+    success_url = reverse_lazy('administration:ctf')
+    success_message = "Challenge %(name)s was created successfully"
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateChallengeView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+    def form_valid(self, form):
+        category = form.cleaned_data['category']
+        flag = form.cleaned_data['flag']
+
+        new_challenge = Challenge(
+            category=category,
+            name=form.cleaned_data['name'],
+            description=form.cleaned_data['description'],
+            points=form.cleaned_data['points'],
+            visible=True
+        )
+
+        new_challenge.save()
+        new_flag = Flag(
+            challenge=new_challenge,
+            text=form.cleaned_data['flag']
+        )
+
+        if self.request.FILES:
+            files = self.request.FILES.getlist('attachments')
+            if files:
+                for f in files:
+                    new_attachment = Attachment.objects.create(
+                        challenge=new_challenge,
+                        data=f
+                    )
+
+        new_flag.save()
+        return super(CreateChallengeView, self).form_valid(form)

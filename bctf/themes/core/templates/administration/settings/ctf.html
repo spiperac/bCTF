@@ -6,8 +6,9 @@
 {% endblock %}
 
 {% block settings %}
+
 <div class="row">
-    <div class="col-4">
+    <div class="col-md-4 col-sm-12">
         <h5>Categories</h5>
         <a  role="button" 
             class="btn btn-info" 
@@ -36,14 +37,11 @@
         </table>
 
     </div>
-    <div class="col-8">
+    <div class="col-md-8 col-sm-12">
         <h5>Challenges</h5>
         <a role="button" 
             class="btn btn-info" 
-            href="#challengeAddModal"
-            data-toggle="modal"
-            data-target="#challengeAddModal"
-            >
+            href="{% url 'challenge:create-challenge' %}">
             <i class="fas fa-plus"></i>Add Challenge
         </a>
 
@@ -52,6 +50,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Category</th>
+                    <th>Points</th>
                     <th>Visible?</th>
                     <th>Actions</th>
                 </tr>
@@ -61,6 +60,7 @@
                 <tr>
                     <td style="color:#b5e853"><b>{{challenge.name}}</b></td>
                     <td>{{challenge.category}}</td>
+                    <td>{{challenge.points}}</td>
                     <td>
                         {% if challenge.visible %}
                             <button class="btn btn-success toggle-challenge" data-challenge-id="{{challenge.pk}}">Visible</button>

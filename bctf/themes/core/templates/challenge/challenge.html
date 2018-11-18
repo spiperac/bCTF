@@ -33,9 +33,9 @@
                     <h3 class="challenge-title text-center">
                         {{challenge.name}}
                     </h3>
-                    <pre class="challenge-description">
-{{challenge.description}}
-                    </pre>
+                    <p class="challenge-description">
+                        {{challenge.description}}
+                    </p>
                     <div class="form-group">
                         <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                             {% csrf_token %}
