@@ -57,7 +57,7 @@ function solvedLineChart(ctx, dataset, team_color) {
             },
             title: {
                 display: true,
-                text: 'Top 10 Teams',
+                text: 'Progress chart',
                 fontSize: 18,
                 fontColor: '#fff'
             },
