@@ -1,9 +1,7 @@
 import yaml
 import os
-from django.core.files import File
-from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
-from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
+from apps.challenges.models import Attachment, Category, Challenge, Flag
 
 
 class Task:
@@ -41,7 +39,7 @@ class Task:
                 fs = FileSystemStorage()
                 file_obj = open(attachment, 'rb')
                 filename = fs.save("{0}".format(file_obj.name), file_obj)
-                uploaded_file_url = fs.url(filename)
+                fs.url(filename)
 
                 new_attachment = Attachment.objects.create(
                     challenge=challenge_obj,

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Sum, Count
-from django.views.generic import TemplateView, ListView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, View
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, BadSubmission

@@ -1,14 +1,11 @@
-import json
 import time
 
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, TemplateView, UpdateView, View)
 
@@ -80,12 +77,12 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
         if Solves.objects.filter(challenge=challenge, account=self.request.user).count() == 0:
             if flag in challenge.flag_set.all().values_list('text', flat=True):
                 if Solves.objects.filter(challenge=challenge).count() == 0:
-                    new_first_blood = FirstBlood.objects.create(
+                    FirstBlood.objects.create(
                         challenge=challenge,
                         account=self.request.user,
                     )
 
-                new_solve = Solves.objects.create(
+                Solves.objects.create(
                     challenge=challenge,
                     account=self.request.user,
                 )
@@ -115,7 +112,6 @@ class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMi
 
     def form_valid(self, form):
         category = form.cleaned_data['category']
-        flag = form.cleaned_data['flag']
 
         new_challenge = Challenge(
             category=category,
@@ -135,7 +131,7 @@ class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMi
             files = self.request.FILES.getlist('attachments')
             if files:
                 for f in files:
-                    new_attachment = Attachment.objects.create(
+                    Attachment.objects.create(
                         challenge=new_challenge,
                         data=f
                     )
@@ -208,7 +204,7 @@ class FlagAddView(UserIsAdminMixin, View):
             flag = form.cleaned_data['flag']
             challenge = Challenge.objects.get(pk=challenge_id)
 
-            new_flag = Flag.objects.create(
+            Flag.objects.create(
                 challenge=challenge,
                 text=flag
             )
@@ -250,7 +246,7 @@ class HintAddView(UserIsAdminMixin, View):
             hint = form.cleaned_data['hint']
             challenge = Challenge.objects.get(pk=challenge_id)
 
-            new_hint = Hint.objects.create(
+            Hint.objects.create(
                 challenge=challenge,
                 text=hint
             )
@@ -292,7 +288,7 @@ class AttachmentAddView(UserIsAdminMixin, View):
             attachment = form.cleaned_data['data']
             challenge = Challenge.objects.get(pk=challenge_id)
 
-            new_attachment = Attachment.objects.create(
+            Attachment.objects.create(
                 challenge=challenge,
                 data=attachment
             )

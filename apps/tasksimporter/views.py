@@ -1,7 +1,4 @@
 import zipfile
-import os
-import json
-import yaml
 from django.shortcuts import render
 from django.conf import settings
 from django.views.generic import View
@@ -23,7 +20,7 @@ class ImportTasksView(View):
             post_file = request.FILES['zip_file']
             fs = FileSystemStorage(location=settings.ZIP_STORAGE_ROOT)
             filename = fs.save("{0}/{1}".format(settings.ZIP_STORAGE_ROOT, post_file.name), post_file)
-            uploaded_file_url = fs.url(filename)
+            fs.url(filename)
 
             # Unziping file
             directory_extract = "{0}/{1}".format(settings.ZIP_STORAGE_ROOT, "tasks")

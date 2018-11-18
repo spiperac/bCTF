@@ -1,10 +1,9 @@
 import string
-import time
 import datetime
 import random
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from apps.accounts.models import Account
-from apps.challenges.models import Category, Challenge, Flag, Solves
+from apps.challenges.models import Category, Challenge, Solves
 
 
 categories_list = [

@@ -1,5 +1,5 @@
 import random
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from apps.accounts.models import Account
 from django_countries import countries
 

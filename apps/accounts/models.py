@@ -1,7 +1,5 @@
 import logging
 from plugins import pagan
-from PIL import Image
-from hashlib import md5
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser

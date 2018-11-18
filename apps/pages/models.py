@@ -1,5 +1,4 @@
 from django.db import models
-from django.template.defaultfilters import slugify
 
 
 class Page(models.Model):

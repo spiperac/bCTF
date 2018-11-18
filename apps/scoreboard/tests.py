@@ -1,6 +1,5 @@
 import random
 import string
-import time
 from django.test import TestCase, Client
 from django.urls import reverse
 

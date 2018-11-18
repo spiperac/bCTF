@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from apps.accounts.models import Account
 from django.contrib.auth.hashers import check_password
 
