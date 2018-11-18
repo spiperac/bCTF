@@ -1,16 +1,24 @@
 import json
 import time
-from django.shortcuts import render
-from django.db.models import Count
+
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views.generic import TemplateView, ListView, FormView, View, UpdateView, DeleteView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from apps.challenges.models import Challenge, Category, Solves, FirstBlood, BadSubmission, Flag, Attachment
-from apps.challenges.forms import SubmitFlagForm, NewChallengeForm, FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Count
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, TemplateView, UpdateView, View)
+
+from apps.challenges.forms import (AttachmentAddForm, AttachmentDeleteForm,
+                                   FlagAddForm, FlagDeleteForm, HintAddForm,
+                                   HintDeleteForm, NewChallengeForm,
+                                   SubmitFlagForm)
+from apps.challenges.models import (Attachment, BadSubmission, Category,
+                                    Challenge, FirstBlood, Flag, Solves,
+                                    Hint)
 from config.config import read_config
 
 
@@ -31,18 +39,23 @@ class CtfNotEnded(UserPassesTestMixin):
 
 
 class ChallengesListView(LoginRequiredMixin, ListView):
-    queryset = Challenge.objects.prefetch_related('category').prefetch_related('solves_set').all()
+    queryset = Challenge.objects.prefetch_related(
+        'category').prefetch_related('solves_set').all()
     context_object_name = 'challenges'
     template_name = 'challenge/list_hexagon_challenges.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        solves = Solves.objects.prefetch_related('challenge').prefetch_related('account')
+        solves = Solves.objects.prefetch_related(
+            'challenge').prefetch_related('account')
 
         context['categories'] = Category.objects.all()
-        context['solved_by_user'] = solves.values_list('challenge', flat=True).filter(account=self.request.user.pk)
-        context['solves'] = solves.values("challenge__name").annotate(c=Count('challenge')).order_by('-c')
-        context['first_bloods'] = FirstBlood.objects.prefetch_related('account').prefetch_related('challenge')
+        context['solved_by_user'] = solves.values_list(
+            'challenge', flat=True).filter(account=self.request.user.pk)
+        context['solves'] = solves.values("challenge__name").annotate(
+            c=Count('challenge')).order_by('-c')
+        context['first_bloods'] = FirstBlood.objects.prefetch_related(
+            'account').prefetch_related('challenge')
         return context
 
 
@@ -53,8 +66,10 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(SubmitFlagView, self).get_context_data(**kwargs)
         context['challenge'] = Challenge.objects.get(pk=self.kwargs['pk'])
-        context['solvers'] = Solves.objects.filter(challenge=context['challenge'])
-        context['solved_by_user'] = Solves.objects.filter(account=self.request.user.pk).values_list('challenge', flat=True)
+        context['solvers'] = Solves.objects.filter(
+            challenge=context['challenge'])
+        context['solved_by_user'] = Solves.objects.filter(
+            account=self.request.user.pk).values_list('challenge', flat=True)
         return context
 
     def form_valid(self, form):

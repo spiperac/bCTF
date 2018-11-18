@@ -1,9 +1,9 @@
 ctf:
-  end_time: null
+  end_time: '1542577978'
   logo: null
-  start_time: null
+  start_time: '1542577958'
   theme: null
-  title: demo
+  title: Example CTF NEW!
 docker:
   driver: null
   host: null

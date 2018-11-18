@@ -1,9 +1,14 @@
 from django.urls import path
 
-from apps.administration.views import IndexView, InformationsView, CTFView, \
-    AccountsView, UpdateAccountView, DeleteAccountView, ToggleAccountStateView, \
-    DockerView, DockerLogsView, DockerActionsView, DockerImageActionsView, GeneralView, GeneralUpdateView, \
-    NewListView, NewsCreateView, NewsUpdateView, NewsDeleteView
+from apps.administration.views import (AccountsView, CTFView,
+                                       DeleteAccountView, DockerActionsView,
+                                       DockerImageActionsView, DockerLogsView,
+                                       DockerView, GeneralUpdateView,
+                                       GeneralView, IndexView,
+                                       InformationsView, NewListView,
+                                       NewsCreateView, NewsDeleteView,
+                                       NewsUpdateView, ToggleAccountStateView,
+                                       UpdateAccountView)
 
 app_name = 'administration'
 urlpatterns = [
@@ -25,9 +30,12 @@ urlpatterns = [
 
     # Account urls
     path('accounts/', AccountsView.as_view(), name='list-accounts'),
-    path('accounts/<int:pk>/update', UpdateAccountView.as_view(), name="update-account"),
-    path('accounts/<int:pk>/delete', DeleteAccountView.as_view(), name="delete-account"),
-    path('accounts/<int:pk>/toggle', ToggleAccountStateView.as_view(), name="toggle-account"),
+    path('accounts/<int:pk>/update',
+         UpdateAccountView.as_view(), name="update-account"),
+    path('accounts/<int:pk>/delete',
+         DeleteAccountView.as_view(), name="delete-account"),
+    path('accounts/<int:pk>/toggle',
+         ToggleAccountStateView.as_view(), name="toggle-account"),
 
     # Docker urls
     path('docker/', DockerView.as_view(), name='docker'),

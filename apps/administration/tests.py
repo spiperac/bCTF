@@ -95,10 +95,10 @@ class AdministrationTest(TestCase):
 
         self.assertTrue(Challenge.objects.get(pk=challenge.pk).visible)
 
-        response = client.post(reverse('administration:toggle-visibility-challenge'), {'challenge_id': challenge.pk})
+        response = client.post(reverse('challenge:toggle-visibility-challenge'), {'challenge_id': challenge.pk})
         self.assertFalse(Challenge.objects.get(pk=challenge.pk).visible)
 
-        response = client.post(reverse('administration:toggle-visibility-challenge'), {'challenge_id': challenge.pk})
+        response = client.post(reverse('challenge:toggle-visibility-challenge'), {'challenge_id': challenge.pk})
         self.assertTrue(Challenge.objects.get(pk=challenge.pk).visible)
 
     def test_general_change_title(self):
@@ -135,21 +135,21 @@ class AdministrationTest(TestCase):
             text="ctf{simple_flag}"
         )
 
-        response = client.get(reverse('administration:flags', args=[challenge.pk, ]))
+        response = client.get(reverse('challenge:flags', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, flag.text)
 
-        response = client.post(reverse('administration:add-flag', args=[challenge.pk, ]), {'challenge_id': challenge.pk, 'flag': 'ctf{second_flag}'})
+        response = client.post(reverse('challenge:add-flag', args=[challenge.pk, ]), {'challenge_id': challenge.pk, 'flag': 'ctf{second_flag}'})
         self.assertEqual(response.status_code, 204)
 
-        response = client.get(reverse('administration:flags', args=[challenge.pk, ]))
+        response = client.get(reverse('challenge:flags', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'ctf{second_flag}')
 
-        response = client.post(reverse('administration:delete-flag'), {'flag': 2})
+        response = client.post(reverse('challenge:delete-flag'), {'flag': 2})
         self.assertEqual(response.status_code, 204)
 
-        response = client.get(reverse('administration:flags', args=[challenge.pk, ]))
+        response = client.get(reverse('challenge:flags', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'ctf{second_flag}')
 
@@ -182,14 +182,14 @@ class AdministrationTest(TestCase):
             text="This is simple hint!"
         )
 
-        response = client.get(reverse('administration:hints', args=[challenge.pk, ]))
+        response = client.get(reverse('challenge:hints', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, hint.text)
 
-        response = client.post(reverse('administration:add-hint', args=[challenge.pk, ]), {'challenge_id': challenge.pk, 'hint': 'This is second hint!'})
+        response = client.post(reverse('challenge:add-hint', args=[challenge.pk, ]), {'challenge_id': challenge.pk, 'hint': 'This is second hint!'})
         self.assertEqual(response.status_code, 204)
 
-        response = client.get(reverse('administration:hints', args=[challenge.pk, ]))
+        response = client.get(reverse('challenge:hints', args=[challenge.pk, ]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'This is second hint!')
 
@@ -203,7 +203,7 @@ class AdministrationTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "This is simple hint!")
 
-        response = client.post(reverse('administration:delete-hint'), {'hint': 2})
+        response = client.post(reverse('challenge:delete-hint'), {'hint': 2})
         self.assertEqual(response.status_code, 204)
 
         response = client.get(reverse('challenge:flag-submit', args=[challenge.pk]))
@@ -231,18 +231,18 @@ class AdministrationTest(TestCase):
         attachment_file = SimpleUploadedFile('attachment_image.png', attachment.getvalue())
         form_data = {'challenge_id': challenge.pk, 'data': attachment_file}
 
-        response = client.post(reverse('administration:add-attachment', args=[challenge.pk, ]), form_data)
+        response = client.post(reverse('challenge:add-attachment', args=[challenge.pk, ]), form_data)
         self.assertEqual(response.status_code, 204)
 
         attachment_name = Attachment.objects.get(pk=1)
 
-        response = client.get(reverse('administration:attachments', args=[challenge.pk]))
+        response = client.get(reverse('challenge:attachments', args=[challenge.pk]))
         self.assertContains(response, attachment_name.filename())
 
-        response = client.post(reverse('administration:delete-attachment'), {'attachment': 1})
+        response = client.post(reverse('challenge:delete-attachment'), {'attachment': 1})
         self.assertEqual(response.status_code, 204)
 
-        response = client.get(reverse('administration:attachments', args=[challenge.pk]))
+        response = client.get(reverse('challenge:attachments', args=[challenge.pk]))
         self.assertNotContains(response, attachment_name.filename())
 
     def test_ctf_time_setup(self):

@@ -1,10 +1,13 @@
 from django.urls import path
 
-from apps.challenges.views import ChallengesListView, SubmitFlagView, CreateChallengeView, \
-    UpdateChallengeView, DeleteChallengeView, \
-    AddCategoryView, UpdateCategoryView, DeleteCategoryView, FlagsView, FlagAddView, HintsView, \
-    HintAddView, HintDeleteView, FlagDeleteView, AttachmentsView, AttachmentAddView, AttachmentDeleteView, \
-    ToggleChallengeVisibility
+from apps.challenges.views import (AddCategoryView, AttachmentAddView,
+                                   AttachmentDeleteView, AttachmentsView,
+                                   ChallengesListView, CreateChallengeView,
+                                   DeleteCategoryView, DeleteChallengeView,
+                                   FlagAddView, FlagDeleteView, FlagsView,
+                                   HintAddView, HintDeleteView, HintsView,
+                                   SubmitFlagView, ToggleChallengeVisibility,
+                                   UpdateCategoryView, UpdateChallengeView)
 
 app_name = 'challenge'
 urlpatterns = [
