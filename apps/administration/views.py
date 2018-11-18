@@ -1,13 +1,14 @@
 import json
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.conf import settings
 from django.db.models import Count
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
-from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood
+from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment, Solves, FirstBlood, BadSubmission
 from apps.administration.forms import FlagAddForm, HintAddForm, HintDeleteForm, FlagDeleteForm, AttachmentAddForm, AttachmentDeleteForm, \
     DockerActionForm, DockerImageActionForm, ConfigUpdateForm
 from apps.administration.docker_utils import DockerTool
@@ -59,6 +60,8 @@ class InformationsView(UserIsAdminMixin, TemplateView):
         context['chall_stats'] = chall_stats
         context['account_stats'] = account_stats
         context['accounts'] = accounts
+        context['uptime'] = settings.GET_UPTIME()
+        context['bad_submissions'] = BadSubmission.objects.prefetch_related('account').prefetch_related('challenge').all()
         context['challenges'] = Challenge.objects.all()
         return context
 
