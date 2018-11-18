@@ -14,6 +14,11 @@ from apps.challenges.forms import SubmitFlagForm, NewChallengeForm
 from config.config import read_config
 
 
+class UserIsAdminMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
 class CtfNotEnded(UserPassesTestMixin):
     def test_func(self):
         cfg = read_config()
@@ -82,7 +87,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
             return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
 
 
-class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, FormView):
+class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMixin, FormView):
     form_class = NewChallengeForm
     template_name = 'challenge/new_challenge.html'
     success_url = reverse_lazy('administration:ctf')

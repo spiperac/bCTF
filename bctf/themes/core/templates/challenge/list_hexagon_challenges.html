@@ -67,7 +67,7 @@
                     {% if challenge.pk in solved_by_user %}
                         <a value="{{challenge}}"
                         id="challengeBtn"
-                        href="#challengeModals"
+                        href="#{{challenge.name}}"
                         data-toggle="modal"
                         data-target="#challengeModals"
                         data-challenge-id="{{challenge.pk}}"
@@ -78,7 +78,7 @@
                     {% else %}
                         <a value="{{challenge}}" 
                         id="challengeBtn"
-                        href="#challengeModals"
+                        href="#{{challenge.name}}"
                         data-toggle="modal"
                         data-target="#challengeModals"
                         data-challenge-id="{{challenge.pk}}"
@@ -149,9 +149,6 @@
 
 <!-- Modal -->
 <div class="modal inmodal" tabindex="-1" id="challengeModals" role="dialog"  aria-hidden="true">
-    <!-- Hack to close modal from inside another view -->
-    <div class="modal-dialog" role="document">
-    </div>
 </div>
 
 {% endblock %}
@@ -183,7 +180,6 @@
         });
 
         $('#challenge-loader').hide();
-        $('#challenge-table').show();
 
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
