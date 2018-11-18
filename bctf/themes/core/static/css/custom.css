@@ -61,3 +61,19 @@ hr {
 .challenge-category {
     color: greenyellow;
 }
+
+.challenge-table td.category {
+    border-right: 2px solid black;
+    padding-bottom: 20px;
+}
+
+.challenge-table td.challenge {
+    padding-left: 30px;
+    padding-bottom: 20px;
+}
+
+
+.btn-challenge {
+    width: 200px;
+    height: 80px;
+}
