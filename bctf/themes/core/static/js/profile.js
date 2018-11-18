@@ -89,7 +89,7 @@ function solvedLineChart(ctx, dataset, team_color) {
 
 function cumulativesum (arr) {
     var result = arr.concat();
-    for (var i = 0; i < arr.length; i++){
+    for (var i = 0; i < arr.length; i += 1){
         result[i] = arr.slice(0, i + 1).reduce(function(p, i){ return p + i; });
     }
     return result
@@ -97,11 +97,11 @@ function cumulativesum (arr) {
 
 function colorhash(str) {
     var hash = 0;
-    for (var i = 0; i < str.length; i++) {
+    for (var i = 0; i < str.length; i += 1) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     var colour = '#';
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 3; i += 1) {
       var value = (hash >> (i * 8)) & 0xFF;
       colour += ('00' + value.toString(16)).substr(-2);
     }
@@ -110,8 +110,10 @@ function colorhash(str) {
 
   String.prototype.hashCode = function() {
     var hash = 0, i, chr, len;
-    if (this.length == 0) return hash;
-    for (i = 0, len = this.length; i < len; i++) {
+    if (this.length == 0) {
+        return hash;
+    }
+    for (i = 0, len = this.length; i < len; i += 1) {
         chr   = this.charCodeAt(i);
         hash  = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
