@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load config_extras %}
-{% config as cfg %}
 
 {% block extra_js %}
     <script src="{% static 'js/index.js' %}"></script>
@@ -77,8 +76,8 @@
 {% block custom_javascript %}
 <script>
     $('document').ready(function() {
-        var countDownTime = `{{cfg.ctf.end_time}}`;
-        var startingTime = `{{cfg.ctf.start_time}}`;
+        var countDownTime = `{% config 'end_time' %}`;
+        var startingTime = `{% config 'start_time' %}`;
         var now = moment().unix();
         
         if (startingTime == 'None' || countDownTime == 'None') {

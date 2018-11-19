@@ -1,12 +1,12 @@
 from django import template
-from django.conf import settings
+from apps.scoreboard.utils import get_key
 from apps.pages.models import Page
 register = template.Library()
 
 
 @register.simple_tag
-def config():
-    return getattr(settings, "CONFIG_FILE", None)
+def config(key):
+    return get_key(key)
 
 
 @register.simple_tag

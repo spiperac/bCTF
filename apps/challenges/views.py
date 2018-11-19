@@ -16,7 +16,7 @@ from apps.challenges.forms import (AttachmentAddForm, AttachmentDeleteForm,
 from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Solves,
                                     Hint)
-from config.config import read_config
+from apps.scoreboard.utils import get_key
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -26,10 +26,9 @@ class UserIsAdminMixin(UserPassesTestMixin):
 
 class CtfNotEnded(UserPassesTestMixin):
     def test_func(self):
-        cfg = read_config()
-        if cfg['ctf']['start_time'] is None or cfg['ctf']['end_time'] is None:
+        if get_key('start_time') is None or get_key('end_time') is None:
             return True
-        elif int(cfg['ctf']['start_time']) < int(time.time()) < int(cfg['ctf']['end_time']):
+        elif int(get_key('start_time')) < int(time.time()) < int(get_key('end_time')):
             return True
         else:
             return False

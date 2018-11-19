@@ -14,7 +14,7 @@
     <form class="form" id="configuration-form">
         <div class="form-group">
             <label for="id_title">CTF Title/Name</label>
-            <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{config.ctf.title}}" required>
+            <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{title}}" required>
             <small id="titleHelp" class="form-text text-muted">This is title of your CTF.</small>
         </div>
         <div class="form-group">
@@ -52,9 +52,9 @@ $('document').ready(function() {
         $(function () {
             var default_start_timestamp = null
             var default_end_timestamp = null
-            if (`{{config.ctf.start_time}}` != 'None' && `{{config.ctf.end_time}}` != 'None') {
-                var default_start_timestamp = moment.unix(`{{config.ctf.start_time}}`);
-                var default_end_timestamp = moment.unix(`{{config.ctf.end_time}}`);
+            if (`{{start_time}}` != 'None' && `{{end_time}}` != 'None') {
+                var default_start_timestamp = moment.unix(`{{start_time}}`);
+                var default_end_timestamp = moment.unix(`{{end_time}}`);
             }
 
             $('#id_start_time').datetimepicker({

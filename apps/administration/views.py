@@ -13,7 +13,7 @@ from apps.administration.forms import (ConfigUpdateForm, DockerActionForm,
 from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Hint, Solves)
 from apps.scoreboard.models import News
-from config.config import read_config, reload_settings, update_config
+from apps.scoreboard.utils import get_key, set_key
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -189,7 +189,9 @@ class GeneralView(UserIsAdminMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['config'] = read_config()
+        context['title'] = get_key("ctf_name")
+        context['start_time'] = get_key('start_time')
+        context['end_time'] = get_key('end_time')
         return context
 
 
@@ -199,23 +201,21 @@ class GeneralUpdateView(UserIsAdminMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(data=request.POST)
         if form.is_valid():
-            title = form.cleaned_data['title']
-            config = read_config()
+            form.cleaned_data['title']
+            
             if 'start_time' in request.POST:
                 if request.POST['start_time']:
-                    config['ctf']['start_time'] = request.POST['start_time']
+                    set_key("start_time", request.POST['start_time'])
                 else:
-                    config['ctf']['start_time'] = None
+                    set_key("start_time", None)
 
             if 'end_time' in request.POST:
                 if request.POST['end_time']:
-                    config['ctf']['end_time'] = request.POST['end_time']
+                    set_key("end_time", request.POST['end_time'])
                 else:
-                    config['ctf']['end_time'] = None
+                    set_key("end_time", None)
 
-            config['ctf']['title'] = title
-            update_config(config)
-            reload_settings()
+            set_key("ctf_name", request.POST['title'])
 
             return HttpResponse(status=204)
         else:

@@ -4,9 +4,10 @@ from django.http import HttpResponse
 from django.contrib.auth import login
 from django.views.generic import View
 from django.contrib.auth.mixins import UserPassesTestMixin
-from config import config
 from apps.accounts.models import Account
 from apps.installer.forms import InstallForm
+from apps.installer.utils import initialize_keys
+from apps.scoreboard.utils import create_key
 
 
 logger = logging.getLogger(__name__)
@@ -41,11 +42,8 @@ class InstallView(UserIsAnonymousMixin, View):
                 new_admin.save()
 
                 try:
-                    config.clear_config()
-                    configuration = config.read_config()
-                    configuration['ctf']['title'] = request.POST['ctf_name']
-                    config.update_config(configuration)
-                    config.reload_settings()
+                    initialize_keys()
+                    create_key("name", request.POST['ctf_name'])
                 except Exception as exception:
                     logger.error('Installation failed: {0}'.format(exception))
 

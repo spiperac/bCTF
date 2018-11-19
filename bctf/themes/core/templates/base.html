@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% load config_extras %}
-    {% config as cfg %}
     {% get_pages as pages %}
-
-    <title>{{cfg.ctf.title}}</title>
+    {% config 'ctf_name' as ctf_name %}
+    <title>{{ctf_name}}</title>
 
     {% load static %}
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
@@ -32,13 +31,14 @@
             </button>
 
             <div class="navbar-header">
-                {% if cfg.ctf.logo %}
+                {% config 'logo' as site_logo %}
+                {% if site_logo %}
                 <a class="navbar-brand" href="/" aria-label="CTF">
-                    <img src="{{cfg.ctf.logo}}" width="120" height="50">
+                    <img src="{{site_logo}}" width="120" height="50">
                 </a>
                 {% else %}
                 <a class="navbar-brand" href="/" aria-label="bCTF">
-                    {{cfg.ctf.title}}
+                    {{ctf_name}}
                 </a>
                 {% endif %}
 

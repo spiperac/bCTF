@@ -7,11 +7,11 @@
     <meta name="author" content="">
     {% load static %}
     {% load config_extras %}
-    {% config as cfg %}
+    {% config 'logo' as site_logo %}
     <title>bCTF Registration</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/login.css' %}" rel="stylesheet">
@@ -24,8 +24,8 @@
   <body class="text-center">
     <form class="form-signin" method="POST">
       {% csrf_token %}
-      {% if cfg.ctf.logo is not null %}
-        <img class="mb-4" src="{{cfg.ctf.logo}}" alt="CTF">
+      {% if site_logo is not null %}
+        <img class="mb-4" src="{{site_logo}}" alt="CTF">
       {% endif %}
       <h1 class="h3 mb-3 font-weight-normal">Login</h1>
       <label for="username" class="sr-only">Username</label>

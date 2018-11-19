@@ -6,15 +6,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-SITE_INSTALLED = True
-# Load configuration
-config_file_path = os.path.join(BASE_DIR, '../config/config.yml')
-with open(config_file_path) as f:
-    cfg = yaml.load(f)
-CONFIG_FILE = cfg
-
-if cfg['ctf']['title'] == None:
-    SITE_INSTALLED = False
 
 # Application definition
 
