@@ -13,6 +13,7 @@ def config(key):
 def get_pages():
     return Page.objects.all()
 
+
 @register.simple_tag
 def get_theme_template():
     return get_theme()

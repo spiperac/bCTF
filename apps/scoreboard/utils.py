@@ -9,17 +9,20 @@ def get_key(key):
         return conf.value
     else:
         return None
-        
+
+
 def set_key(name, value):
     conf = Configuration.objects.get(key=name)
     conf.value = value
     conf.save()
+
 
 def create_key(key, value):
     Configuration.objects.create(
         key=key,
         value=value
     )
+
 
 def get_themes():
     themes_path = "{0}/themes/".format(settings.BASE_DIR)
@@ -32,8 +35,10 @@ def get_themes():
 
     return themes_list
 
+
 def set_theme(theme):
     set_key("theme", theme)
+
 
 def get_theme():
     theme = get_key("theme")

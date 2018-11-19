@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
 from apps.teams.models import Team
 

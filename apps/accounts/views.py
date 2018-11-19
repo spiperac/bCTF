@@ -27,10 +27,11 @@ class RegistrationView(CreateView):
 
 
 class Login(LoginView):
-    redirect_authenticated_user=True
+    redirect_authenticated_user = True
 
     def get_template_names(self):
         return list([get_theme_url('templates/registration/login.html')])
+
 
 class ProfileView(View):
 
@@ -70,11 +71,9 @@ class ProfileView(View):
         return render(self.request, get_theme_url('templates/account/profile.html'), context=context)
 
 
-        
-
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm
-    
+
     def get_template_names(self):
         return list([get_theme_url('templates/account/update.html')])
 

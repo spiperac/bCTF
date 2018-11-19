@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Sum, Count
-from django.views.generic import TemplateView, View
+from django.views.generic import View
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, BadSubmission
