@@ -10,8 +10,8 @@ def get_key(key):
     else:
         return None
         
-def set_key(key, value):
-    conf = Configuration.objects.get(key=key)
+def set_key(name, value):
+    conf = Configuration.objects.get(key=name)
     conf.value = value
     conf.save()
 
@@ -33,9 +33,7 @@ def get_themes():
     return themes_list
 
 def set_theme(theme):
-    print(theme)
     set_key("theme", theme)
-
 
 def get_theme():
     theme = get_key("theme")
