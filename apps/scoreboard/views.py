@@ -4,10 +4,11 @@ from django.views.generic import TemplateView, View
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, BadSubmission
+from config.themes import get_theme_url
 
 
 class IndexView(TemplateView):
-    template_name = 'templates/index.html'
+    template_name = get_theme_url('templates/index.html')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,4 +34,4 @@ class IndexView(TemplateView):
 class ScoreboardView(View):
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'templates/scoreboard/list.html')
+        return render(self.request, get_theme_url('templates/scoreboard/list.html'))

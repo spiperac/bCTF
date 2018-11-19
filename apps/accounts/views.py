@@ -8,11 +8,12 @@ from django.views.generic import CreateView, DetailView, UpdateView
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
 from apps.challenges.models import Solves, FirstBlood, Challenge
+from config.themes import get_theme_url
 
 
 class RegistrationView(CreateView):
     form_class = AccountCreationForm
-    template_name = 'templates/registration/signup.html'
+    template_name = get_theme_url('templates/registration/signup.html')
     success_url = reverse_lazy('login')
 
     def dispatch(self, request, *args, **kwargs):
@@ -23,7 +24,7 @@ class RegistrationView(CreateView):
 
 class ProfileView(DetailView):
     model = Account
-    template_name = 'templates/account/profile.html'
+    template_name = get_theme_url('templates/account/profile.html')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,7 +62,7 @@ class ProfileView(DetailView):
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm
-    template_name = 'templates/account/update.html'
+    template_name = get_theme_url('templates/account/update.html')
 
     def get_object(self):
         return self.request.user
