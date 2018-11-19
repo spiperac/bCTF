@@ -8,15 +8,17 @@
     {% load config_extras %}
     {% get_pages as pages %}
     {% config 'ctf_name' as ctf_name %}
+    {% config 'theme' as theme %}
     <title>{{ctf_name}}</title>
-
+    
     {% load static %}
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+    <link rel="shortcut icon" type="image/png" href="/static/{{theme}}{% static 'img/favicon.png' %}"/>
 
     <!-- CSS files -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fonts/css/all.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    
+    <link rel="stylesheet" type="text/css" href="/static/{{theme}}{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="/static/{{theme}}{% static 'fonts/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="/static/{{theme}}{% static 'css/custom.css' %}">
     {% block extra_css%}
     
     {% endblock %}
@@ -63,7 +65,7 @@
                     {% if request.user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user fa-lg"></i> ( {{request.user.username|safe}} )
+                                <i class="fas fa-user fa-lg"></i> ( {{request.user.username}} )
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Profile</a>
@@ -106,15 +108,15 @@
         </p>
     </div>
 <!-- JavaScript files -->
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="/static/{{theme}}{% static 'js/moment.min.js' %}"></script>
+<script src="/static/{{theme}}{% static 'js/jquery.min.js' %}"></script>
 
 {% block modals %}
 
 {% endblock %}
 
-<script src="{% static 'js/popper.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="/static/{{theme}}{% static 'js/popper.min.js' %}"></script>
+<script src="/static/{{theme}}{% static 'js/bootstrap.min.js' %}"></script>
 <!-- JavaScript files -->
 {% block extra_js%}
 {% endblock %}

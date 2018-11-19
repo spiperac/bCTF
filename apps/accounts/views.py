@@ -12,7 +12,7 @@ from apps.challenges.models import Solves, FirstBlood, Challenge
 
 class RegistrationView(CreateView):
     form_class = AccountCreationForm
-    template_name = 'registration/signup.html'
+    template_name = 'templates/registration/signup.html'
     success_url = reverse_lazy('login')
 
     def dispatch(self, request, *args, **kwargs):
@@ -23,7 +23,7 @@ class RegistrationView(CreateView):
 
 class ProfileView(DetailView):
     model = Account
-    template_name = 'account/profile.html'
+    template_name = 'templates/account/profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,7 +61,7 @@ class ProfileView(DetailView):
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm
-    template_name = 'account/update.html'
+    template_name = 'templates/account/update.html'
 
     def get_object(self):
         return self.request.user

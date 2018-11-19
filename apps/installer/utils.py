@@ -5,3 +5,4 @@ def initialize_keys():
     create_key("start_time", None)
     create_key("end_time", None)
     create_key("logo", None)
+    create_key("theme", "core")

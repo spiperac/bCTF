@@ -38,7 +38,7 @@ class ChallengesListView(LoginRequiredMixin, ListView):
     queryset = Challenge.objects.prefetch_related(
         'category').prefetch_related('solves_set').all()
     context_object_name = 'challenges'
-    template_name = 'challenge/list_hexagon_challenges.html'
+    template_name = 'templates/challenge/list_hexagon_challenges.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -57,7 +57,7 @@ class ChallengesListView(LoginRequiredMixin, ListView):
 
 class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
     form_class = SubmitFlagForm
-    template_name = 'challenge/challenge.html'
+    template_name = 'templates/challenge/challenge.html'
 
     def get_context_data(self, **kwargs):
         context = super(SubmitFlagView, self).get_context_data(**kwargs)
@@ -86,21 +86,21 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                     account=self.request.user,
                 )
 
-                return render(self.request, 'challenge/flag_success.html', {'challenge': challenge})
+                return render(self.request, 'templates/challenge/flag_success.html', {'challenge': challenge})
             else:
                 new_bad_submission = BadSubmission.objects.create(
                     challenge=challenge,
                     account=self.request.user,
                     flag=flag
                 )
-                return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
+                return render(self.request, 'templates/challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
-            return render(self.request, 'challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
+            return render(self.request, 'templates/challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
 
 
 class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMixin, FormView):
     form_class = NewChallengeForm
-    template_name = 'challenge/new_challenge.html'
+    template_name = 'templates/challenge/new_challenge.html'
     success_url = reverse_lazy('administration:challenges')
     success_message = "Challenge %(name)s was created successfully"
 
@@ -142,13 +142,13 @@ class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMi
 class UpdateChallengeView(UserIsAdminMixin, UpdateView):
     model = Challenge
     fields = '__all__'
-    template_name = 'administration/settings/challenge/update_challenge.html'
+    template_name = 'templates/administration/settings/challenge/update_challenge.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class DeleteChallengeView(UserIsAdminMixin, DeleteView):
     model = Challenge
-    template_name = 'administration/settings/challenge/delete_challenge.html'
+    template_name = 'templates/administration/settings/challenge/delete_challenge.html'
     success_url = reverse_lazy('administration:challenges')
 
 
@@ -171,26 +171,26 @@ class ToggleChallengeVisibility(UserIsAdminMixin, View):
 class AddCategoryView(UserIsAdminMixin, CreateView):
     model = Category
     fields = '__all__'
-    template_name = 'administration/settings/category/add_category.html'
+    template_name = 'templates/administration/settings/category/add_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class UpdateCategoryView(UserIsAdminMixin, UpdateView):
     model = Category
     fields = '__all__'
-    template_name = 'administration/settings/category/update_category.html'
+    template_name = 'templates/administration/settings/category/update_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class DeleteCategoryView(UserIsAdminMixin, DeleteView):
     model = Category
-    template_name = 'administration/settings/category/delete_category.html'
+    template_name = 'templates/administration/settings/category/delete_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class FlagsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/flags.html'
+    template_name = 'templates/administration/settings/challenge/flags.html'
 
 
 class FlagAddView(UserIsAdminMixin, View):
@@ -232,7 +232,7 @@ class FlagDeleteView(UserIsAdminMixin, View):
 
 class HintsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/hints.html'
+    template_name = 'templates/administration/settings/challenge/hints.html'
 
 
 class HintAddView(UserIsAdminMixin, View):
@@ -274,7 +274,7 @@ class HintDeleteView(UserIsAdminMixin, View):
 
 class AttachmentsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/attachments.html'
+    template_name = 'templates/administration/settings/challenge/attachments.html'
 
 
 class AttachmentAddView(UserIsAdminMixin, View):

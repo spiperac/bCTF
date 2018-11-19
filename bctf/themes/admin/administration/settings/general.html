@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block extra_js %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/tempusdominus-bootstrap-4.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'admin/static/css/tempusdominus-bootstrap-4.min.css' %}">
 
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<script src="{% static 'admin/static/js/moment.min.js' %}"></script>
+<script src="{% static 'admin/static/js/tempusdominus-bootstrap-4.min.js' %}"></script>
 {% endblock %}
 
 {% block settings %}
@@ -17,6 +17,17 @@
             <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{title}}" required>
             <small id="titleHelp" class="form-text text-muted">This is title of your CTF.</small>
         </div>
+
+        <div class="form-group">
+            <label for="id_theme">Theme:</label>
+            <select class="form-control" id="id_theme" name="theme">
+                {% for theme in themes %}
+                <option value="{{theme}}">{{theme}}</option>
+                {% endfor %}
+            </select>
+            <small id="titleHelp" class="form-text text-muted">Set a theme for your CTF.</small>
+        </div>
+
         <div class="form-group">
             <label for="id_start_time">Start time</label>
             <div class="input-group date" id="id_start_time" data-target-input="nearest">
@@ -76,7 +87,7 @@ $('document').ready(function() {
         event.preventDefault();
         var start_datetime = $("#id_start_time").data('date');
         var end_datetime = $("#id_end_time").data('date');
-
+        
         if (start_datetime) {
             var start_timestamp = moment(start_datetime).unix();
         }   else {
@@ -93,6 +104,7 @@ $('document').ready(function() {
         var DATA = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             title: $('#id_title').val(),
+            theme: $("#id_theme").val(),
             start_time: start_timestamp,
             end_time: end_timestamp
         }

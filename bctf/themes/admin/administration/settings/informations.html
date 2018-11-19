@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block extra_js %}
-    <script src="{% static 'js/Chart.min.js' %}"></script>
-    <script src="{% static 'js/informations.js' %}"></script>
+    <script src="{% static 'admin/static/js/Chart.min.js' %}"></script>
+    <script src="{% static 'admin/static/js/informations.js' %}"></script>
 {% endblock %}
 
 {% block settings %}
@@ -99,12 +99,12 @@ $('document').ready(function() {
         var ctx = document.getElementById('id_accounts_solved_chart').getContext('2d');
         var stats = {{account_stats|safe}};
         solvedAtLeastOne(ctx, stats);
-
-        var ctx = document.getElementById('id_bloods_chart').getContext('2d');
-        var first_bloods_labels = {{first_bloods_labels|safe}};
-        var first_bloods_data = {{first_bloods_data|safe}};
-        firstBloods(ctx, first_bloods_labels, first_bloods_data);
-
+        {% if first_bloods_data %}
+            var ctx = document.getElementById('id_bloods_chart').getContext('2d');
+            var first_bloods_labels = {{first_bloods_labels|safe}};
+            var first_bloods_data = {{first_bloods_data|safe}};
+            firstBloods(ctx, first_bloods_labels, first_bloods_data);
+        {% endif %}
 })
 </script>
 

@@ -11,26 +11,26 @@ class UserIsAdminMixin(UserPassesTestMixin):
 
 class PageView(DetailView):
     model = Page
-    template_name = 'pages/page.html'
+    template_name = 'templates/pages/page.html'
 
 
 class PageCreateView(UserIsAdminMixin, LoginRequiredMixin, CreateView):
     model = Page
     fields = '__all__'
-    template_name = 'pages/create_page.html'
+    template_name = 'administration/settings/pages/create_page.html'
     success_url = reverse_lazy('pages:list-pages')
 
 
 class PageUpdateView(UserIsAdminMixin, LoginRequiredMixin, UpdateView):
     model = Page
     fields = '__all__'
-    template_name = 'pages/update_page.html'
+    template_name = 'administration/settings/pages/update_page.html'
     success_url = reverse_lazy('pages:list-pages')
 
 
 class PageListView(UserIsAdminMixin, LoginRequiredMixin, ListView):
     model = Page
-    template_name = 'pages/list_pages.html'
+    template_name = 'administration/settings/pages/list_pages.html'
 
 
 class PageDeleteView(UserIsAdminMixin, LoginRequiredMixin, DeleteView):

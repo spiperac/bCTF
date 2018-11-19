@@ -51,7 +51,10 @@ ROOT_URLCONF = 'bctf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'themes/core/templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'themes/admin/'),
+            os.path.join(BASE_DIR, 'themes/core/'),
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,7 +121,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'themes/core/static'),
+    os.path.join(BASE_DIR, 'themes/'),
 )
 
 MEDIA_URL = '/media/'

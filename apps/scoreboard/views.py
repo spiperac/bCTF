@@ -7,7 +7,7 @@ from apps.challenges.models import Challenge, BadSubmission
 
 
 class IndexView(TemplateView):
-    template_name = 'index.html'
+    template_name = 'templates/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,4 +33,4 @@ class IndexView(TemplateView):
 class ScoreboardView(View):
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'scoreboard/list.html')
+        return render(self.request, 'templates/scoreboard/list.html')

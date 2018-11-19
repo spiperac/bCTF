@@ -11,7 +11,7 @@ class ImportTasksView(View):
     form_class = ImportTasksForm
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'tasks/import.html', {'form': self.form_class})
+        return render(self.request, 'templates/tasks/import.html', {'form': self.form_class})
 
     def post(self, request, *args, **kwargs):
         form = ImportTasksForm(request.POST, request.FILES)
@@ -37,4 +37,4 @@ class ImportTasksView(View):
             else:
                 print("File does not exist!")
 
-            return render(self.request, 'tasks/import.html', {'form': self.form_class})
+            return render(self.request, 'templates/tasks/import.html', {'form': self.form_class})
