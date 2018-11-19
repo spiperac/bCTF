@@ -27,6 +27,10 @@
     font-size: 35px;
     padding: 20px;
 }
+.header {
+    height: 300px;
+    background-color: grey;
+}
 
 .challenge-description {
     font-size: 15px;
@@ -34,7 +38,7 @@
 }
 
 body {
-    color:#949ba2;
+
 }
 
 hr {

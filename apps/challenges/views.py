@@ -35,17 +35,15 @@ class CtfNotEnded(UserPassesTestMixin):
             return False
 
 
-class ChallengesListView(LoginRequiredMixin, ListView):
-    queryset = Challenge.objects.prefetch_related(
-        'category').prefetch_related('solves_set').all()
-    context_object_name = 'challenges'
-    template_name = get_theme_url('templates/challenge/list_hexagon_challenges.html')
+class ChallengesListView(LoginRequiredMixin, View):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        context = {}
         solves = Solves.objects.prefetch_related(
             'challenge').prefetch_related('account')
 
+        context['challenges'] = Challenge.objects.prefetch_related(
+            'category').prefetch_related('solves_set').all()
         context['categories'] = Category.objects.all()
         context['solved_by_user'] = solves.values_list(
             'challenge', flat=True).filter(account=self.request.user.pk)
@@ -53,7 +51,7 @@ class ChallengesListView(LoginRequiredMixin, ListView):
             c=Count('challenge')).order_by('-c')
         context['first_bloods'] = FirstBlood.objects.prefetch_related(
             'account').prefetch_related('challenge')
-        return context
+        return render(self.request, get_theme_url('templates/challenge/list_hexagon_challenges.html'), context=context)
 
 
 class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):

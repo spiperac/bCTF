@@ -7,11 +7,9 @@ from apps.challenges.models import Challenge, BadSubmission
 from config.themes import get_theme_url
 
 
-class IndexView(TemplateView):
-    template_name = get_theme_url('templates/index.html')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+class IndexView(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
         challenges = Challenge.objects.all()
         bad_submissions = BadSubmission.objects.all()
         total_points_available = challenges.aggregate(Sum('points'))['points__sum']
@@ -28,7 +26,7 @@ class IndexView(TemplateView):
         context['total_points_available'] = total_points_available if total_points_available else 0
         context['number_bad_submission'] = bad_submissions_number
         context['kings_of_wrong'] = king_of_wrong
-        return context
+        return render(self.request, get_theme_url('templates/index.html'), context=context)
 
 
 class ScoreboardView(View):

@@ -1,10 +1,11 @@
 import json
 from itertools import accumulate
 from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, View, UpdateView
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
 from apps.challenges.models import Solves, FirstBlood, Challenge
@@ -22,12 +23,11 @@ class RegistrationView(CreateView):
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
 
 
-class ProfileView(DetailView):
-    model = Account
-    template_name = get_theme_url('templates/account/profile.html')
+class ProfileView(View):
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request, *args, **kwargs):
+        context = {}
+        self.object = get_object_or_404(Account, pk=self.kwargs['pk'])
         first_bloods = FirstBlood.objects.prefetch_related('challenge').filter(account=self.object.pk)
         solves = Solves.objects.prefetch_related('challenge').prefetch_related('challenge__category').filter(account=self.object.pk)
         total_points_available = Challenge.objects.aggregate(Sum('points'))['points__sum']
@@ -51,14 +51,17 @@ class ProfileView(DetailView):
         dataset["pointHoverRadius"] = 5
         dataset["fill"] = "false"
 
+        context['object'] = self.object
         context['solved'] = solves if solves else 0
         context['rank'] = self.object.rank
         context['progress'] = str(round((self.object.points * 100) / total_points_available if self.object.points or total_points_available else 0, 2))
         context['first_bloods'] = first_bloods if first_bloods else 0
         context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]
         context['solved_dataset'] = json.dumps(dataset)
-        return context
+        return render(self.request, get_theme_url('templates/account/profile.html'), context=context)
 
+
+        
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm

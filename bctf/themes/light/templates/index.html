@@ -1,4 +1,4 @@
-{% extends './base.html' %}
+{% extends 'light/templates/base.html' %}
 {% load static %}
 {% load config_extras %}
 
@@ -8,15 +8,15 @@
 
 {% block content %}
 
-<div class="row tall-row text-center">
-    <div class="col-lg-12">
-        <i class="fas fa-stopwatch fa-3x inline-block"></i>
-        <div id="countDownTimer" class="d-inline-block">
-            Loading timer...
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <i class="fas fa-stopwatch fa-3x inline-block"></i> light index
+            <div id="countDownTimer" class="d-inline-block">
+                Loading timer...
+            </div>
+            <hr>
         </div>
-        <hr>
     </div>
-</div>
     <div class="row">
         <div class="col-md-3 col-sm-12 text-center">
             <p><i class="fas fa-users"></i> Total Teams</p>
