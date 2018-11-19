@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.views.generic import CreateView, View, UpdateView
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
@@ -14,14 +15,22 @@ from config.themes import get_theme_url
 
 class RegistrationView(CreateView):
     form_class = AccountCreationForm
-    template_name = get_theme_url('templates/registration/signup.html')
     success_url = reverse_lazy('login')
+
+    def get_template_names(self):
+        return list([get_theme_url('templates/registration/signup.html')])
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse_lazy('scoreboard:home'))
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
 
+
+class Login(LoginView):
+    redirect_authenticated_user=True
+
+    def get_template_names(self):
+        return list([get_theme_url('templates/registration/login.html')])
 
 class ProfileView(View):
 
@@ -65,7 +74,9 @@ class ProfileView(View):
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm
-    template_name = get_theme_url('templates/account/update.html')
+    
+    def get_template_names(self):
+        return list([get_theme_url('templates/account/update.html')])
 
     def get_object(self):
         return self.request.user

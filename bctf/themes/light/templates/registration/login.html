@@ -8,17 +8,19 @@
     {% load static %}
     {% load config_extras %}
     {% config 'logo' as site_logo %}
+    {% get_theme_template as theme %}
+
     <title>bCTF Registration</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="/static/{{theme}}{% static 'css/bootstrap.min.css' %}">
 
     <!-- Custom styles for this template -->
-    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+    <link href="/static/{{theme}}{% static 'css/login.css' %}" rel="stylesheet">
 
     <!-- JS bootstrap-->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="/static/{{theme}}{% static 'js/jquery.min.js' %}"></script>
+    <script src="/static/{{theme}}{% static 'js/bootstrap.min.js' %}"></script>
   </head>
 
   <body class="text-center">
