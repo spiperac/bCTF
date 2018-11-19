@@ -1,0 +1,19 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Congrats, {{challenge.name}} pwned!</h4>
+            <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="alert alert-success">The flag is captured! You got +{{challenge.points}} points!</p>
+        </div><!-- /.modal-body -->
+        </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+<script>
+    // close the modal after 3 seconds
+    setTimeout(function() {
+        $('#challengeModals').modal('hide');
+    }, 3000);
+</script>
