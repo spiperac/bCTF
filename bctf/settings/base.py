@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
     # apps
     'apps.accounts',
+    'apps.teams',
     'apps.challenges',
     'apps.scoreboard',
     'apps.pages',

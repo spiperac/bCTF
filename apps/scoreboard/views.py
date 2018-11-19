@@ -4,7 +4,6 @@ from django.views.generic import TemplateView, View
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, BadSubmission
-from config.config import read_config
 
 
 class IndexView(TemplateView):
@@ -12,7 +11,6 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        current_site = read_config()
         challenges = Challenge.objects.all()
         bad_submissions = BadSubmission.objects.all()
         total_points_available = challenges.aggregate(Sum('points'))['points__sum']
@@ -29,7 +27,6 @@ class IndexView(TemplateView):
         context['total_points_available'] = total_points_available if total_points_available else 0
         context['number_bad_submission'] = bad_submissions_number
         context['kings_of_wrong'] = king_of_wrong
-        context['settings'] = current_site
         return context
 
 

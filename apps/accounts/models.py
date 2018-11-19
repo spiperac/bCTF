@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
+from apps.teams.models import Team
 
 
 logger = logging.getLogger(__name__)
@@ -22,6 +23,7 @@ def create_pagan(sender, instance, created, **kwargs):
 class Account(AbstractUser):
     banned = models.BooleanField(default=False)
     country = CountryField(null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.PROTECT, null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     points = models.IntegerField(default=0)
 
@@ -44,7 +46,7 @@ class Account(AbstractUser):
 
     @property
     def rank(self):
-        sorted_list = sorted(Account.objects.filter(is_active=True), key=lambda t: -t.points)
+        sorted_list = list(Account.objects.filter(is_active=True).order_by('-points'))
         rank = sorted_list.index(self) + 1
         return rank
 
