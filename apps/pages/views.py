@@ -4,6 +4,7 @@ from django.views.generic import CreateView, DetailView, ListView, DeleteView, U
 from apps.pages.models import Page
 from config.themes import get_theme_url
 
+
 class UserIsAdminMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff

@@ -36,7 +36,7 @@
                     <div class="col">
                         <div class="card-block px-2">
                             <h4 class="card-title">{{object.username}}</h4>
-                            <p class="card-text">Currently at <b style="color:whitesmoke">{{rank|to_word}}</b> place!</p>
+                            <p class="card-text">Currently at <b>{{rank|to_word}}</b> place!</p>
                             {% if object.country %}
                                 <p class="card-text">Team is from  <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20"></p>
                             {% endif %}

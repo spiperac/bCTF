@@ -17,11 +17,9 @@ function solvedChart(ctx, data) {
             display: true,
             text: 'Solved',
             fontSize: 30,
-            fontColor: 'white'
         },
         legend: {
             labels: {
-                fontColor: "white",
                 fontSize: 15
             }
         }
@@ -51,7 +49,6 @@ function solvedLineChart(ctx, dataset, team_color) {
             legend: {
                 position: 'bottom',
                 labels: {
-                    fontColor: "#fff",
                     usePointStyle: true,
                 }
             },
@@ -59,13 +56,11 @@ function solvedLineChart(ctx, dataset, team_color) {
                 display: true,
                 text: 'Progress chart',
                 fontSize: 18,
-                fontColor: '#fff'
             },
             scales: {
                 xAxes: [{
                     type: 'time',
                     ticks: {
-                        fontColor: "#fff",
                         beginAtZero: false
                     },
                     gridLines: {
@@ -74,7 +69,6 @@ function solvedLineChart(ctx, dataset, team_color) {
                 }],
                 yAxes: [{
                     ticks: {
-                        fontColor: "#fff",
                     },
                     gridLines: {
                         display:false
