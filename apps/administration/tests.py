@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.files.base import ContentFile
 from apps.accounts.models import Account
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
+from apps.installer.utils import initialize_keys
 
 
 # "borrowed" from easy_thumbnails/tests/test_processors.py
@@ -38,6 +39,7 @@ class AdministrationTest(TestCase):
         self.admin_account.set_password("administrator123")
         self.admin_account.save()
         self.test_title = "Example CTF"
+        initialize_keys()
 
     def login_as_admin(self):
         """

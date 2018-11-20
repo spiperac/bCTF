@@ -16,5 +16,5 @@ class DockerImageActionForm(forms.Form):
 
 
 class ConfigUpdateForm(forms.Form):
-    title = forms.CharField(max_length=64)
-    theme = forms.ChoiceField(choices=THEME_CHOICES)
+    title = forms.CharField(max_length=64, required=False)
+    theme = forms.ChoiceField(choices=THEME_CHOICES, required=False)
