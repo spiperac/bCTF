@@ -1,12 +1,18 @@
-{% extends 'administration/index.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 {% block extra_js%}
-    <script src="{% static 'admin/static/js/jquery.form.js' %}"></script>
 {% endblock %}
 
-{% block settings %}
-
+{% block content %}
+<div class="jumbotron">
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <h1>News & Updates <i class="fas fa-newspaper"></i></h1>
+            <hr>
+        </div>
+    </div>
+</div>
 <div class="content">
     <button class="btn btn-info" data-toggle="modal" data-target="#newsCreateModal"><i class="fas fa-plus"></i> Add news</button>
     <br />

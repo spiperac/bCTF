@@ -22,11 +22,7 @@ class UserIsAdminMixin(UserPassesTestMixin):
 
 
 class IndexView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/index.html'
-
-
-class InformationsView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/settings/informations.html'
+    template_name = 'templates/informations.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,7 +69,7 @@ class InformationsView(UserIsAdminMixin, TemplateView):
 
 
 class CTFView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/settings/ctf.html'
+    template_name = 'templates/ctf.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,14 +81,14 @@ class CTFView(UserIsAdminMixin, TemplateView):
 class AccountsView(UserIsAdminMixin, ListView):
     model = Account
     context_object_name = 'accounts'
-    template_name = 'administration/settings/accounts.html'
+    template_name = 'templates/accounts.html'
 
 
 class UpdateAccountView(UserIsAdminMixin, UpdateView):
     model = Account
     fields = ['username', 'email', 'password',
               'is_staff', 'is_superuser', 'is_active', 'banned']
-    template_name = 'administration/settings/account/update_account.html'
+    template_name = 'templates/account/update_account.html'
     success_url = reverse_lazy('administration:list-accounts')
 
 
@@ -104,12 +100,12 @@ class ToggleAccountStateView(UserIsAdminMixin, UpdateView):
 
 class DeleteAccountView(UserIsAdminMixin, DeleteView):
     model = Account
-    template_name = 'administration/settings/account/delete_account.html'
+    template_name = 'templates/account/delete_account.html'
     success_url = reverse_lazy('administration:list-accounts')
 
 
 class DockerView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/settings/docker.html'
+    template_name = 'templates/docker.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -120,7 +116,7 @@ class DockerView(UserIsAdminMixin, TemplateView):
 
 
 class DockerLogsView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/settings/docker/logs.html'
+    template_name = 'templates/docker/logs.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -185,7 +181,7 @@ class DockerImageActionsView(UserIsAdminMixin, View):
 
 
 class GeneralView(UserIsAdminMixin, TemplateView):
-    template_name = 'administration/settings/general.html'
+    template_name = 'templates/general.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -229,20 +225,20 @@ class GeneralUpdateView(UserIsAdminMixin, View):
 class NewListView(UserIsAdminMixin, ListView):
     model = News
     ordering = '-created_at'
-    template_name = 'administration/settings/news.html'
+    template_name = 'templates/news.html'
 
 
 class NewsCreateView(UserIsAdminMixin, CreateView):
     model = News
     fields = ['text']
-    template_name = 'administration/settings/news/create_news.html'
+    template_name = 'templates/news/create_news.html'
     success_url = reverse_lazy('administration:news')
 
 
 class NewsUpdateView(UserIsAdminMixin, UpdateView):
     model = News
     fields = ['text']
-    template_name = 'administration/settings/news/update_news.html'
+    template_name = 'templates/news/update_news.html'
     success_url = reverse_lazy('administration:news')
 
 

@@ -5,15 +5,13 @@ from apps.administration.views import (AccountsView, CTFView,
                                        DockerImageActionsView, DockerLogsView,
                                        DockerView, GeneralUpdateView,
                                        GeneralView, IndexView,
-                                       InformationsView, NewListView,
+                                       UpdateAccountView, NewListView,
                                        NewsCreateView, NewsDeleteView,
-                                       NewsUpdateView, ToggleAccountStateView,
-                                       UpdateAccountView)
+                                       NewsUpdateView, ToggleAccountStateView)
 
 app_name = 'administration'
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
-    path('informations/', InformationsView.as_view(), name='informations'),
+    path('informations/', IndexView.as_view(), name='index'),
 
     # CTF urls
     path('challenges/', CTFView.as_view(), name='challenges'),

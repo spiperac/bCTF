@@ -28,7 +28,7 @@
 <div class="content">
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <div class="card">
+            <div class="card bg-light">
                 <div class="row no-gutters">
                     <div class="col-auto">
                         <img src="{{ object.get_avatar_medium }}" width="128" height="128" class="img-fluid" alt="">
@@ -44,10 +44,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer w-100 text-muted">
+                <div class="card-footer w-100 text-muted bg-light">
                         <h6>Progress <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Team progress based on points gathered"></i></h6>
 
-                        <div class="progress bg-default" style="height: 20px;">
+                        <div class="progress bg-dark" style="height: 20px;">
                             <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{progress}}%;" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100">
                                 <span><b>{{progress}}%</b></span>
                             </div>

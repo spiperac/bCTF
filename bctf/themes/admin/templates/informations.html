@@ -1,0 +1,152 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block extra_js %}
+    <script src="{% static 'admin/static/js/informations.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-server"></i> System
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Accounts: {{accounts.count}}</h4>
+                                        <h4>Challenges: {{challenges.count}}</h4>
+                                        <h4>Categories: {{categories.count}}</h4>
+                                    </div>
+                                    <div class="card-footer">
+                                        Uptime: {{uptime}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-users"></i> Accounts
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Accounts: {{accounts.count}}</h4>
+                                        <h4>Administrators: 0</h4>
+                                        <h4>Banned: 0</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-spider"></i> Challenges
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Solved: {{accounts.count}}</h4>
+                                        <h4>Released: {{challenges.count}}</h4>
+                                        <h4>Categories: {{categories.count}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fab fa-keycdn"></i> Submits
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Wrong Submits: {{accounts.count}}</h4>
+                                        <h4>Top team: ?</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div style="height: 300px">
+                            <canvas id="id_solved_chart" width="300px"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div style="height: 300px">
+                            <canvas id="id_accounts_solved_chart" width="300px"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        {% if first_bloods_data %}
+                            <div style="height: 300px">
+                                <canvas id="id_bloods_chart" width="300px"></canvas>
+                            </div>
+                        {% else %}
+                            <h2>No first bloods yet!</h2>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <br />
+                        <h1 class="text-center">Bad Submissions</h1>
+                        {% if bad_submissions %}
+                            <table class="table table-light">
+                                <thead>
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Challenge</th>
+                                        <th>Flag</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for bad_submission in bad_submissions %}
+                                        <tr>
+                                            <td>{{bad_submission.account.username}}</td>
+                                            <td>{{bad_submission.challenge.name}}</td>
+                                            <td>{{bad_submission.flag}}</td>
+                                            <td>{{bad_submission.created_at}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <h2 class="text-center">No bad submissions yet!</h2>
+                        {% endif %}
+
+        
+{% endblock %}
+
+
+{% block custom_javascript %}
+
+<script>
+
+$('document').ready(function() {
+        var ctx = document.getElementById('id_solved_chart').getContext('2d');
+        var stats = {{chall_stats|safe}};
+        solvedChart(ctx, stats)
+    
+        var ctx = document.getElementById('id_accounts_solved_chart').getContext('2d');
+        var stats = {{account_stats|safe}};
+        solvedAtLeastOne(ctx, stats);
+        {% if first_bloods_data %}
+            var ctx = document.getElementById('id_bloods_chart').getContext('2d');
+            var first_bloods_labels = {{first_bloods_labels|safe}};
+            var first_bloods_data = {{first_bloods_data|safe}};
+            firstBloods(ctx, first_bloods_labels, first_bloods_data);
+        {% endif %}
+})
+</script>
+
+{% endblock %}

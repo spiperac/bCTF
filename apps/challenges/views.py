@@ -101,7 +101,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
 
 class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMixin, FormView):
     form_class = NewChallengeForm
-    template_name = 'administration/settings/challenge/new_challenge.html'
+    template_name = 'templates/challenge/new_challenge.html'
     success_url = reverse_lazy('administration:challenges')
     success_message = "Challenge %(name)s was created successfully"
 

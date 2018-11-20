@@ -1,57 +1,69 @@
-{% extends 'administration/index.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 {% block extra_js %}
     <link rel="stylesheet" type="text/css" href="{% static 'admin/static/css/dataTables.bootstrap4.min.css' %}">
 
     <script src="{% static 'admin/static/js/jquery.form.js' %}"></script>
-    <script src="{% static 'admin/static/js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'admin/static/js/dataTables.bootstrap4.min.js' %}"></script>
-
 {% endblock %}
 
-{% block settings %}
-<div id="id_search_area" class="id_search_area d-flex w-100">
+{% block content %}
+<div id="content">
+    
+    <div class="jumbotron">
+        <div class="row tall-row text-center">
+            <div class="col-lg-12">
+                <h1>Accounts <i class="fas fa-users"></i></h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-12">
+                <div id="id_search_area" class="id_search_area d-flex w-100">
+                </div>
+                <table class="table table-borderless" id="id_accounts_table">
+                    <thead>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for account in accounts %}
+                        <tr>
+                            <td>{{account.pk}}</td>
+                            <td><a href="{% url 'profile' account.pk %}" style="color:#b5e853">{{account.username}}</a></td>
+                            <td>{{account.email}}</td>
+                            {% if account.is_superuser %}
+                                <td style="color:red">Admin</td>
+                            {% elif account.is_staff %}
+                                <td>Staff</td>
+                            {% else %}
+                                <td>Normal</td>
+                            {% endif %}
+                            {% if account.is_active %}
+                                <td><button class="btn btn-success deactivate" data-account-id="{{account.pk}}">Active</button></td>
+                            {% else %}
+                                <td><button class="btn btn-danger activate" data-account-id="{{account.pk}}">Banned</button></td>
+                            {% endif %}
+                            <td>
+                                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#updateAccountModal">
+                                    <i class="fas fa-edit fa-lg"></i>
+                                </a>
+                                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#deleteAccountModal">
+                                    <i class="fas fa-trash fa-lg"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                
+                </table>
+            </div>
+        </div>
 </div>
-<table class="table table-borderless" id="id_accounts_table">
-    <thead>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th></th>
-    </thead>
-    <tbody>
-        {% for account in accounts %}
-        <tr>
-            <td>{{account.pk}}</td>
-            <td><a href="{% url 'profile' account.pk %}" style="color:#b5e853">{{account.username}}</a></td>
-            <td>{{account.email}}</td>
-            {% if account.is_superuser %}
-                <td style="color:red">Admin</td>
-            {% elif account.is_staff %}
-                <td>Staff</td>
-            {% else %}
-                <td>Normal</td>
-            {% endif %}
-            {% if account.is_active %}
-                <td><button class="btn btn-success deactivate" data-account-id="{{account.pk}}">Active</button></td>
-            {% else %}
-                <td><button class="btn btn-danger activate" data-account-id="{{account.pk}}">Banned</button></td>
-            {% endif %}
-            <td>
-                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#updateAccountModal">
-                    <i class="fas fa-edit fa-lg"></i>
-                </a>
-                <a data-account-id="{{account.pk}}" data-toggle="modal" data-target="#deleteAccountModal">
-                    <i class="fas fa-trash fa-lg"></i>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-
-</table>
 
 <!-- Edit Account Modal -->
 <div class="modal fade" tabindex="-1" id="updateAccountModal">
