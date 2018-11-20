@@ -20,7 +20,7 @@ function clean_events() {
 function feed_events(element) {
     $('#events').append(
         `
-        <li><span style="color:red">[${element.time}]</span> 
+        <li><span>[${element.time}]</span> 
         -> <a href="/accounts/profile/${element.team_id}">${element.team}</a> just captured ${element.challenge}!
         </li>
         `

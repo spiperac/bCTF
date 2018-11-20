@@ -44,19 +44,18 @@ class ChallengesListView(LoginRequiredMixin, View):
 
         context['challenges'] = Challenge.objects.prefetch_related(
             'category').prefetch_related('solves_set').all()
-        context['categories'] = Category.objects.all()
-        context['solved_by_user'] = solves.values_list(
+        context['categories'] = Category.objects.prefetch_related('challenge_set').all()
+        context['solved_by_user'] = solves.prefetch_related('challenge').values_list(
             'challenge', flat=True).filter(account=self.request.user.pk)
         context['solves'] = solves.values("challenge__name").annotate(
             c=Count('challenge')).order_by('-c')
         context['first_bloods'] = FirstBlood.objects.prefetch_related(
             'account').prefetch_related('challenge')
-        return render(self.request, get_theme_url('templates/challenge/list_hexagon_challenges.html'), context=context)
+        return render(self.request, get_theme_url('templates/challenge/list_challenges.html'), context=context)
 
 
 class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
     form_class = SubmitFlagForm
-    template_name = get_theme_url('templates/challenge/challenge.html')
 
     def get_context_data(self, **kwargs):
         context = super(SubmitFlagView, self).get_context_data(**kwargs)
@@ -66,6 +65,9 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
         context['solved_by_user'] = Solves.objects.filter(
             account=self.request.user.pk).values_list('challenge', flat=True)
         return context
+
+    def get_template_names(self):
+        return list([get_theme_url('templates/challenge/challenge.html')])
 
     def form_valid(self, form):
         challenge_id = form.cleaned_data['challenge_id']

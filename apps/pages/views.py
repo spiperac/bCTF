@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView
 from apps.pages.models import Page
-
+from config.themes import get_theme_url
 
 class UserIsAdminMixin(UserPassesTestMixin):
     def test_func(self):
@@ -11,7 +11,9 @@ class UserIsAdminMixin(UserPassesTestMixin):
 
 class PageView(DetailView):
     model = Page
-    template_name = 'templates/pages/page.html'
+
+    def get_template_names(self):
+        return list([get_theme_url('templates/pages/page.html')])
 
 
 class PageCreateView(UserIsAdminMixin, LoginRequiredMixin, CreateView):

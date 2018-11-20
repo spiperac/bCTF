@@ -49,7 +49,7 @@
                         <ul>
                             {% for article in news %}
                                 <li style="margin-bottom:5px;">
-                                    <span style="color:yellow">[{{article.created_at|date:"SHORT_DATETIME_FORMAT"}}]</span><br />
+                                    <span>[{{article.created_at|date:"SHORT_DATETIME_FORMAT"}}]</span><br />
                                     {{article.text}}
                                 </li>
                             {% endfor %}

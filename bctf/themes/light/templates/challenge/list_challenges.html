@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_js%}
-    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="/static/{{theme}}{% static 'js/jquery.form.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -17,53 +17,50 @@
     <div class="col-md-12 text-center" id="challenge-loader">
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
     </div>
-    <table class="challenge-table" id="challenge-table" style="display:none">
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td class="category">{{category}}</td>
-                {% for challenge in challenges %}
-                    {% if challenge.category == category and challenge.visible == True %}
-                        <td class="challenge">
-                            {% if challenge.pk in solved_by_user.all %}
-                            <a  value="{{challenge}}" 
-                                class="btn btn-success btn-challenge"
-                                href="#challengeModals"
-                                data-toggle="modal"
-                                data-target="#challengeModals"
-                                data-challenge-id="{{challenge.pk}}"
-                                >
-                                <i class="fas fa-check"></i>
-                            {% else %}
-                            <a  value="{{challenge}}" 
-                                class="btn btn-primary btn-challenge"
-                                href="#challengeModals"
-                                data-toggle="modal"
-                                data-target="#challengeModals"
-                                data-challenge-id="{{challenge.pk}}"
-                                >
-                                <i class="fas fa-crosshairs"></i>
-                            {% endif %}
-                                {{challenge.name}}<br />{{challenge.points}}
-                            </a>
-                        </td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    {% for category in categories %}
+                            <h1>{{category}}</h1>
+                            {% for challenge in challenges %}
+                                {% if challenge.category == category and challenge.visible == True %}
+                                        {% if challenge.pk in solved_by_user %}
+                                        <a  value="{{challenge}}" 
+                                            class="btn btn-success btn-challenge"
+                                            href="#{{challenge.name}}"
+                                            data-toggle="modal"
+                                            data-target="#challengeModals"
+                                            data-challenge-id="{{challenge.pk}}"
+                                            >
+                                            <i class="fas fa-check"></i>
+                                        {% else %}
+                                        <a  value="{{challenge}}" 
+                                            class="btn btn-primary btn-challenge"
+                                            href="#{{challenge.name}}"
+                                            data-toggle="modal"
+                                            data-target="#challengeModals"
+                                            data-challenge-id="{{challenge.pk}}"
+                                            >
+                                            <i class="fas fa-crosshairs"></i>
+                                        {% endif %}
+                                            {{challenge.name}}<br />{{challenge.points}}
+                                        </a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal inmodal" tabindex="-1" id="challengeModals">
+
 </div>
 
 {% endblock %}
 
-{% block modals %}
-<!-- Modal -->
-<div class="modal fade" tabindex="-1" id="challengeModals">
-    <!-- Hack to close modal from inside another view -->
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    </div>
-</div>
+{% block custom_javascript %}
 
 <script>
     $('document').ready(function() {
@@ -72,14 +69,31 @@
     
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
+            modal.html(
+                `{% include 'light/templates/challenge/challenge_loading.html' %}`
+            )
             var challengeID = $(event.relatedTarget).data('challenge-id')
-            //var formURL = "{% url 'challenge:flag-submit' 1 %}".replace('1', challengeID)
             var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
                 url: formURL,
                 context: document.body
             }).done(function(response) {
                 modal.html(response);
+            }).fail(function(err){
+                if (err.status == 403) {
+                    modal.html(`
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                CTF Ended
+                            </div>
+                            <div class="modal-body">
+                                Be faster next year!
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }
             });
         })
 
