@@ -33,6 +33,11 @@
                     <h3 class="challenge-title text-center">
                         {{challenge.name}}
                     </h3>
+                    {% if challenge.author %}
+                    <div class="challenge-author d-inline float-right">
+                        Author: {{challenge.author}}
+                    </div>
+                    {% endif %}
                     <p class="challenge-description">
                         {{challenge.description|linebreaks}}
                     </p>

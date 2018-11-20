@@ -11,6 +11,7 @@ class SubmitFlagForm(forms.Form):
 class NewChallengeForm(forms.Form):
     category = forms.ModelChoiceField(queryset=Category.objects.all())
     name = forms.CharField(max_length=128)
+    author = forms.CharField(max_length=64)
     description = forms.CharField(widget=forms.Textarea())
     points = forms.IntegerField()
     flag = forms.CharField(max_length=1024)

@@ -13,6 +13,7 @@ class Category(models.Model):
 class Challenge(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=128, null=False, blank=False)
+    author = models.CharField(max_length=64, null=True, blank=True)
     description = models.TextField(null=False, blank=False)
     points = models.IntegerField()
     visible = models.BooleanField(default=True)
