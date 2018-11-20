@@ -33,3 +33,9 @@ class ScoreboardView(View):
 
     def get(self, request, *args, **kwargs):
         return render(self.request, get_theme_url('templates/scoreboard/list.html'))
+
+def handler404(request):
+    return render(request, get_theme_url('templates/errors/404.html'), status=404)
+    
+def handler500(request):
+    return render(request, get_theme_url('templates/errors/500.html'), status=500)
