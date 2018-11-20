@@ -21,6 +21,7 @@ easier challenge deployment, controll small set of docker containers running cha
 * Account management system with captcha (captcha is #TODO atm)
     * You can ban/unban user accounts
 * Pages interface for creating custom pages for eg. rules or faq ( auto-added to top menu)
+* Supports Themes ( comes with few out of box)
 * Admin interface
 * Backup & Restore 
 * Email support ( for registration, password resets, and optional account activation links)
@@ -40,7 +41,6 @@ easier challenge deployment, controll small set of docker containers running cha
 ## Todo
 
 * Plugins interface
-* Theme customisation/changing interface
 
 
 ## Getting Started
