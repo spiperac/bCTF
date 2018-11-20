@@ -6,3 +6,6 @@ class Page(models.Model):
     slug = models.SlugField(unique=True, max_length=255)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        get_latest_by = "created_on"

@@ -143,13 +143,13 @@ class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMi
 class UpdateChallengeView(UserIsAdminMixin, UpdateView):
     model = Challenge
     fields = '__all__'
-    template_name = 'administration/settings/challenge/update_challenge.html'
+    template_name = 'templates/challenge/update_challenge.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class DeleteChallengeView(UserIsAdminMixin, DeleteView):
     model = Challenge
-    template_name = 'administration/settings/challenge/delete_challenge.html'
+    template_name = 'templates/challenge/delete_challenge.html'
     success_url = reverse_lazy('administration:challenges')
 
 
@@ -172,26 +172,26 @@ class ToggleChallengeVisibility(UserIsAdminMixin, View):
 class AddCategoryView(UserIsAdminMixin, CreateView):
     model = Category
     fields = '__all__'
-    template_name = 'administration/settings/category/add_category.html'
+    template_name = 'templates/category/add_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class UpdateCategoryView(UserIsAdminMixin, UpdateView):
     model = Category
     fields = '__all__'
-    template_name = 'administration/settings/category/update_category.html'
+    template_name = 'templates/category/update_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class DeleteCategoryView(UserIsAdminMixin, DeleteView):
     model = Category
-    template_name = 'administration/settings/category/delete_category.html'
+    template_name = 'templates/category/delete_category.html'
     success_url = reverse_lazy('administration:challenges')
 
 
 class FlagsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/flags.html'
+    template_name = 'templates/challenge/flags.html'
 
 
 class FlagAddView(UserIsAdminMixin, View):
@@ -233,7 +233,7 @@ class FlagDeleteView(UserIsAdminMixin, View):
 
 class HintsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/hints.html'
+    template_name = 'templates/challenge/hints.html'
 
 
 class HintAddView(UserIsAdminMixin, View):
@@ -275,7 +275,7 @@ class HintDeleteView(UserIsAdminMixin, View):
 
 class AttachmentsView(UserIsAdminMixin, DetailView):
     model = Challenge
-    template_name = 'administration/settings/challenge/attachments.html'
+    template_name = 'templates/challenge/attachments.html'
 
 
 class AttachmentAddView(UserIsAdminMixin, View):

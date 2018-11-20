@@ -35,6 +35,14 @@ class PageListView(UserIsAdminMixin, LoginRequiredMixin, ListView):
     model = Page
     template_name = 'templates/pages/list_pages.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PageListView, self).get_context_data(**kwargs)
+        try:
+            context['latest'] = Page.objects.all().latest().created_on
+        except Page.DoesNotExist:
+            context['latest'] = None
+        return context
+
 
 class PageDeleteView(UserIsAdminMixin, LoginRequiredMixin, DeleteView):
     model = Page

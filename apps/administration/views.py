@@ -227,6 +227,14 @@ class NewListView(UserIsAdminMixin, ListView):
     ordering = '-created_at'
     template_name = 'templates/news.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(NewListView, self).get_context_data(**kwargs)
+        try:
+            context['latest'] = News.objects.all().latest().created_at
+        except News.DoesNotExist:
+            context['latest'] = None
+        return context
+
 
 class NewsCreateView(UserIsAdminMixin, CreateView):
     model = News
