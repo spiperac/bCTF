@@ -126,3 +126,37 @@ function randomColors(data_length) {
     });
 
  }  
+
+ function topTeams(ctx, data) {
+ 
+    data = {
+        datasets: [{
+            data: data,
+            backgroundColor: randomColors(data.length)
+        }],
+        borderWidth: 1,
+        labels: labels,
+    };
+    
+    options = {
+        maintainAspectRatio : false,
+
+        title: {
+            display: true,
+            text: 'Top Teams',
+            fontSize: 30,
+            fontColor: 'white'
+        },
+        legend: {
+            labels: {
+                fontColor: "white",
+                fontSize: 15
+            }
+        }
+    }
+    var topTeamsChart = new Chart(ctx,{
+        type: 'bar',
+        data: data,
+        options: options
+    });
+}

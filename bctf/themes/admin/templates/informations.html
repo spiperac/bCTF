@@ -70,28 +70,54 @@
 
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-12">
-                        <div style="height: 300px">
-                            <canvas id="id_solved_chart" width="300px"></canvas>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
-                        <div style="height: 300px">
-                            <canvas id="id_accounts_solved_chart" width="300px"></canvas>
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="height: 300px">
+                                    <canvas id="id_solved_chart" width="300px"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                     <div class="col-md-6 col-sm-12">
-                        {% if first_bloods_data %}
-                            <div style="height: 300px">
-                                <canvas id="id_bloods_chart" width="300px"></canvas>
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="height: 300px">
+                                    <canvas id="id_accounts_solved_chart" width="300px"></canvas>
+                                </div>
                             </div>
-                        {% else %}
-                            <h2>No first bloods yet!</h2>
-                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card">
+                                <div class="card-body">
+                                    {% if first_bloods_data %}
+                                        <div style="height: 300px">
+                                            <canvas id="id_bloods_chart" width="300px"></canvas>
+                                        </div>
+                                    {% else %}
+                                        <h2>No first bloods yet!</h2>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card">
+                                <div class="card-body">
+                                    {% if solves %}
+                                        <div style="height: 300px">
+                                            <canvas id="id_top_teams_chart" width="300px"></canvas>
+                                        </div>
+                                    {% else %}
+                                        <h2>No solves yet!</h2>
+                                    {% endif %}
+                                </div>
+                        </div>
                     </div>
                 </div>
 
@@ -123,6 +149,9 @@
                         {% else %}
                             <h2 class="text-center">No bad submissions yet!</h2>
                         {% endif %}
+                    </div>
+                </div>
+                
 
         
 {% endblock %}
