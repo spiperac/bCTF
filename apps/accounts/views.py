@@ -46,7 +46,7 @@ class ProfileView(View):
         axes_data = []
         for time, score in zip(times, accumulated_scores):
             data = {}
-            data["x"] = time
+            data["x"] = time * 1000
             data["y"] = score
             axes_data.append(data)
 
