@@ -1,5 +1,7 @@
 {% extends 'administration/index.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
+
 
 {% block extra_js %}
 <link rel="stylesheet" type="text/css" href="{% static 'admin/static/css/tempusdominus-bootstrap-4.min.css' %}">
@@ -19,12 +21,7 @@
         </div>
 
         <div class="form-group">
-            <label for="id_theme">Theme:</label>
-            <select class="form-control" id="id_theme" name="theme">
-                {% for theme in themes %}
-                <option value="{{theme}}">{{theme}}</option>
-                {% endfor %}
-            </select>
+            {{form.theme|as_crispy_field}}
             <small id="titleHelp" class="form-text text-muted">Set a theme for your CTF.</small>
         </div>
 
@@ -48,7 +45,6 @@
             </div>
             <small id="titleHelp" class="form-text text-muted">Ending time and date of your CTF. Timezone is UTC!</small>
         </div>
-
         <button type="submit" id="update-config" class="btn btn-primary">Save</button>
     </form>
 

@@ -1,4 +1,8 @@
 from django import forms
+from apps.scoreboard.utils import get_themes, get_theme
+
+
+THEME_CHOICES = [(x, x) for x in get_themes()]
 
 
 class DockerActionForm(forms.Form):
@@ -13,3 +17,4 @@ class DockerImageActionForm(forms.Form):
 
 class ConfigUpdateForm(forms.Form):
     title = forms.CharField(max_length=64)
+    theme = forms.ChoiceField(choices=THEME_CHOICES)

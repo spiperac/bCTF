@@ -13,7 +13,7 @@ from apps.administration.forms import (ConfigUpdateForm, DockerActionForm,
 from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Hint, Solves)
 from apps.scoreboard.models import News
-from apps.scoreboard.utils import get_key, set_key, get_themes, set_theme
+from apps.scoreboard.utils import get_key, set_key, get_themes, set_theme, get_theme
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -189,6 +189,8 @@ class GeneralView(UserIsAdminMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        CURRENT_THEME = get_theme()
+        context['form'] = ConfigUpdateForm(initial={'theme': CURRENT_THEME})
         context['themes'] = get_themes()
         context['title'] = get_key("ctf_name")
         context['start_time'] = get_key('start_time')
