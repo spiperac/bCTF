@@ -12,11 +12,13 @@ class DockerTool(object):
         self.key = None
 
         self.client = None
+        self.api_client = None
         self.connect()
 
     def connect(self):
         try:
             self.client = docker.from_env()
+            self.api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
             self.client.create_host_config(
                 publish_all_ports=True,
                 )
@@ -35,6 +37,13 @@ class DockerTool(object):
 
     def get_image(self, image_id):
         return self.client.images.get(image_id)
+
+    def create_image(self, path, image_name):
+        return self.api_client.build(
+            path=path, 
+            rm=True,
+            quiet=True,
+            tag=image_name)
 
     def create_container(self, image_id):
         return self.client.containers.create(image_id, publish_all_ports=True)

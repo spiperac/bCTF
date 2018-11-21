@@ -2,7 +2,7 @@ from django.shortcuts import render
 from config.themes import get_theme_url
 
 
-def error_view_403(request):
+def error_view_403(request, exception):
     return render(request, get_theme_url('templates/errors/403.html'), status=403)
 
 

@@ -39,8 +39,12 @@ class ImportTasksView(UserIsAdminMixin, View):
             import_log = []
             tasks = feed_tasks(base_path=tasks_base_dir)
             for task in tasks:
-                task.create()
-                import_log.append(task.log)
+                try:
+                    task.create()
+                    import_log.append(task.log)
+                except Exception as exc:
+                    task.log.append('Error: Improting of {0} failed because of: {1}'.format(task.name, exc))
+                    import_log.append(task.log)
 
             clean_base_path(tasks_base_dir)
 
