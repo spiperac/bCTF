@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, TemplateView, UpdateView, View)
 
@@ -24,7 +25,7 @@ class UserIsAdminMixin(UserPassesTestMixin):
 
 class IndexView(UserIsAdminMixin, ListView):
     queryset = BadSubmission.objects.prefetch_related(
-        'account').prefetch_related('challenge').all()
+        'account').prefetch_related('challenge')
     context_object_name = 'bad_submissions'
     paginate_by = 10
     template_name = 'templates/informations.html'
@@ -34,21 +35,25 @@ class IndexView(UserIsAdminMixin, ListView):
         context['challenges'] = Challenge.objects.prefetch_related('solves')
         context['categories'] = Category.objects.all()
 
+        # Challenge statistics
         chall_stats = []
         total_challs = context['challenges'].count()
         solved_challs = Solves.objects.prefetch_related('challenge').values(
             'challenge__pk').distinct().count()
         unsolved_challs = int(total_challs) - int(solved_challs)
+        chall_stats.append(solved_challs)
+        chall_stats.append(unsolved_challs)
 
+        # Account statistics
         accounts = Account.objects.prefetch_related('solves').order_by('-points')
         account_stats = []
         total_accounts = accounts.count()
-        accounts_with_points = [
-            x for x in accounts if x.solves.count() > 0]
-        accounts_with_zero = total_accounts - len(accounts_with_points)
-        account_stats.append(len(accounts_with_points))
+        accounts_with_points = accounts.annotate(solves_count=Count('solves')).filter(solves_count__gt=0).count()
+        accounts_with_zero = total_accounts - accounts_with_points
+        account_stats.append(accounts_with_points)
         account_stats.append(accounts_with_zero)
 
+        # FirstBloods statistics
         first_bloods = FirstBlood.objects.prefetch_related('account').prefetch_related('challenge').values_list(
             'account__username', flat=True).distinct()
         first_blood_data = []
@@ -57,10 +62,8 @@ class IndexView(UserIsAdminMixin, ListView):
             solved = fb_list.count(account)
             first_blood_data.append(solved)
 
-        chall_stats.append(solved_challs)
-        chall_stats.append(unsolved_challs)
+        # Top 10 Teams statistics
         top_10 = accounts[:10]
-
         top_10_data = {}
         top_10_labels = []
         top_10_scores = []
@@ -82,11 +85,13 @@ class IndexView(UserIsAdminMixin, ListView):
 
         context['first_bloods_labels'] = fb_list
         context['first_bloods_data'] = first_blood_data
-        context['chall_stats'] = chall_stats
+        context['top_10_stats'] = top_10_data
         context['account_stats'] = account_stats
         context['accounts'] = accounts
+        context['account_count'] = total_accounts
+        context['chall_stats'] = chall_stats
+        context['solved_challs'] = int(solved_challs)
         context['uptime'] = settings.GET_UPTIME()
-        context['top_10_stats'] = top_10_data
         return context
 
 
