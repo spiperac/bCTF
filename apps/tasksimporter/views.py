@@ -1,13 +1,19 @@
 import zipfile
 from django.shortcuts import render
 from django.conf import settings
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import View
 from apps.tasksimporter.forms import ImportTasksForm
 from django.core.files.storage import FileSystemStorage
 from apps.tasksimporter.utils import feed_tasks
 
 
-class ImportTasksView(View):
+class UserIsAdminMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class ImportTasksView(UserIsAdminMixin, View):
     form_class = ImportTasksForm
 
     def get(self, request, *args, **kwargs):
