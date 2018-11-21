@@ -32,7 +32,7 @@ class Account(AbstractUser):
 
     @property
     def get_points_dynamic(self):
-        sovles_set = self.solves_set.prefetch_related('challenges')
+        sovles_set = self.solves.prefetch_related('challenges')
         if sovles_set.count() > 0:
             points = sovles_set.values("challenge__points").aggregate(total_points=models.Sum('challenge__points'))
             if points is None:
@@ -52,7 +52,7 @@ class Account(AbstractUser):
 
     @property
     def number_solved(self):
-        return self.solves_set.count()
+        return self.solves.count()
 
     @property
     def get_avatar(self):

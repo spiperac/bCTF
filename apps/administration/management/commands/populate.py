@@ -3,7 +3,7 @@ import datetime
 import random
 from django.core.management.base import BaseCommand
 from apps.accounts.models import Account
-from apps.challenges.models import Category, Challenge, Solves
+from apps.challenges.models import Category, Challenge, Solves, FirstBlood
 
 
 categories_list = [
@@ -94,12 +94,18 @@ class Command(BaseCommand):
         for x in range(0, size):
             challenge = random.choice(Challenge.objects.all())
             account = random.choice(Account.objects.all())
-            random_minutes = random.randint(0, 3000)
-            Solves.objects.create(
-                challenge=challenge,
-                account=account,
-                created_at=datetime.datetime.now() + datetime.timedelta(minutes=random_minutes)
-            )
+            random_minutes = random.randint(0, 4000)
+            if Solves.objects.filter(account=account, challenge=challenge).count() == 0:
+                if Solves.objects.filter(challenge=challenge).count() == 0:
+                    FirstBlood.objects.create(
+                        account=account,
+                        challenge=challenge
+                    )
+                Solves.objects.create(
+                    challenge=challenge,
+                    account=account,
+                    created_at=datetime.datetime.now() + datetime.timedelta(minutes=random_minutes)
+                )
 
         top_solvers = []
         for x in range(0, 15):

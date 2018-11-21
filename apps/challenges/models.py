@@ -20,7 +20,7 @@ class Challenge(models.Model):
 
     @property
     def sorted_by_solves_set(self):
-        return self.solves_set.order_by('points')
+        return self.solves.order_by('points')
 
 
 class Hint(models.Model):
@@ -42,8 +42,8 @@ class Attachment(models.Model):
 
 
 class Solves(models.Model):
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    challenge = models.ForeignKey(Challenge, related_name='solves', on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, related_name='solves', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, force_insert=False, force_update=False, using=None):

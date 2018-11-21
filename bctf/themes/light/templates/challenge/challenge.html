@@ -23,7 +23,7 @@
                     </li>
                 <li class="nav-item">
                     <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">
-                        <i class="fas fa-question-circle"></i> Solved <span class="badge badge-secondary">{{challenge.solves_set.all.count}}</span>
+                        <i class="fas fa-question-circle"></i> Solved <span class="badge badge-secondary">{{challenge.solves.all.count}}</span>
                     </a>
                 </li>
             </ul>
@@ -84,7 +84,7 @@
                             <th>Time</th>
                         </thead>
                         <tbody>
-                            {% for solve in challenge.solves_set.all %}
+                            {% for solve in challenge.solves.all %}
                             <tr>
                                 <td><a href="{% url 'profile' solve.account.pk %}">{{solve.account.username}}</a></td>
                                 <td>{{solve.created_at}}</td>

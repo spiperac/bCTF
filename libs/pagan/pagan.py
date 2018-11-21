@@ -63,7 +63,6 @@ class Avatar():
         filepath = ("%s%s.png" % (path, filename))
         filepath = os.path.join(path, "%s.png" % filename)
         # FIXIT: filepath without SUFFIX, print writes false filename
-        print ("Saving: %s" % filepath)
         quality = 50
         self.img.save(filepath, 'PNG', optimize=True,quality=quality)
 

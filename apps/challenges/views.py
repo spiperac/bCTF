@@ -43,7 +43,7 @@ class ChallengesListView(LoginRequiredMixin, View):
             'challenge').prefetch_related('account')
 
         context['challenges'] = Challenge.objects.prefetch_related(
-            'category').prefetch_related('solves_set').all()
+            'category').prefetch_related('solves').all()
         context['categories'] = Category.objects.prefetch_related('challenge_set').all()
         context['solved_by_user'] = solves.prefetch_related('challenge').values_list(
             'challenge', flat=True).filter(account=self.request.user.pk)

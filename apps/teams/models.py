@@ -16,4 +16,4 @@ class Team(models.Model):
 
     @property
     def number_solved(self):
-        return self.solves_set.count()
+        return self.solves.count()

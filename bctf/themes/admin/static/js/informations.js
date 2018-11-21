@@ -112,10 +112,7 @@ function randomColors(data_length) {
             fontColor: 'white'
         },
         legend: {
-            labels: {
-                fontColor: "white",
-                fontSize: 15
-            }
+            display: false,
         }
     }
 

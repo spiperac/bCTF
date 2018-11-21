@@ -31,32 +31,30 @@ class IndexView(UserIsAdminMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['challenges'] = Challenge.objects.prefetch_related('category')
+        context['challenges'] = Challenge.objects.prefetch_related('solves')
         context['categories'] = Category.objects.all()
 
         chall_stats = []
         total_challs = context['challenges'].count()
-        solved_challs = Solves.objects.values(
+        solved_challs = Solves.objects.prefetch_related('challenge').values(
             'challenge__pk').distinct().count()
         unsolved_challs = int(total_challs) - int(solved_challs)
 
-        accounts = Account.objects.prefetch_related('solves_set').order_by('-points')
+        accounts = Account.objects.prefetch_related('solves').order_by('-points')
         account_stats = []
         total_accounts = accounts.count()
         accounts_with_points = [
-            x for x in accounts if x.solves_set.count() > 0]
+            x for x in accounts if x.solves.count() > 0]
         accounts_with_zero = total_accounts - len(accounts_with_points)
         account_stats.append(len(accounts_with_points))
         account_stats.append(accounts_with_zero)
 
-        first_bloods = FirstBlood.objects.all().values_list(
+        first_bloods = FirstBlood.objects.prefetch_related('account').prefetch_related('challenge').values_list(
             'account__username', flat=True).distinct()
-        first_blood_accounts = [
-            x for x in first_bloods.prefetch_related('account')]
         first_blood_data = []
-        for account in first_blood_accounts:
-            solved = FirstBlood.objects.filter(
-                account__username=account).count()
+        fb_list = list(first_bloods)
+        for account in fb_list:
+            solved = fb_list.count(account)
             first_blood_data.append(solved)
 
         chall_stats.append(solved_challs)
@@ -82,13 +80,12 @@ class IndexView(UserIsAdminMixin, ListView):
             ]
         }
 
-        context['first_bloods_labels'] = first_blood_accounts
+        context['first_bloods_labels'] = fb_list
         context['first_bloods_data'] = first_blood_data
         context['chall_stats'] = chall_stats
         context['account_stats'] = account_stats
         context['accounts'] = accounts
         context['uptime'] = settings.GET_UPTIME()
-        context['challenges'] = Challenge.objects.all()
         context['top_10_stats'] = top_10_data
         return context
 

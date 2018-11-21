@@ -1,4 +1,4 @@
-import yaml
+import json
 import os
 from django.core.files.storage import FileSystemStorage
 from apps.challenges.models import Attachment, Category, Challenge, Flag
@@ -73,20 +73,20 @@ def validate_task_file(task_data):
     return valid
 
 
-def parse_task_yaml(task_dir):
-    with open("{0}/{1}".format(task_dir, "task.yml")) as data_file:
-        task = yaml.load(data_file)
+def parse_task_json(task_dir):
+    with open("{0}/{1}".format(task_dir, "task.json")) as data_file:
+        task = json.load(data_file)
     if validate_task_file(task):
         attachments = []
         if 'attachments' in task:
-            if task['attachments']:
-                for attachment in task['attachments']:
-                    attachment_file = "{0}/files/{1}".format(task_dir, attachment)
-                    if os.path.isfile(attachment_file):
-                        attachments.append(attachment_file)
+            print(task['attachments'])
+            if task['attachments'] == True:
+                files_path = "{0}/files/".format(task_dir)
+                attachments = [''.join((files_path, f)) for f in os.listdir(files_path) if os.path.isfile(''.join((files_path, f)))]
 
         new_task = Task(
             name=task['name'],
+            #author=task['author'],
             category=task['category'],
             description=task['description'],
             flag=task['flag'],
@@ -105,8 +105,8 @@ def feed_tasks(base_path):
     for task_dir_name in task_list:
         print("Trying to add {}".format(task_dir_name))
         task_full_path = "{0}/{1}".format(base_path, task_dir_name)
-        if os.path.isfile("{0}/task.yml".format(task_full_path)):
-            new_task = parse_task_yaml(task_full_path)
+        if os.path.isfile("{0}/task.json".format(task_full_path)):
+            new_task = parse_task_json(task_full_path)
             if new_task:
                 tasks.append(new_task)
 

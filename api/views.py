@@ -12,7 +12,7 @@ def scores(request):
         response['ranks'] = []
         total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
         
-        accounts_scored = Account.objects.prefetch_related('solves_set').filter(points__gt=0).filter(is_active=True).order_by('-points')
+        accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')
 
         for (rank, account) in enumerate(accounts_scored, start=1):
             team = {}
@@ -33,13 +33,13 @@ def top_scores(request):
         response['ranks'] = {}
         
         if Solves.objects.count() > 0:
-            for (rank, account) in enumerate(Account.objects.prefetch_related('solves_set').order_by('-points')[:10], start=1):
+            for (rank, account) in enumerate(Account.objects.prefetch_related('solves').order_by('-points')[:10], start=1):
                 team = {}
                 team['id'] = account.pk
                 team['name'] = account.username
                 team['solves'] = []
 
-                for solve in account.solves_set.select_related('challenge').iterator():
+                for solve in account.solves.select_related('challenge').iterator():
                     chall = {}
                     chall['chal'] = solve.challenge_id
                     chall['team'] = account.pk
