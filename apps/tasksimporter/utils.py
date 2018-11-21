@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from django.core.files.storage import FileSystemStorage
 from apps.challenges.models import Attachment, Category, Challenge, Flag
 
@@ -12,39 +13,50 @@ class Task:
         self.flag = flag
         self.points = points
         self.attachments = attachments
+        self.log = []
 
     def create(self):
-        # Category
-        if Category.objects.filter(name=self.category).count() == 0:
-            Category.objects.create(name=self.category)
+        self.log.append("Importing challenge: {0}".format(self.name))
+        try:
+            # Category
+            if Category.objects.filter(name=self.category).count() == 0:
+                Category.objects.create(name=self.category)
+                self.log.append("Category {0} created.".format(self.category))
 
-        # Challenge
-        category_obj = Category.objects.get(name=self.category)
-        challenge_obj = Challenge.objects.create(
-            name=self.name,
-            category=category_obj,
-            description=self.description,
-            points=self.points
-        )
+            # Challenge
+            category_obj = Category.objects.get(name=self.category)
+            challenge_obj = Challenge.objects.create(
+                name=self.name,
+                category=category_obj,
+                description=self.description,
+                points=self.points
+            )
+            self.log.append('Challenge added.')
 
-        # Flag
-        Flag.objects.create(
-            challenge=challenge_obj,
-            text=self.flag
-        )
+            # Flag
+            Flag.objects.create(
+                challenge=challenge_obj,
+                text=self.flag
+            )
+            self.log.append('Flag {0} added.'.format(self.flag))
 
-        # Attachments
-        if self.attachments is not None:
-            for attachment in self.attachments:
-                fs = FileSystemStorage()
-                file_obj = open(attachment, 'rb')
-                filename = fs.save("{0}".format(file_obj.name), file_obj)
-                fs.url(filename)
+            # Attachments
+            if self.attachments is not None:
+                for attachment in self.attachments:
+                    fs = FileSystemStorage()
+                    file_obj = open(attachment, 'rb')
+                    filename = fs.save("{0}".format(file_obj.name), file_obj)
+                    fs.url(filename)
 
-                new_attachment = Attachment.objects.create(
-                    challenge=challenge_obj,
-                )
-                new_attachment.data.save(file_obj.name.split("/")[-1], file_obj)
+                    new_attachment = Attachment.objects.create(
+                        challenge=challenge_obj,
+                    )
+                    new_file_name = file_obj.name.split("/")[-1]
+                    new_attachment.data.save(new_file_name, file_obj)
+                    self.log.append('   - Attachment {0} added.'.format(new_file_name))
+            self.log.append("Success!")
+        except Exception as exc:
+            self.log.append("Error: Importing of {0} failed with: {1}".format(self.name, exc))
 
 
 def locate_tasks(base_path):
@@ -79,7 +91,6 @@ def parse_task_json(task_dir):
     if validate_task_file(task):
         attachments = []
         if 'attachments' in task:
-            print(task['attachments'])
             if task['attachments'] == True:
                 files_path = "{0}/files/".format(task_dir)
                 attachments = [''.join((files_path, f)) for f in os.listdir(files_path) if os.path.isfile(''.join((files_path, f)))]
@@ -111,3 +122,7 @@ def feed_tasks(base_path):
                 tasks.append(new_task)
 
     return tasks
+
+
+def clean_base_path(base_path):
+    shutil.rmtree(base_path, ignore_errors=True)

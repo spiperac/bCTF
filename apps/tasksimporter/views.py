@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import View
 from apps.tasksimporter.forms import ImportTasksForm
 from django.core.files.storage import FileSystemStorage
-from apps.tasksimporter.utils import feed_tasks
+from apps.tasksimporter.utils import feed_tasks, clean_base_path
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -36,11 +36,12 @@ class ImportTasksView(UserIsAdminMixin, View):
 
             # Parsing tasks
             tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
+            import_log = []
             tasks = feed_tasks(base_path=tasks_base_dir)
             for task in tasks:
                 task.create()
+                import_log.append(task.log)
 
-            else:
-                print("File does not exist!")
+            clean_base_path(tasks_base_dir)
 
-            return render(self.request, 'templates/tasks/import.html', {'form': self.form_class})
+            return render(self.request, 'templates/tasks/import.html', {'form': self.form_class, 'import_log': import_log})
