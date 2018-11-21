@@ -38,6 +38,9 @@ class DockerTool(object):
     def get_image(self, image_id):
         return self.client.images.get(image_id)
 
+    def remove_image(self, image_id):
+        self.api_client.remove_image(image_id)
+
     def create_image(self, path, image_name):
         return self.api_client.build(
             path=path, 

@@ -183,7 +183,7 @@ class DockerImageActionsView(UserIsAdminMixin, View):
             if action == "create":
                 dt.create_container(image_id)
             elif action == "remove":
-                image.remove()
+                dt.remove_image(image_id)
             else:
                 return HttpResponse(status=400)
 
