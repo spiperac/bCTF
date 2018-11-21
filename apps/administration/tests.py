@@ -57,7 +57,7 @@ class AdministrationTest(TestCase):
         """
         client = self.login_as_admin()
 
-        response = client.get(reverse('administration:informations'))
+        response = client.get(reverse('administration:index'))
         self.assertEqual(response.status_code, 200)
 
     def test_ctf_view(self):
