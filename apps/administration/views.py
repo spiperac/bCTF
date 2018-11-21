@@ -14,6 +14,7 @@ from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Hint, Solves)
 from apps.scoreboard.models import News
 from apps.scoreboard.utils import get_key, set_key, get_themes, set_theme, get_theme
+from apps.accounts.utils import generate_color
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -35,7 +36,7 @@ class IndexView(UserIsAdminMixin, TemplateView):
             'challenge__pk').distinct().count()
         unsolved_challs = int(total_challs) - int(solved_challs)
 
-        accounts = Account.objects.prefetch_related('solves_set')
+        accounts = Account.objects.prefetch_related('solves_set').order_by('-points')
         account_stats = []
         total_accounts = accounts.count()
         accounts_with_points = [
@@ -56,6 +57,27 @@ class IndexView(UserIsAdminMixin, TemplateView):
 
         chall_stats.append(solved_challs)
         chall_stats.append(unsolved_challs)
+        top_10 = accounts[:10]
+
+        top_10_data = {}
+        top_10_labels = []
+        top_10_scores = []
+        top_10_colors = []
+        for team in top_10:
+            top_10_labels.append(team.username)
+            top_10_scores.append(team.points)
+            top_10_colors.append(generate_color(team.username))
+        
+        top_10_data = {
+            'labels': top_10_labels,
+            'datasets': [
+                {
+                    'data': top_10_scores,
+                    'backgroundColor': top_10_colors
+                }
+            ]
+        }
+
         context['first_bloods_labels'] = first_blood_accounts
         context['first_bloods_data'] = first_blood_data
         context['chall_stats'] = chall_stats
@@ -65,6 +87,7 @@ class IndexView(UserIsAdminMixin, TemplateView):
         context['bad_submissions'] = BadSubmission.objects.prefetch_related(
             'account').prefetch_related('challenge').all()
         context['challenges'] = Challenge.objects.all()
+        context['top_10_stats'] = top_10_data
         return context
 
 

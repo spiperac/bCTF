@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import check_password
 
 
 class AccountCreationForm(UserCreationForm):
+    username = forms.CharField(min_length=6, max_length=64)
 
     class Meta(UserCreationForm.Meta):
         model = Account

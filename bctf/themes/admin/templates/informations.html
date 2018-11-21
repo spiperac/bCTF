@@ -109,13 +109,10 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="card border-secondary">
                                 <div class="card-body">
-                                    {% if solves %}
                                         <div style="height: 300px">
                                             <canvas id="id_top_teams_chart" width="300px"></canvas>
                                         </div>
-                                    {% else %}
-                                        <h2>No solves yet!</h2>
-                                    {% endif %}
+            
                                 </div>
                         </div>
                     </div>
@@ -169,12 +166,17 @@ $('document').ready(function() {
         var ctx = document.getElementById('id_accounts_solved_chart').getContext('2d');
         var stats = {{account_stats|safe}};
         solvedAtLeastOne(ctx, stats);
+
         {% if first_bloods_data %}
             var ctx = document.getElementById('id_bloods_chart').getContext('2d');
             var first_bloods_labels = {{first_bloods_labels|safe}};
             var first_bloods_data = {{first_bloods_data|safe}};
             firstBloods(ctx, first_bloods_labels, first_bloods_data);
         {% endif %}
+
+        var ctx = document.getElementById('id_top_teams_chart').getContext('2d');
+        var team_stats = {{top_10_stats|safe}};
+        topTeams(ctx, team_stats)
 })
 </script>
 

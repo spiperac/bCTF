@@ -127,17 +127,8 @@ function randomColors(data_length) {
 
  }  
 
- function topTeams(ctx, data) {
- 
-    data = {
-        datasets: [{
-            data: data,
-            backgroundColor: randomColors(data.length)
-        }],
-        borderWidth: 1,
-        labels: labels,
-    };
-    
+ function topTeams(ctx, team_stats) {
+    console.log(team_stats);
     options = {
         maintainAspectRatio : false,
 
@@ -148,15 +139,31 @@ function randomColors(data_length) {
             fontColor: 'white'
         },
         legend: {
-            labels: {
-                fontColor: "white",
-                fontSize: 15
-            }
+            display: false,
+        },
+        scales: {
+            xAxes: [{
+                ticks: {
+                    fontColor: "#fff",
+                    beginAtZero: false
+                },
+                gridLines: {
+                    display:false
+                } 
+            }],
+            yAxes: [{
+                ticks: {
+                    fontColor: "#fff",
+                },
+                gridLines: {
+                    display:false
+                }   
+            }]
         }
     }
     var topTeamsChart = new Chart(ctx,{
         type: 'bar',
-        data: data,
+        data: team_stats,
         options: options
     });
 }
