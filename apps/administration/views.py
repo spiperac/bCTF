@@ -22,7 +22,11 @@ class UserIsAdminMixin(UserPassesTestMixin):
         return self.request.user.is_staff
 
 
-class IndexView(UserIsAdminMixin, TemplateView):
+class IndexView(UserIsAdminMixin, ListView):
+    queryset = BadSubmission.objects.prefetch_related(
+        'account').prefetch_related('challenge').all()
+    context_object_name = 'bad_submissions'
+    paginate_by = 10
     template_name = 'templates/informations.html'
 
     def get_context_data(self, **kwargs):
@@ -67,7 +71,7 @@ class IndexView(UserIsAdminMixin, TemplateView):
             top_10_labels.append(team.username)
             top_10_scores.append(team.points)
             top_10_colors.append(generate_color(team.username))
-        
+
         top_10_data = {
             'labels': top_10_labels,
             'datasets': [
@@ -84,8 +88,6 @@ class IndexView(UserIsAdminMixin, TemplateView):
         context['account_stats'] = account_stats
         context['accounts'] = accounts
         context['uptime'] = settings.GET_UPTIME()
-        context['bad_submissions'] = BadSubmission.objects.prefetch_related(
-            'account').prefetch_related('challenge').all()
         context['challenges'] = Challenge.objects.all()
         context['top_10_stats'] = top_10_data
         return context

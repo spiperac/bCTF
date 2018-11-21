@@ -1,15 +1,16 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
-
+from django.db.models import Sum
 from apps.accounts.models import Account
 from apps.challenges.models import Solves, Challenge
+
 
 def scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = []
-        number_challenges = Challenge.objects.count()
+        total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
         
         accounts_scored = Account.objects.prefetch_related('solves_set').filter(points__gt=0).filter(is_active=True).order_by('-points')
 
@@ -19,7 +20,7 @@ def scores(request):
             team['name'] = account.username
             team['country'] = account.country.flag_css
             team['points'] = account.points
-            team['precentage'] = str(round((account.number_solved * 100) / number_challenges if account.number_solved or number_challenges else 0, 2))
+            team['precentage'] = str(round((account.points * 100) / total_points if account.number_solved or total_points else 0, 2))
             team['avatar'] = account.get_avatar
             team['rank'] = rank
             response['ranks'].append(team)
