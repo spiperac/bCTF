@@ -17,6 +17,10 @@ class DockerTool(object):
     def connect(self):
         try:
             self.client = docker.from_env()
+            self.client.create_host_config(
+                publish_all_ports=True,
+                )
+
         except Exception as exception:
             logger.error("Unable to connect to docker host: {0}".format(exception))
 
@@ -33,7 +37,27 @@ class DockerTool(object):
         return self.client.images.get(image_id)
 
     def create_container(self, image_id):
-        return self.client.containers.create(image_id)
+        return self.client.containers.create(image_id, publish_all_ports=True)
+
+    def container_action(self, container_id, action):
+            container = self.get_container(container_id)
+
+            if action == "restart":
+                container.restart()
+            elif action == "stop":
+                container.stop()
+            elif action == "pause":
+                if container.status == "paused":
+                    container.unpause()
+                else:
+                    container.pause()
+            elif action == "start":
+                container.start()
+            elif action == "remove":
+                container.remove()
+            else:
+                return False
+            return True
 
     def execute(self, container_id, cmd):
         container = self.get_container(container_id)

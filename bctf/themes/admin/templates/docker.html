@@ -1,6 +1,6 @@
 {% extends 'templates/base.html' %}
 {% load static %}
-
+{% load docker_tags %}
 {% block extra_js %}
 {% endblock %}
 
@@ -52,9 +52,8 @@
                             <td>{{container.name}}</td>
                             <td>{{container.image.attrs.RepoTags.0}}</td>
                             <td>
-                                {% for port in container.attrs.NetworkSettings.Ports %}
-                                    {{port}}
-                                {% endfor %}
+                                {{container.attrs.NetworkSettings.Ports|get_port}}
+
                             </td>
                             <td>{{container.status}}</td>
                             <td>

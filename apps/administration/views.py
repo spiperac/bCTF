@@ -162,22 +162,7 @@ class DockerActionsView(UserIsAdminMixin, View):
             container_id = form.cleaned_data['container_id']
             action = form.cleaned_data['action']
             dt = DockerTool()
-            container = dt.get_container(container_id)
-
-            if action == "restart":
-                container.restart()
-            elif action == "stop":
-                container.stop()
-            elif action == "pause":
-                if container.status == "paused":
-                    container.unpause()
-                else:
-                    container.pause()
-            elif action == "start":
-                container.start()
-            elif action == "remove":
-                container.remove()
-            else:
+            if not dt.container_action(container_id, action):
                 return HttpResponse(status=400)
 
             return HttpResponse(status=204)
