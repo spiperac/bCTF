@@ -5,10 +5,12 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.accounts.views import RegistrationView, ProfileView, AccountUpdateView, Login
 from apps.installer.views import InstallView
-from apps.scoreboard import views as scoreboard_views
+from bctf.views import error_view_403, error_view_404, error_view_500
+from django.conf.urls import handler403, handler404, handler500
 
-handler404 = scoreboard_views.handler404
-handler500 = scoreboard_views.handler500
+handler403 = error_view_403
+handler404 = error_view_404
+handler500 = error_view_500
 
 urlpatterns = [
     # accounts

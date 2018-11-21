@@ -35,9 +35,9 @@ class ScoreboardView(View):
         return render(self.request, get_theme_url('templates/scoreboard/list.html'))
 
 
-def handler404(request):
+def error_view_404(request):
     return render(request, get_theme_url('templates/errors/404.html'), status=404)
 
 
-def handler500(request):
+def error_view_500(request):
     return render(request, get_theme_url('templates/errors/500.html'), status=500)
