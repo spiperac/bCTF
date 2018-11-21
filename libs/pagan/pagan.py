@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-from plugins.pagan import generator as generator
+from libs.pagan import generator as generator
 from PIL import Image, ImageDraw
 
 import os

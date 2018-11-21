@@ -1,5 +1,5 @@
 import logging
-from plugins import pagan
+from libs import pagan
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
