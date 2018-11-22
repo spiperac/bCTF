@@ -27,7 +27,6 @@ class ThemeStaticFinder(BaseFinder):
     def __init__(self, app_names=None, *args, **kwargs):
         # List of locations with static files
         self.locations = []
-        self.theme = get_theme()
         # Maps dir paths to an appropriate storage instance
         self.storages = OrderedDict()
         for root in settings.STATICFILES_DIRS:
@@ -77,7 +76,7 @@ class ThemeStaticFinder(BaseFinder):
         for prefix, root in self.locations:
             if root not in searched_locations:
                 searched_locations.append(root)
-            matched_path = self.find_location(root, "{0}/static/{1}".format(self.theme, path), prefix)
+            matched_path = self.find_location(root, "{0}/static/{1}".format(get_theme(), path), prefix)
             if matched_path:
                 if not all:
                     return matched_path

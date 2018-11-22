@@ -12,7 +12,7 @@ def scores(request):
         response['ranks'] = []
         total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
         
-        accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')
+        accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')[:100]
 
         for (rank, account) in enumerate(accounts_scored, start=1):
             team = {}
