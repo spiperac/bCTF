@@ -2,7 +2,8 @@ import time
 from datetime import timedelta
 
 START_TIME = time.time()
-# ...
+
+
 def GET_UPTIME():
     """
     Returns the number of seconds since the program started.

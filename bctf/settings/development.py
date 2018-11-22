@@ -9,10 +9,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*", ]
 
-if DEBUG == True:
+if DEBUG is True:
     INSTALLED_APPS += [
-        'django.contrib.admin', 
-        'debug_toolbar',                
+        'django.contrib.admin',
+        'debug_toolbar',
     ]
 
     MIDDLEWARE += [

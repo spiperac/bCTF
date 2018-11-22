@@ -21,7 +21,7 @@ class DockerTool(object):
             self.api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
             self.client.create_host_config(
                 publish_all_ports=True,
-                )
+            )
 
         except Exception as exception:
             logger.error("Unable to connect to docker host: {0}".format(exception))
@@ -43,7 +43,7 @@ class DockerTool(object):
 
     def create_image(self, path, image_name):
         return self.api_client.build(
-            path=path, 
+            path=path,
             rm=True,
             quiet=True,
             tag=image_name)

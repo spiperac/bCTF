@@ -2,7 +2,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView
 from apps.pages.models import Page
-from config.themes import get_theme_url
 
 
 class UserIsAdminMixin(UserPassesTestMixin):

@@ -4,7 +4,6 @@ from django.views.generic import View
 from apps.accounts.models import Account
 from apps.scoreboard.models import News
 from apps.challenges.models import Challenge, BadSubmission
-from config.themes import get_theme_url
 
 
 class IndexView(View):

@@ -10,6 +10,7 @@ class ThemeLoader(Loader):
     def __init__(self, engine, dirs=None):
         super().__init__(engine)
         self.dirs = dirs
+        self.theme = get_theme()
 
     def get_dirs(self):
         return self.dirs if self.dirs is not None else self.engine.dirs
@@ -27,7 +28,7 @@ class ThemeLoader(Loader):
         in template_dirs. For security reasons, if a path doesn't lie inside
         one of the template_dirs it is excluded from the result set.
         """
-        template_name = "{0}/{1}".format(get_theme(), template_name)
+        template_name = "{0}/{1}".format(self.theme, template_name)
 
         for template_dir in self.get_dirs():
             try:

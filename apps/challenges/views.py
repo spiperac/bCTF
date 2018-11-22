@@ -17,7 +17,6 @@ from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Solves,
                                     Hint)
 from apps.scoreboard.utils import get_key
-from config.themes import get_theme_url
 
 
 class UserIsAdminMixin(UserPassesTestMixin):

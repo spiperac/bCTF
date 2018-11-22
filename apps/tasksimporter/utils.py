@@ -21,7 +21,7 @@ class Task:
         dt = DockerTool()
         image_name = "".join(self.name.split()).lower()
         build = dt.create_image(path, "{0}/{1}".format(self.category, image_name))
-   
+
         if build:
             self.log.append('Docker image created: {0}'.format(self.name))
         else:
@@ -65,13 +65,12 @@ class Task:
                 new_file_name = file_obj.name.split("/")[-1]
                 new_attachment.data.save(new_file_name, file_obj)
                 self.log.append('Attachment {0} added.'.format(new_file_name))
-        
+
         if self.docker_path:
             print(self.docker_path)
             self.create_docker_image(self.docker_path)
-            
-        self.log.append("Success!")
 
+        self.log.append("Success!")
 
 
 def locate_tasks(base_path):
@@ -108,18 +107,18 @@ def parse_task_json(task_dir):
         docker_path = False
 
         if 'attachments' in task:
-            if task['attachments'] == True:
+            if task['attachments'] is True:
                 files_path = "{0}/files/".format(task_dir)
                 attachments = [''.join((files_path, f)) for f in os.listdir(files_path) if os.path.isfile(''.join((files_path, f)))]
 
         if 'docker' in task:
             print('docker found!')
-            if task['docker'] == True:
+            if task['docker'] is True:
                 docker_path = "{0}/docker/".format(task_dir)
 
         new_task = Task(
             name=task['name'],
-            #author=task['author'],
+            # author=task['author'],
             category=task['category'],
             description=task['description'],
             flag=task['flag'],

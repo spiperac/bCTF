@@ -10,7 +10,6 @@ from django.views.generic import CreateView, View, UpdateView
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
 from apps.challenges.models import Solves, FirstBlood, Challenge
-from config.themes import get_theme_url
 
 
 class RegistrationView(CreateView):

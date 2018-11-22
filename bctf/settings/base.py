@@ -53,7 +53,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'themes/'),
-            ],
+        ],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -128,11 +128,11 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_FINDERS = (
-  'custom.theme_staticfinder.ThemeStaticFinder',
-  'django.contrib.staticfiles.finders.FileSystemFinder',
-  'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'custom.theme_staticfinder.ThemeStaticFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-ZIP_STORAGE_ROOT =  os.path.join(MEDIA_ROOT, 'tmp')
+ZIP_STORAGE_ROOT = os.path.join(MEDIA_ROOT, 'tmp')
