@@ -14,7 +14,7 @@ class PageView(DetailView):
     model = Page
 
     def get_template_names(self):
-        return list([get_theme_url('templates/pages/page.html')])
+        return list(['templates/pages/page.html'])
 
 
 class PageCreateView(UserIsAdminMixin, LoginRequiredMixin, CreateView):

@@ -1,4 +1,4 @@
-{% extends 'light/templates/base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 {% block extra_css %}
@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="/static/{{theme}}{% static 'js/Chart.min.js' %}"></script>
-    <script src="/static/{{theme}}{% static 'js/scoreboard.js' %}"></script>    
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/scoreboard.js' %}"></script>    
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                 <h1><i class="fas fa-trophy" style="color:goldenrod"></i> Scoreboard</h1>
             </div>
             <div class="p-2 bd-highlight">
-                <img src="/static/{{theme}}{% static 'img/live_icon.png' %}" class="img-fluid" width="60" height="30">
+                <img src="{% static 'img/live_icon.png' %}" class="img-fluid" width="60" height="30">
             </div>
         </div>
         <hr />

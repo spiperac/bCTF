@@ -52,10 +52,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'themes/admin/'),
             os.path.join(BASE_DIR, 'themes/'),
             ],
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -63,6 +61,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'loaders': [
+                'django.template.loaders.app_directories.Loader',
+                'custom.admin_loader.AdminTemplateLoader',
+                'custom.theme_loader.ThemeLoader'
+            ]
         },
     },
 ]
@@ -122,6 +125,12 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'themes/'),
+)
+
+STATICFILES_FINDERS = (
+  'custom.theme_staticfinder.ThemeStaticFinder',
+  'django.contrib.staticfiles.finders.FileSystemFinder',
+  'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
 MEDIA_URL = '/media/'

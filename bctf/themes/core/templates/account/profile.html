@@ -1,10 +1,10 @@
-{% extends 'core/templates/base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 {% load account_tags %}
 
 {% block extra_js %}
-    <script src="/static/{{theme}}{% static 'js/Chart.min.js' %}"></script>
-    <script src="/static/{{theme}}{% static 'js/profile.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
 
 {% block content %}

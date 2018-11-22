@@ -23,7 +23,7 @@ class Task:
         build = dt.create_image(path, "{0}/{1}".format(self.category, image_name))
    
         if build:
-            self.log.append('- Docker image created: {0}'.format(self.name))
+            self.log.append('Docker image created: {0}'.format(self.name))
         else:
             self.log.append('Error: Image creation failed for: {0}'.format(self.name))
 
@@ -64,7 +64,7 @@ class Task:
                 )
                 new_file_name = file_obj.name.split("/")[-1]
                 new_attachment.data.save(new_file_name, file_obj)
-                self.log.append('   - Attachment {0} added.'.format(new_file_name))
+                self.log.append('Attachment {0} added.'.format(new_file_name))
         
         if self.docker_path:
             print(self.docker_path)

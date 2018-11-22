@@ -51,7 +51,7 @@ class ChallengesListView(LoginRequiredMixin, View):
             c=Count('challenge')).order_by('-c')
         context['first_bloods'] = FirstBlood.objects.prefetch_related(
             'account').prefetch_related('challenge')
-        return render(self.request, get_theme_url('templates/challenge/list_challenges.html'), context=context)
+        return render(self.request, 'templates/challenge/list_challenges.html', context=context)
 
 
 class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
@@ -67,7 +67,7 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
         return context
 
     def get_template_names(self):
-        return list([get_theme_url('templates/challenge/challenge.html')])
+        return list(['templates/challenge/challenge.html'])
 
     def form_valid(self, form):
         challenge_id = form.cleaned_data['challenge_id']
@@ -87,16 +87,16 @@ class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
                     account=self.request.user,
                 )
 
-                return render(self.request, get_theme_url('templates/challenge/flag_success.html'), {'challenge': challenge})
+                return render(self.request, 'templates/challenge/flag_success.html', {'challenge': challenge})
             else:
                 new_bad_submission = BadSubmission.objects.create(
                     challenge=challenge,
                     account=self.request.user,
                     flag=flag
                 )
-                return render(self.request, get_theme_url('templates/challenge/challenge.html'), {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
+                return render(self.request, 'templates/challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Wrong flag!'})
         else:
-            return render(self.request, get_theme_url('templates/challenge/challenge.html'), {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
+            return render(self.request, 'templates/challenge/challenge.html', {'challenge': challenge, 'solvers': Solves.objects.filter(challenge=challenge), 'error': 'Already solved!'})
 
 
 class CreateChallengeView(SuccessMessageMixin, LoginRequiredMixin, UserIsAdminMixin, FormView):

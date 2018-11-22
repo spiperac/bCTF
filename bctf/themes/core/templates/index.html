@@ -1,9 +1,9 @@
-{% extends 'core/templates/base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 {% load config_extras %}
 
 {% block extra_js %}
-    <script src="/static/{{theme}}{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
 
 {% block content %}

@@ -1,8 +1,8 @@
-{% extends 'light/templates/base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 {% block extra_js%}
-    <script src="/static/{{theme}}{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -68,7 +68,7 @@
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             modal.html(
-                `{% include 'light/templates/challenge/challenge_loading.html' %}`
+                `{% include 'templates/challenge/challenge_loading.html' %}`
             )
             var challengeID = $(event.relatedTarget).data('challenge-id')
             var formURL = `/challenges/${challengeID}/flag/`

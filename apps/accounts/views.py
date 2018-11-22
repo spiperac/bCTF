@@ -18,7 +18,7 @@ class RegistrationView(CreateView):
     success_url = reverse_lazy('login')
 
     def get_template_names(self):
-        return list([get_theme_url('templates/registration/signup.html')])
+        return list(['templates/registration/signup.html'])
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -30,7 +30,7 @@ class Login(LoginView):
     redirect_authenticated_user = True
 
     def get_template_names(self):
-        return list([get_theme_url('templates/registration/login.html')])
+        return list(['templates/registration/login.html'])
 
 
 class ProfileView(View):
@@ -68,14 +68,14 @@ class ProfileView(View):
         context['first_bloods'] = first_bloods if first_bloods else 0
         context['solved_stats'] = [solves.count(), Challenge.objects.count() - solves.count()]
         context['solved_dataset'] = json.dumps(dataset)
-        return render(self.request, get_theme_url('templates/account/profile.html'), context=context)
+        return render(self.request, 'templates/account/profile.html', context=context)
 
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AccountChangeForm
 
     def get_template_names(self):
-        return list([get_theme_url('templates/account/update.html')])
+        return list(['templates/account/update.html'])
 
     def get_object(self):
         return self.request.user

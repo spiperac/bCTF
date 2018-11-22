@@ -1,13 +1,13 @@
-{% extends 'core/templates/base.html' %}
+{% extends 'templates/base.html' %}
 {% load static %}
 
 {% block extra_css%}
-    <link rel="stylesheet" type="text/css" href="/static/{{theme}}{% static 'css/hexagons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/hexagons.css' %}">
 {% endblock %}
 
 {% block extra_js%}
-    <script src="/static/{{theme}}{% static 'js/jquery.form.js' %}"></script>
-    <script src="/static/{{theme}}{% static 'js/hexagons.min.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/hexagons.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -184,7 +184,7 @@
         $('#challengeModals').on('show.bs.modal', function (event) {
             var modal = $(this)
             modal.html(
-                `{% include 'core/templates/challenge/challenge_loading.html' %}`
+                `{% include 'templates/challenge/challenge_loading.html' %}`
             )
             var challengeID = $(event.relatedTarget).data('challenge-id')
             var formURL = `/challenges/${challengeID}/flag/`
