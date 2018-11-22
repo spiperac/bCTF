@@ -8,7 +8,7 @@ SECRET_KEY = 'z6u+3oksy50%8xepzcrgc&1t3mgjd6)oy=qyqm-hb5-j*3a=q@'
 DEBUG = False
 
 ALLOWED_HOSTS = ['*', ]
-STATICFILES_STORAGE = 'custom.theme_storage.ThemeStorage'
+#STATICFILES_STORAGE = 'custom.theme_storage.ThemeStorage'
 
 STATIC_ROOT = "/var/tmp/static"
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media/')
