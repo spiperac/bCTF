@@ -1,7 +1,7 @@
 from .base import *
 from .uptime import *
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret! This is fine for development on your *LOCAL* server.
 SECRET_KEY = 'z6u+3oksy50%8xepzcrgc&1t3mgjd6)oy=qyqm-hb5-j*3a=q@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -22,6 +22,14 @@ if DEBUG is True:
     ]
 
     INTERNAL_IPS = ('127.0.0.1', )
+
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/bctf_cache',
+    }
+}
 
 LOGGING = {
     'version': 1,

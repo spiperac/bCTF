@@ -3,7 +3,8 @@ from .base import *
 from .email import *
 from .uptime import *
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret! This will try to get secret key from environment varaible.
+# If that fails it will create .secret_key file for you, and populate it with random secured SECRET_KEY token.
 if not os.environ.get('SECRET_KEY'):
     try:
         with open('.secret_key', 'rb') as secret_key:
@@ -29,6 +30,14 @@ ALLOWED_HOSTS = ['*', ]
 
 STATIC_ROOT = "/var/tmp/static"
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media/')
+
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/bctf_cache',
+    }
+}
 
 # Security
 
