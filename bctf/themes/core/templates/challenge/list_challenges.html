@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block extra_css%}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/hexagons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/hexagons.css">
 {% endblock %}
 
 {% block extra_js%}
-    <script src="{% static 'js/jquery.form.js' %}"></script>
-    <script src="{% static 'js/hexagons.min.js' %}"></script>
+    <script src="{{theme_static}}/js/jquery.form.js"></script>
+    <script src="{{theme_static}}/js/hexagons.min.js"></script>
 {% endblock %}
 
 {% block content %}

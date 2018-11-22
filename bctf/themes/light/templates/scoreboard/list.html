@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+    <link rel="stylesheet" href="{{theme_static}}/flags/sprite-hq.css">
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/Chart.min.js' %}"></script>
-    <script src="{% static 'js/scoreboard.js' %}"></script>    
+    <script src="{{theme_static}}/js/Chart.min.js"></script>
+    <script src="{{theme_static}}js/scoreboard.js"></script>    
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                 <h1><i class="fas fa-trophy" style="color:goldenrod"></i> Scoreboard</h1>
             </div>
             <div class="p-2 bd-highlight">
-                <img src="{% static 'img/live_icon.png' %}" class="img-fluid" width="60" height="30">
+                <img src="{{theme_static}}/img/live_icon.png" class="img-fluid" width="60" height="30">
             </div>
         </div>
         <hr />
