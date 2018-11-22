@@ -5,7 +5,7 @@ $('document').ready(function() {
 })
 
 function populate_events(){
-    var scoresURL = "/api/events";
+    var scoresURL = "/api/events/";
     $.getJSON( scoresURL, function( data ) {
         $.each( data.events, function( key, val ) {
             feed_events(val);
