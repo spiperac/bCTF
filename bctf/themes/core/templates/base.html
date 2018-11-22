@@ -12,13 +12,13 @@
     <title>{{ctf_name}}</title>
     
     {% load static %}
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{{theme_static}}/img/favicon.png"/>
 
     <!-- CSS files -->
     
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'fonts/css/all.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/fonts/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/custom.css">
     {% block extra_css%}
     
     {% endblock %}
@@ -109,15 +109,15 @@
         </p>
     </div>
 <!-- JavaScript files -->
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{{theme_static}}/js/moment.min.js"></script>
+<script src="{{theme_static}}/js/jquery.min.js"></script>
 
 {% block modals %}
 
 {% endblock %}
 
-<script src="{% static 'js/popper.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{{theme_static}}/js/popper.min.js"></script>
+<script src="{{theme_static}}/js/bootstrap.min.js"></script>
 <!-- JavaScript files -->
 {% block extra_js%}
 {% endblock %}
