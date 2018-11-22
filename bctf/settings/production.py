@@ -1,9 +1,26 @@
+import secrets
 from .base import *
 from .email import *
 from .uptime import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'z6u+3oksy50%8xepzcrgc&1t3mgjd6)oy=qyqm-hb5-j*3a=q@'
+if not os.environ.get('SECRET_KEY'):
+    try:
+        with open('.secret_key', 'rb') as secret_key:
+            SECRET_KEY = secret_key.read()
+    except (OSError, IOError):
+        SECRET_KEY = None
+
+    if not SECRET_KEY:
+        SECRET_KEY = secrets.token_urlsafe(50)
+        try:
+            with open('.secret_key', 'w') as secret_key:
+                secret_key.write(SECRET_KEY)
+                secret_key.flush()
+        except (OSError, IOError):
+            pass
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = False
 
