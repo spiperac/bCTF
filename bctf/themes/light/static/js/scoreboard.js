@@ -129,7 +129,7 @@ function scores_graph() {
 
         $('#loaderScoreboard').hide();
         var ctx = document.getElementById('score-graph-live').getContext('2d');
-        var LineChartDemo = new Chart(ctx , {
+        window.scoreboardChart = new Chart(ctx , {
             type: "scatter",
             data: chartData, 
             responsive: true,
@@ -147,7 +147,7 @@ function scores_graph() {
                     var text = []; 
                     text.push('<ul class="' + chart.id + '-legend">'); 
                     for (var i = 0; i < chart.data.datasets.length; i++) { 
-                        text.push('<li style="list-style:none;"><i class="fas fa-circle" style="color:' + 
+                        text.push('<li style="list-style:none;" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"><i class="fas fa-circle" style="color:' + 
                                    chart.data.datasets[i].backgroundColor + 
                                    '"></i> '); 
                         if (chart.data.datasets[i].label) { 
@@ -183,10 +183,23 @@ function scores_graph() {
                 }
             }
         });
-        $('#chart-legend').html(LineChartDemo.generateLegend());
+        $('#chart-legend').html(scoreboardChart.generateLegend());
         
     });
 }
+
+// Show/hide chart by click legend
+updateDataset = function(e, datasetIndex) {
+    var index = datasetIndex;
+    var ci = e.view.scoreboardChart;
+    var meta = ci.getDatasetMeta(index);
+
+    // See controller.isDatasetVisible comment
+    meta.hidden = meta.hidden === null? !ci.data.datasets[index].hidden : null;
+
+    // We hid a dataset ... rerender the chart
+    ci.update();
+};
 
 function cumulativesum (arr) {
     var result = arr.concat();
