@@ -19,6 +19,8 @@ def scores(request):
             team['id'] = account.pk
             team['name'] = account.username
             team['country'] = account.country.flag_css
+            team['country_name'] = account.country.name
+            team['country_code'] = account.country.code
             team['points'] = account.points
             team['precentage'] = str(round((account.points * 100) / total_points if account.number_solved or total_points else 0, 2))
             team['avatar'] = account.get_avatar

@@ -24,7 +24,7 @@ function clean_table() {
 
 function feed_table(element) {
     if (element.country) {
-        var show_county = `<i class="flag2x ${element.country}"></i>`;
+        var show_county = `<i class="flag1x ${element.country}"></i>`;
     } else {
         var show_county = ``;
     }
@@ -42,7 +42,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td>${show_county}</td>
+                <td>${show_county} (${element.country_name})</td>
                 <td class="td-points">${element.points}</td>
             </tr>
             `
@@ -61,7 +61,7 @@ function feed_table(element) {
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
-                <td>${show_county}</td>
+                <td>${show_county}  (${element.country_name})</td>
                 <td class="td-points">${element.points}</td>
             </tr>
             `
