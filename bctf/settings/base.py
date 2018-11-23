@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'apps.pages',
     'apps.administration',
     'apps.tasksimporter',
+    'plugins.quizz_challenges',
 
     # installer
     'apps.installer',
