@@ -8,79 +8,53 @@
 {% endblock %}
 
 {% block content %}
-<div class="row tall-row">
-    <div class="col-lg-12">
-        <div class="d-flex justify-content-between bd-highlight mb-3">
-            <div class="p-2 bd-highlight">
-                <h1>#{{rank}} </h1>
-            </div>
-            <div class="p-2 bd-highlight">
-                <h1>
-                    {{object.username}} {% if rank == 1 %} <i class="fas fa-crown" style="color:goldenrod"></i> {% endif %}
-                </h1>
-            </div>
-            <div class="p-2 bd-highlight">
-            </div>
-        </div>
-        <hr>
-    </div>
-</div>
-<div class="content">
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div class="card bg-light">
-                <div class="row no-gutters">
-                    <div class="col-auto">
-                        <img src="{{ object.get_avatar_medium }}" width="128" height="128" class="img-fluid" alt="">
-                    </div>
-                    <div class="col">
-                        <div class="card-block px-2">
-                            <h4 class="card-title">{{object.username}}</h4>
-                            <p class="card-text">Currently at <b>{{rank|to_word}}</b> place!</p>
-                            {% if object.country %}
-                                <p class="card-text">Team is from  <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20"></p>
-                            {% endif %}
-                            <h4>Points: <span class="badge badge-dark"><b>{{object.points}} pts</b></span></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer w-100 text-muted bg-light">
-                        <h6>Progress <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Team progress based on points gathered"></i></h6>
 
-                        <div class="progress bg-dark" style="height: 20px;">
-                            <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{progress}}%;" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100">
-                                <span><b>{{progress}}%</b></span>
-                            </div>
+    <div class="grid">
+        <div class="cell -4of12">
+            <div class="card">
+                <div class="row no-gutters">
+                    <div class="card-header">
+                        <img src="{{ object.get_avatar_medium }}" width="128" height="128" class="img-fluid" alt="">
+                        <h2>{{object.username}}</h2>
+
+                    </div>
+
+                        <p class="card-text">Currently at <b>{{rank|to_word}}</b> place!</p>
+                        {% if object.country %}
+                        <h3>Team is from  <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20"></h3>
+                        {% endif %}
+                        <h3>Points: <b>{{object.points}} pts</b></h3>
+                </div>
+                <div class="card-footer ">
+                        <h3>Progress <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Team progress based on points gathered"></i></h3>
+
+                        <div class="progress-bar progress-bar-show-percent">
+                            <div class="progress-bar-filled" style="width: {{progress}}%" data-filled="{{progress}}%"></div>
                         </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-sm-12">
+        <div class="cell -8of12">
             <div style="height: 300px">
                 <canvas id="id_solved_line_chart"></canvas>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div style="height: 300px">
-                <canvas id="id_solved_chart" width="300px"></canvas>
-            </div>
+    <hr />
+    <div class="grid">
+        <div class="cell -6of12">
+                <h6>Solved</h6>
+                {% if solved|length == 0 %}
+                    <p>Nothing solved yet!</p>
+                {% else %}
+                <ul>
+                    {% for solve in solved %}
+                        <li>{{solve.challenge.name}} - ({{solve.challenge.category}} - {{solve.challenge.points}})</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
         </div>
-        <div class="col-md-6 col-sm-12">
-            <h3>History</h3>
-            <hr />
-            <h6>Solved</h6>
-            {% if solved|length == 0 %}
-                <p>Nothing solved yet!</p>
-            {% else %}
-            <ul>
-                {% for solve in solved %}
-                    <li>{{solve.challenge.name}} - ({{solve.challenge.category}} - {{solve.challenge.points}})</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-
+        <div class="cell -6of12">
             <h6>First bloods</h6>
             {% if not first_bloods %}
                 <p>No first bloods!</p>
@@ -93,17 +67,12 @@
             {% endif %}
         </div>
     </div>
-</div>
 
 {% endblock %}
 
 {% block custom_javascript %}
 <script>
 $('document').ready(function() {
-        var ctx = document.getElementById('id_solved_chart').getContext('2d');
-        var stats = {{solved_stats|safe}};
-        solvedChart(ctx, stats)
-
         var new_ctx = document.getElementById('id_solved_line_chart').getContext('2d');
         var dataset = {{solved_dataset|safe}};
         solvedLineChart(new_ctx, dataset)

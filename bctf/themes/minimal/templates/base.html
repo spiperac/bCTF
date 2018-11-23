@@ -27,6 +27,7 @@
 <body class="hack dark-grey">
     <!-- Navigation -->
     <div class="container">
+        <hr />
         <div class="grid -stretch">
             <div class="cell -6of12">
                 <div class="content">
@@ -58,23 +59,16 @@
         </div>
         <hr />
     </div>
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show fixed-top" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>{{ message }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
 
-<main role="main">
-    <div class="container mainframe">
-        {% block content %}
+    <main role="main">
+        <div class="container mainframe">
+            {% block content %}
 
-        {% endblock %}
+            {% endblock %}
+        </div>
+    </main>
 
+    <div class="container">
         <div id="footer" class="grid">
             <div class="cell -12of12 grid -center">
                 <p>
@@ -83,8 +77,6 @@
             </div>
         </div>
     </div>
-</main>
-
 <!-- JavaScript files -->
 <script src="{{theme_static}}/js/moment.min.js"></script>
 <script src="{{theme_static}}/js/jquery.min.js"></script>

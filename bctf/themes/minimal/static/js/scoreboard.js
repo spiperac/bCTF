@@ -32,7 +32,7 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}</td>
+                <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
                         <img src="${element.avatar}" height="50" width="50" class="img-fluid">
@@ -51,7 +51,7 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td>${element.rank}</td>
+                <td style="color:white">${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
                         <img src="${element.avatar}" height="50" width="50" class="img-fluid">
@@ -141,6 +141,7 @@ function scores_graph() {
                 legend: {
                     position: 'bottom',
                     labels: {
+                        fontColor: "#fff",
                         usePointStyle: true,
                     }
                 },
@@ -148,11 +149,13 @@ function scores_graph() {
                     display: true,
                     text: 'Top 10 Teams',
                     fontSize: 18,
+                    fontColor: '#fff'
                 },
                 scales: {
                     xAxes: [{
                         type: 'time',
                         ticks: {
+                            fontColor: "#fff",
                             beginAtZero: false
                         },
                         gridLines: {
@@ -161,6 +164,7 @@ function scores_graph() {
                     }],
                     yAxes: [{
                         ticks: {
+                            fontColor: "#fff",
                         },
                         gridLines: {
                             display:false

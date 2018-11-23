@@ -1,5 +1,6 @@
         <div class="card">
             <div class="card-header">
+                <a id="closeChallenge" class="grid -right">close</a>
                 <span class="challenge-category">{{challenge.category}}</span>
                 <span class="badge badge-secondary">{{challenge.points}} pts</span> 
             </div>
@@ -18,15 +19,13 @@
                 </p>
                 {% if challenge.attachment_set.count > 0 %}
                 {% for attachment in challenge.attachment_set.all %}
-                        <a role="button" class="btn" href="{{attachment.data.url}}"><i class="fas fa-download"></i> {{attachment.filename}}</a>
+                        <a href="{{attachment.data.url}}"><i class="fas fa-download"></i> {{attachment.filename}}</a><br />
                     {% endfor %}
                 {% endif %}
 
-                <br />
                 <form method="POST" class="form" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                     {% csrf_token %}
                     <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
-                    <br />
 
                     {% if challenge.pk in solved_by_user %}
                         <div class="alert alert-success">
@@ -35,7 +34,7 @@
                     {% else %}
                     
                     {% if error %}
-                    <fieldset class="form-group form-danger">
+                    <fieldset class="form-group form-error">
                     {% else %}
                     <fieldset class="form-group form-warning">
                     {% endif %}
@@ -46,8 +45,7 @@
                     {% endif %}
                 </form>
                 {% if error %}
-                    <div class="alert alert-dismissible alert-danger">
-                        <button type="button" data-dismiss="alert" class="close">×</button>
+                    <div class="alert alert-error">
                         <strong>Oh snap! {{error}}</strong>
                     </div>
                 {% endif %}
@@ -64,6 +62,8 @@
         }
         $('#flag-submit-form').ajaxForm(form_options);
         
-
+        $("#closeChallenge").on('click', function() {
+            $("#challengeCard").hide();
+        })
     })
 </script>

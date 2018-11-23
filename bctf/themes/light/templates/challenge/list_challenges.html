@@ -21,8 +21,8 @@
                 <div class="col-md-12 col-sm-12">
                     {% for category in categories %}
                             <h1>{{category}}</h1>
-                            {% for challenge in challenges %}
-                                {% if challenge.category == category and challenge.visible == True %}
+                            {% for challenge in category.challenge_set.all %}
+                                {% if challenge.visible %}
                                         {% if challenge.pk in solved_by_user %}
                                         <a  value="{{challenge}}" 
                                             class="btn btn-success btn-challenge"
