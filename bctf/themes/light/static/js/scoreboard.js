@@ -67,7 +67,6 @@ function feed_table(element) {
             `
         )
     }
-
 }
 
 function scores_graph() {
@@ -139,11 +138,26 @@ function scores_graph() {
             options: {
  
                 legend: {
-                    position: 'bottom',
+                    position: false,
                     labels: {
                         usePointStyle: true,
                     }
                 },
+                legendCallback: function(chart) { 
+                    var text = []; 
+                    text.push('<ul class="' + chart.id + '-legend">'); 
+                    for (var i = 0; i < chart.data.datasets.length; i++) { 
+                        text.push('<li style="list-style:none;"><i class="fas fa-circle" style="color:' + 
+                                   chart.data.datasets[i].backgroundColor + 
+                                   '"></i> '); 
+                        if (chart.data.datasets[i].label) { 
+                            text.push(chart.data.datasets[i].label); 
+                        } 
+                        text.push('</li>'); 
+                    } 
+                    text.push('</ul>'); 
+                    return text.join(''); 
+                },                 
                 title: {
                     display: true,
                     text: 'Top 10 Teams',
@@ -169,6 +183,7 @@ function scores_graph() {
                 }
             }
         });
+        $('#chart-legend').html(LineChartDemo.generateLegend());
         
     });
 }
