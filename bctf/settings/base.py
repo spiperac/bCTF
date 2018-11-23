@@ -1,5 +1,6 @@
 import os
 import yaml
+from plugins import install_plugins
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,8 +9,11 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
 # Application definition
+INSTALLED_APPS = []
 
-INSTALLED_APPS = [
+# Plugin installation
+INSTALLED_APPS += install_plugins()
+INSTALLED_APPS += [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -28,7 +32,6 @@ INSTALLED_APPS = [
     'apps.pages',
     'apps.administration',
     'apps.tasksimporter',
-    'plugins.quizz_challenges',
 
     # installer
     'apps.installer',

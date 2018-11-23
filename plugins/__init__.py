@@ -8,11 +8,28 @@ def list_plugins():
     """
     returns: List of plugin app names, based on directory name.
     """
-    return next(os.walk(current_dir))[1]
+    plugin_dirs = next(os.walk(current_dir))[1]
+    filtered = [x for x in plugin_dirs if not x.startswith('__')]
+    return filtered
 
-def add_urls(urlpatterns, plugin):
+def install_plugins():
+    """
+    INSTALLED_APPS - bCTF original installd apps var
+    """
+    plugins = []
+    for plugin in list_plugins():
+        plugins += [
+            'plugins.{0}'.format(plugin)
+        ]
+
+    return plugins
+
+def install_plugin_urls():
     """
     urlpatterns - bCTF original urlpatterns
-    plugin - plugin name to be included in new path
     """
-    urlpatterns += path('{0}/'.format(plugin), include('plugins.{0}.urls'.format(plugin)), name=plugin)
+    urls = []
+    for plugin in list_plugins():
+        urls.append(path('{0}/'.format(plugin), include('plugins.{0}.urls'.format(plugin)), name=plugin))
+
+    return urls

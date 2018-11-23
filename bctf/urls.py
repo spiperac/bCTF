@@ -7,13 +7,17 @@ from apps.accounts.views import RegistrationView, ProfileView, AccountUpdateView
 from apps.installer.views import InstallView
 from bctf.views import error_view_403, error_view_404, error_view_500
 from django.conf.urls import handler403, handler404, handler500
-from plugins import list_plugins, add_urls
+from plugins import list_plugins, install_plugin_urls
 
 handler403 = error_view_403
 handler404 = error_view_404
 handler500 = error_view_500
 
-urlpatterns = [
+urlpatterns = []
+
+# Plugin urls loaded first
+urlpatterns += install_plugin_urls()
+urlpatterns += [
     # accounts
     path('accounts/login/', Login.as_view(), name="login"),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name="logout"),
@@ -33,7 +37,6 @@ urlpatterns = [
     path('challenges/', include('apps.challenges.urls')),
     path('pages/', include('apps.pages.urls')),
     path('importer/', include('apps.tasksimporter.urls')),
-    path('quizz/', include('plugins.quizz_challenges.urls')),
 
     # installer
     path('install/', InstallView.as_view(), name='installer'),
