@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{theme_static}}/flags/sprite-hq.css">
+    <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
 {% endblock %}
 
 {% block extra_js %}
@@ -11,20 +11,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="row tall-row ">
-    <div class="col-lg-12">
-        <div class="d-flex justify-content-between bd-highlight mb-3">
-            <div class="p-2 bd-highlight">
-                
-            </div>
-            <div class="p-2 bd-highlight">
+<div class="grid">
+    <div class="cell -12of12">
                 <h1><i class="fas fa-trophy" style="color:goldenrod"></i> Scoreboard</h1>
-            </div>
-            <div class="p-2 bd-highlight">
-                <img src="{{theme_static}}/img/live_icon.png" class="img-fluid" width="60" height="30">
-            </div>
-        </div>
-        <hr />
     </div>
 </div>
 
@@ -35,8 +24,8 @@
 
 <div id="chart-legend"></div>
 
-<div class="table-responsive">
-    <table class="table table-borderless w-100 d-block d-md-table" id="scores">
+<div class="table">
+    <table class="table" id="scores">
         <thead>
             <tr>
                 <th scope="col" class="tr-rank">#Rank</th>

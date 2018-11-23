@@ -7,54 +7,53 @@
 
 {% block content %}
     <!-- Typography -->
-    <div class="row tall-row text-center">
-        <div class="col-lg-12">
-            <h1>Challenges <i class="fas fa-flag-checkered"></i></h1>
-            <hr>
+    <div class="grid">
+        <div class="cell -12of12">
+            <h1><i class="fas fa-flag-checkered"></i> Challenges</h1>
         </div>
     </div>
-    <div class="col-md-12 text-center" id="challenge-loader">
-        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-    </div>
-    <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 col-sm-12">
-                    {% for category in categories %}
-                            <h1>{{category}}</h1>
-                            {% for challenge in challenges %}
-                                {% if challenge.category == category and challenge.visible == True %}
-                                        {% if challenge.pk in solved_by_user %}
-                                        <a  value="{{challenge}}" 
-                                            class="btn btn-success btn-challenge"
-                                            href="#{{challenge.name}}"
-                                            data-toggle="modal"
-                                            data-target="#challengeModals"
-                                            data-challenge-id="{{challenge.pk}}"
-                                            >
-                                            <i class="fas fa-check"></i>
-                                        {% else %}
-                                        <a  value="{{challenge}}" 
-                                            class="btn btn-primary btn-challenge"
-                                            href="#{{challenge.name}}"
-                                            data-toggle="modal"
-                                            data-target="#challengeModals"
-                                            data-challenge-id="{{challenge.pk}}"
-                                            >
-                                            <i class="fas fa-crosshairs"></i>
-                                        {% endif %}
-                                            {{challenge.name}}<br />{{challenge.points}}
-                                        </a>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                </div>
+ <div class="grid">
+     <div class="cell -7of12">
+            <div class="content">
+            {% for category in categories %}
+                <h1>{{category}}</h1>
+                {% for challenge in challenges %}
+                    {% if challenge.category == category and challenge.visible == True %}
+                            {% if challenge.pk in solved_by_user %}
+                            <a  value="{{challenge}}"
+                                class="btn btn-success btn-ghost btn-challenge"
+                                href="#{{challenge.name}}"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                                <i class="fas fa-check"></i>
+                            {% else %}
+                            <a  value="{{challenge}}" 
+                                class="btn btn-primary btn-ghost btn-challenge"
+                                href="#{{challenge.name}}"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                                <i class="fas fa-crosshairs"></i>
+                            {% endif %}
+                                {{challenge.name}}<br />{{challenge.points}}
+                            </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+     </div>
+     <div class="cell -4of12">
+         <div class="content">
+            <div id="challengeCard">
+
             </div>
         </div>
+     </div>
+ </div>
 
-<!-- Modal -->
-<div class="modal inmodal" tabindex="-1" id="challengeModals">
-
-</div>
 
 {% endblock %}
 
@@ -62,15 +61,13 @@
 
 <script>
     $('document').ready(function() {
-        $('#challenge-loader').hide();
-        $('#challenge-table').show();
     
-        $('#challengeModals').on('show.bs.modal', function (event) {
-            var modal = $(this)
-            modal.html(
-                `{% include 'templates/challenge/challenge_loading.html' %}`
-            )
-            var challengeID = $(event.relatedTarget).data('challenge-id')
+        $('.btn-challenge').on('click', function (event) {
+            var modal = $("#challengeCard")
+            modal.show();
+            modal.html("Loading...")
+            var challengeID = $(this).data('challenge-id')
+            console.log(challengeID)
             var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
                 url: formURL,
