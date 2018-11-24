@@ -1,5 +1,7 @@
 import json
+import zipfile
 import os
+import io
 import shutil
 from django.core.files.storage import FileSystemStorage
 from apps.challenges.models import Attachment, Category, Challenge, Flag
@@ -148,3 +150,35 @@ def feed_tasks(base_path):
 
 def clean_base_path(base_path):
     shutil.rmtree(base_path, ignore_errors=True)
+
+
+def export_as_zip():
+    challenges = Challenge.objects.prefetch_related('flag_set').all()
+
+    zip_file = io.BytesIO()
+    archive  = zipfile.ZipFile(zip_file, "a")
+
+    for challenge in challenges:
+        task_json = {
+            "name": challenge.name,
+            "category": challenge.name,
+            "description": challenge.description,
+            "flag": "test",
+            "points": challenge.points,
+            "attachments": "true" if challenge.attachment_set.all() else "false"
+        }
+
+        archive.writestr("tasks/{0}/task.json".format(challenge.name), json.dumps(task_json))
+
+        if challenge.attachment_set.count() > 0:
+            for attachment in challenge.attachment_set.all():
+                f = attachment.data.open(mode="rb")
+                archive.writestr("tasks/{0}/files/{1}".format(challenge.name, str(os.path.basename(attachment.data.name))), f.read())
+                f.close()
+
+    for file in archive.filelist:
+        file.create_system = 0
+
+    archive.close()
+
+    return zip_file

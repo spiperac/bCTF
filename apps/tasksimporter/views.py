@@ -1,11 +1,13 @@
 import zipfile
+from datetime import datetime
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import View
 from apps.tasksimporter.forms import ImportTasksForm
 from django.core.files.storage import FileSystemStorage
-from apps.tasksimporter.utils import feed_tasks, clean_base_path
+from apps.tasksimporter.utils import feed_tasks, clean_base_path, export_as_zip
 
 
 class UserIsAdminMixin(UserPassesTestMixin):
@@ -49,3 +51,16 @@ class ImportTasksView(UserIsAdminMixin, View):
             clean_base_path(tasks_base_dir)
 
             return render(self.request, 'templates/tasks/import.html', {'form': self.form_class, 'import_log': import_log})
+
+
+class ExportTasksView(UserIsAdminMixin, View):
+    def get(self, request, *args, **kwargs):
+        archive = export_as_zip()
+        zip_name = "tasks-{0}".format(datetime.now())
+        response = HttpResponse(content_type="application/zip")
+        response["Content-Disposition"] = "attachment; filename={0}.zip".format(zip_name)
+
+        archive.seek(0)
+        response.write(archive.read())
+        
+        return response
