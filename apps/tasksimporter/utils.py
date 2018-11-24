@@ -160,7 +160,7 @@ def export_as_zip():
     for challenge in challenges:
         task_json = {
             "name": challenge.name,
-            "category": challenge.name,
+            "category": challenge.category.name,
             "description": challenge.description,
             "flag": "test",
             "points": challenge.points,
