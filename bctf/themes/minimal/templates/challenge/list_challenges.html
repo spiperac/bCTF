@@ -68,13 +68,16 @@
 
 <script>
     $('document').ready(function() {
-    
+
+        $(document).keyup(function(e) {
+            if (e.keyCode === 27) $('#challengeCard').hide();
+        });
+
         $('.btn-challenge').on('click', function (event) {
             var modal = $("#challengeCard")
             modal.show();
             modal.html("Loading...")
             var challengeID = $(this).data('challenge-id')
-            console.log(challengeID)
             var formURL = `/challenges/${challengeID}/flag/`
             $.ajax({
                 url: formURL,
