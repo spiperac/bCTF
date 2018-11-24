@@ -37,9 +37,9 @@ class ImportTasksView(UserIsAdminMixin, View):
             zip_ref.close()
 
             # Parsing tasks
-            tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
+            #tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
             import_log = []
-            tasks = feed_tasks(base_path=tasks_base_dir)
+            tasks = feed_tasks(base_path=directory_extract)
             for task in tasks:
                 try:
                     task.create()
@@ -48,7 +48,7 @@ class ImportTasksView(UserIsAdminMixin, View):
                     task.log.append('Error: Improting of {0} failed because of: {1}'.format(task.name, exc))
                     import_log.append(task.log)
 
-            clean_base_path(tasks_base_dir)
+            clean_base_path(directory_extract)
 
             return render(self.request, 'templates/tasks/import.html', {'form': self.form_class, 'import_log': import_log})
 
@@ -56,7 +56,7 @@ class ImportTasksView(UserIsAdminMixin, View):
 class ExportTasksView(UserIsAdminMixin, View):
     def get(self, request, *args, **kwargs):
         archive = export_as_zip()
-        zip_name = "tasks-{0}".format(datetime.now())
+        zip_name = "tasks-{0}".format(datetime.now().date())
         response = HttpResponse(content_type="application/zip")
         response["Content-Disposition"] = "attachment; filename={0}.zip".format(zip_name)
 

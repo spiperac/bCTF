@@ -135,12 +135,16 @@ def parse_task_json(task_dir):
 
 def feed_tasks(base_path):
     task_list = locate_tasks(base_path)
+    print(task_list)
 
     tasks = []
     for task_dir_name in task_list:
         print("Trying to add {}".format(task_dir_name))
         task_full_path = "{0}/{1}".format(base_path, task_dir_name)
-        if os.path.isfile("{0}/task.json".format(task_full_path)):
+        task_file = "{0}/task.json".format(task_full_path)
+        print(task_file)
+        if os.path.isfile(task_file):
+            print("Adding new task")
             new_task = parse_task_json(task_full_path)
             if new_task:
                 tasks.append(new_task)
@@ -173,7 +177,7 @@ def export_as_zip():
         if challenge.attachment_set.count() > 0:
             for attachment in challenge.attachment_set.all():
                 f = attachment.data.open(mode="rb")
-                archive.writestr("tasks/{0}/files/{1}".format(challenge.name, str(os.path.basename(attachment.data.name))), f.read())
+                archive.writestr("{0}/files/{1}".format(challenge.name, str(os.path.basename(attachment.data.name))), f.read())
                 f.close()
 
     for file in archive.filelist:
