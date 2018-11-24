@@ -48,7 +48,7 @@ class ImportTasksView(UserIsAdminMixin, View):
                     task.log.append('Error: Improting of {0} failed because of: {1}'.format(task.name, exc))
                     import_log.append(task.log)
 
-            clean_base_path(directory_extract)
+            #clean_base_path(directory_extract)
 
             return render(self.request, 'templates/tasks/import.html', {'form': self.form_class, 'import_log': import_log})
 

@@ -5,5 +5,5 @@ from apps.tasksimporter.views import ImportTasksView, ExportTasksView
 app_name = 'importer'
 urlpatterns = [
     path('', ImportTasksView.as_view(), name='import-tasks'),
-    path('export/', ExportTasksView.as_view(), name='export')
+    path('export/', ExportTasksView.as_view(), name='export-tasks')
 ]

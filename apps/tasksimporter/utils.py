@@ -69,7 +69,6 @@ class Task:
                 self.log.append('Attachment {0} added.'.format(new_file_name))
 
         if self.docker_path:
-            print(self.docker_path)
             self.create_docker_image(self.docker_path)
 
         self.log.append("Success!")
@@ -114,7 +113,6 @@ def parse_task_json(task_dir):
                 attachments = [''.join((files_path, f)) for f in os.listdir(files_path) if os.path.isfile(''.join((files_path, f)))]
 
         if 'docker' in task:
-            print('docker found!')
             if task['docker'] is True:
                 docker_path = "{0}/docker/".format(task_dir)
 
@@ -135,16 +133,13 @@ def parse_task_json(task_dir):
 
 def feed_tasks(base_path):
     task_list = locate_tasks(base_path)
-    print(task_list)
 
     tasks = []
     for task_dir_name in task_list:
         print("Trying to add {}".format(task_dir_name))
         task_full_path = "{0}/{1}".format(base_path, task_dir_name)
         task_file = "{0}/task.json".format(task_full_path)
-        print(task_file)
         if os.path.isfile(task_file):
-            print("Adding new task")
             new_task = parse_task_json(task_full_path)
             if new_task:
                 tasks.append(new_task)
@@ -172,12 +167,14 @@ def export_as_zip():
             "attachments": "true" if challenge.attachment_set.all() else "false"
         }
 
-        archive.writestr("tasks/{0}/task.json".format(challenge.name), json.dumps(task_json))
+        folder_name = ''.join(str(challenge.name).split()).lower()
+
+        archive.writestr("{0}/task.json".format(folder_name), json.dumps(task_json, indent=4, sort_keys=True))
 
         if challenge.attachment_set.count() > 0:
             for attachment in challenge.attachment_set.all():
                 f = attachment.data.open(mode="rb")
-                archive.writestr("{0}/files/{1}".format(challenge.name, str(os.path.basename(attachment.data.name))), f.read())
+                archive.writestr("{0}/files/{1}".format(folder_name, str(os.path.basename(attachment.data.name))), f.read())
                 f.close()
 
     for file in archive.filelist:
