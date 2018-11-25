@@ -7,6 +7,7 @@ from apps.accounts.views import RegistrationView, ProfileView, AccountUpdateView
 from apps.installer.views import InstallView
 from api.account_views import AccountViewSet
 from api.scoreboard_views import ScoreboardViewSet
+from api.solves_views import SolvesViewSet
 from bctf.views import error_view_403, error_view_404, error_view_500
 from rest_framework import routers
 from django.conf.urls import handler403, handler404, handler500
@@ -18,8 +19,9 @@ handler500 = error_view_500
 
 # API Router
 router = routers.DefaultRouter()
-router.register(r'teams', AccountViewSet)
-router.register(r'score', ScoreboardViewSet)
+router.register(r'teams', AccountViewSet, base_name='teams')
+router.register(r'score', ScoreboardViewSet, base_name='score')
+router.register(r'solves', SolvesViewSet, base_name='solves')
 
 urlpatterns = []
 

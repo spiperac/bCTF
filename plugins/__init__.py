@@ -30,6 +30,6 @@ def install_plugin_urls():
     """
     urls = []
     for plugin in list_plugins():
-        urls.append(path('{0}/'.format(plugin), include('plugins.{0}.urls'.format(plugin)), name=plugin))
+        urls.append(path('{0}/'.format(plugin), include('plugins.{0}.urls'.format(plugin))))
 
     return urls
