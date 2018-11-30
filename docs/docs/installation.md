@@ -11,7 +11,20 @@ You will need following available on your host machine:
 * (optional) Virtualenv - recommended
 * (optional) Docker - it's optional, but if you have it, you'll be able to controll challenge containers from bCTF administration panel.
 
-## Host Installation
+
+## Simplest host installation
+    git clone https://github.com/spiperac/bctf
+    cd bctf
+    pip3 install -r requirements.txt  ( or python3 -m pip install -r requirements.txt)
+    python3 manage.py
+    python3 runserver 0.0.0.0:8080
+   
+
+And your fresh installed bCTF will wait for you on http://localhost:8080.
+
+Note: This is suited for development or testing, for production you should export DJANGO_SETTINGS_MODULE to bctf.settings.production,
+and server it over nginx or apache web server.
+## Host Installation ( Recommended)
 
 This is suitable for test/local runs.
 If you wan't to run bCTF from your virtual machine, make sure you have items described in prerequisites installed.
@@ -32,6 +45,14 @@ and use corresponding settings.
 * [/opt/bctf/]$ export DJANGO_SETTINGS_MODULE=bctf.settings.production
 * [/opt/bctf/]$ python manage.py runserver 127.0.0.1:8000
 
+
+You can run bCTF with Gunicorn with command like this:
+
+    /usr/local/bin/gunicorn --chdir /path/to/bctf/ bctf.wsgi -b 0.0.0.0:8000
+
+And then proxy it to the nginx.
+Be sure to check config/ directory in the repository as there are some useful example configuration files,
+and those are used by docker too.
 
 ## Docker
 
