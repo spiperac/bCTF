@@ -16,7 +16,7 @@ Here's example:
 |
 |--------| Challenge 1
 |		 |
-|		 |- task.yml
+|		 |- task.json
 |		 |
 |		 |- files/
 |
@@ -24,7 +24,7 @@ Here's example:
 |
 |--------| Challenge 2
 |		 |
-|		 |- task.yml
+|		 |- task.json
 |		 |
 |		 |- files/ |
 |				   | - example.c
@@ -32,7 +32,7 @@ Here's example:
 |
 |--------| Challenge 3
 |		 |
-|		 |- task.yml
+|		 |- task.json
 |		 |
 |		 |- files/
 
@@ -41,23 +41,23 @@ Here's example:
 
 
 So, your folder with challenges should contain one challenge directory per challenge. TaskImporter will consider every folder as a new challenge.
-Inside challenge directory, you will need to have <b>task.yml</b> file which holds description and definition of your task.
+Inside challenge directory, you will need to have <b>task.json</b> file which holds description and definition of your task.
 
-<b>task.yml</b>
-<pre>
-name: Challenge 2
-author: hax0r
-category: example
-description: Some misleading description
-points: 150
-flag: bctf{flag_imposible_to_guess}
-attachments:
-  - example.c
+<b>task.json</b>
 
-</pre>
+    {
+      "name": "Challenge 1",
+      "author": "hax0r",
+      "category": "example",
+      "description": "Some misleading description",
+      "points": 150,
+      "flag": "bctf{flag_imposible_to_bruteforce}",
+      "attachments": true
+    }
 
-As you may guess, in section attachments you have to define which files you want to be uploaded as attachment for that specific task. In example above, there's <b>example.c</b>.
-That means that Task Importer will try to upload file from <b>challenge2/files/example.c</b>.
+As you may guess, in section attachments you have to set do you want files from files/ directory to be uploaded as attachment for that specific task. 
+Task importer will upload all files from files/ directory if attachments are set to true, in other case it will just ommit it completely.
+
 
 
 Note: On error, or improperly configured task, Task Importer will skip that challenge and contrinue to import others.
