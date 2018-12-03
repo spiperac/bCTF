@@ -38,7 +38,7 @@ urlpatterns += [
     path('accounts/profile/<int:pk>', ProfileView.as_view(), name="profile"),
     path('accounts/settings/', AccountUpdateView.as_view(), name="account-settings"),
     path('registration/', RegistrationView.as_view(), name='registration'),
-    
+
     # API
     path('api-auth/', include('rest_framework.urls')),
     path('v1/', include(router.urls)),

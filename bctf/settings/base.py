@@ -1,5 +1,4 @@
 import os
-import yaml
 from plugins import install_plugins
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
