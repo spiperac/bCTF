@@ -37,7 +37,7 @@ class ImportTasksView(UserIsAdminMixin, View):
             zip_ref.close()
 
             # Parsing tasks
-            #tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
+            # tasks_base_dir = "{0}/{1}".format(directory_extract, str(post_file)[:-4])
             import_log = []
             tasks = feed_tasks(base_path=directory_extract)
             for task in tasks:
@@ -48,7 +48,7 @@ class ImportTasksView(UserIsAdminMixin, View):
                     task.log.append('Error: Improting of {0} failed because of: {1}'.format(task.name, exc))
                     import_log.append(task.log)
 
-            #clean_base_path(directory_extract)
+            # clean_base_path(directory_extract)
 
             return render(self.request, 'templates/tasks/import.html', {'form': self.form_class, 'import_log': import_log})
 
@@ -62,5 +62,4 @@ class ExportTasksView(UserIsAdminMixin, View):
 
         archive.seek(0)
         response.write(archive.read())
-        
         return response

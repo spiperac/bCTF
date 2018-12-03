@@ -155,7 +155,7 @@ def export_as_zip():
     challenges = Challenge.objects.prefetch_related('flag_set').all()
 
     zip_file = io.BytesIO()
-    archive  = zipfile.ZipFile(zip_file, "a")
+    archive = zipfile.ZipFile(zip_file, "a")
 
     for challenge in challenges:
         task_json = {
