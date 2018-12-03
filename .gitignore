@@ -92,3 +92,5 @@ media/*
 bctf/sent_emails/*
 media/*
 bctf/media/*
+.idea/*
+.secret_key

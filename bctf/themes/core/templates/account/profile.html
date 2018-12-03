@@ -56,9 +56,13 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
+            {% if solved_stats.0 %}
             <div style="height: 300px">
                 <canvas id="id_solved_line_chart"></canvas>
             </div>
+            {% else %}
+            <h2>Nothing solved currently!</h2>
+            {% endif %}
         </div>
     </div>
     <div class="row">
