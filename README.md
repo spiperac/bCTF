@@ -1,34 +1,38 @@
 # bCTF
 
-bCTF is a scoreboard system for hosting and managing CTF style games. 
+bCTF is a scoreboard system for hosting and managing security CTF competitions/games. 
 We, at the BalCCon.org, were using CTFd for quite some time ( that's why that ui looks familiar ...), and we decided that we need some more features like:
-easier challenge deployment, controll small set of docker containers running challenges, more interactions and informations feeded to players, etc... Thus bCTF came to existence.
+rest api, easier challenge deployment, controll small set of docker containers running challenges, more interactions and informations feeded to players, etc... Thus bCTF came to existence.
 
 ## Features
 
-* CTFTime.org compatible scoreboard feed
+* REST API
 * News & Events feed on home page
-* CTF Timer ( start and stop time)
-* Challenges Importer ( from .zip file)
+* CTF Timer - Start & Stop timer
+* Challenges Importer/Exporter ( from/to .zip file)
 * Challenges, categories, hints, flags, files ...
     * Challenge visibility can be toggled
     * Challenge files upload work out of box with S3, Dropbox, or bCTF host
-    * First Blood! List showing teams who scored challenge first
+    * First Bloods! List showing teams who scored challenge first
     * Points degradation system - optional and off by default - can be configured from admin interface
 * Live scoreboard
     * Graph with top 10 teams
     * Table with team names, gr/avatars, ranks, points, and (optional) country
 * Account management system with captcha (captcha is #TODO atm)
     * You can ban/unban user accounts
+    * Upgrade other accounts to staff/admin
 * Pages interface for creating custom pages for eg. rules or faq ( auto-added to top menu)
 * Supports Themes ( comes with few out of box)
+* Supports Plugins ( comes with few out of box)
+* Super easy to develop custom theme.
+* Super easy to develop custom plugin.
+* CTFTime.org compatible scoreboard feed (Plugin enabled out of box)
 * Admin interface
 * Backup & Restore 
 * Email support ( for registration, password resets, and optional account activation links)
-* Beta themes customisation
 * Fast and small on deps
     * bCTF is using django with minimal set of 3rd party libs
-        * besides django, only pyyaml and django-countries are required
+        * besides django, only drf and django-countries are required
 * Unit tests and selenium tests coverage
 * Bootstrap 4
 * Experimental docker controller interface where you can manage you challenge containers ( If you are not running bCTF inside docker)
@@ -40,7 +44,7 @@ easier challenge deployment, controll small set of docker containers running cha
 
 ## Todo
 
-* Plugins interface
+* Vue.js front as an alternative to django-templates.
 
 
 ## Getting Started
@@ -61,11 +65,19 @@ If you want to run it on your machine/server, you'll need to install:
 
 ### Installing
 
-After you got all initial requirements sorted out, there's few more things.
+After you got all initial system requirements sorted out, there's few more things.
 
-Required way to install python dependencies is to use virtualenv, like in this example.
+Go into your folder where you downloaded/cloned bCTF and type:
 
-So, go into your folder where you downloaded/cloned bCTF and type:
+```
+pip install -r requirements.txt
+
+# Migrate and run!
+python3 manage.py migrate
+python3 manage.py runserver 0.0.0.0:8080
+```
+
+Or, if you want to use virtualenv (which is recommented!) do this:
 
 ```
 # Setup virtualenv and install dependencies
@@ -74,7 +86,7 @@ virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
 
-# Migrate
+# Migrate and run!
 python3 manage.py migrate
 python3 manage.py runserver 0.0.0.0:8080
 
@@ -106,7 +118,7 @@ Pull requests and bug reports are more than welcome. As for the coding standard,
 
 ## Authors
 
-* **S. Piperac ( badarg) ** - *Initial work* - [@0xbadarg](https://twitter.com/0xbadarg)
+* **S. Piperac - [@0xbadarg](https://twitter.com/0xbadarg)
 
 See also the list of [contributors](https://github.com/spiperac/bctf/contributors) who participated in this project.
 
