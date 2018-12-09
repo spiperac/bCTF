@@ -7,7 +7,8 @@ from apps.administration.views import (AccountsView, CTFView,
                                        GeneralView, IndexView,
                                        UpdateAccountView, NewListView,
                                        NewsCreateView, NewsDeleteView,
-                                       NewsUpdateView, ToggleAccountStateView)
+                                       NewsUpdateView, ToggleAccountStateView,
+                                       BackupRestore)
 
 app_name = 'administration'
 urlpatterns = [
@@ -41,5 +42,7 @@ urlpatterns = [
     path('docker/action', DockerActionsView.as_view(), name="action-docker"),
     path('docker/image/action', DockerImageActionsView.as_view(), name="action-image"),
 
+    # Backup and restore
+    path('backup-restore/', BackupRestore.as_view(), name='backup-restore'),
 
 ]

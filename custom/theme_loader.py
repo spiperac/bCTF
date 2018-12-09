@@ -2,7 +2,7 @@ from django.core.exceptions import SuspiciousFileOperation
 from django.template import Origin, TemplateDoesNotExist
 from django.utils._os import safe_join
 from django.template.loaders.base import Loader
-from apps.scoreboard.utils import get_theme
+from config.themes import get_theme
 
 
 class ThemeLoader(Loader):

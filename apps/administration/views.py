@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.db.models import Count
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
@@ -14,7 +15,8 @@ from apps.administration.forms import (ConfigUpdateForm, DockerActionForm,
 from apps.challenges.models import (Attachment, BadSubmission, Category,
                                     Challenge, FirstBlood, Flag, Hint, Solves)
 from apps.scoreboard.models import News
-from apps.scoreboard.utils import get_key, set_key, get_themes, set_theme, get_theme
+from config import get_key, set_key
+from config.themes import get_themes, set_theme, get_theme
 from apps.accounts.utils import generate_color
 
 
@@ -88,6 +90,9 @@ class IndexView(UserIsAdminMixin, ListView):
         context['top_10_stats'] = top_10_data
         context['account_stats'] = account_stats
         context['accounts'] = accounts
+        context['total_accounts'] = total_accounts
+        context['account_count_admin'] = accounts.filter(is_active=False).count
+        context['account_count_banned'] = accounts.filter(is_superuser=True).count
         context['account_count'] = total_accounts
         context['chall_stats'] = chall_stats
         context['solved_challs'] = int(solved_challs)
@@ -227,7 +232,17 @@ class GeneralUpdateView(UserIsAdminMixin, View):
                 else:
                     set_key("end_time", None)
 
-            set_key("ctf_name", request.POST['title'])
+            if 'title' in request.POST:
+                set_key("ctf_name", request.POST['title'])
+
+            if 'scoreboard_users' in request.POST:
+                set_key("scoreboard_users", request.POST['scoreboard_users'])
+
+            if 'registration_status' in request.POST:
+                set_key("registration_status", request.POST['registration_status'])
+
+            if request.FILES['ctf_logo']:
+                pass
 
             return HttpResponse(status=204)
         else:
@@ -265,3 +280,21 @@ class NewsUpdateView(UserIsAdminMixin, UpdateView):
 class NewsDeleteView(UserIsAdminMixin, DeleteView):
     model = News
     success_url = reverse_lazy('administration:news')
+
+
+class BackupRestore(UserIsAdminMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'templates/backup_restore.html')
+
+
+class Backup(UserIsAdminMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        return render(self.request, 'templates/backup_restore.html')
+
+
+class Restore(UserIsAdminMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        return render(self.request, 'templates/backup_restore.html')

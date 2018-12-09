@@ -2,7 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.encoding import filepath_to_uri
 from urllib.parse import urljoin
 
-from apps.scoreboard.utils import get_theme
+from config.themes import get_theme
 
 
 class ThemeStorage(FileSystemStorage):

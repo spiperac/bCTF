@@ -29,8 +29,8 @@
                                     </div>
                                     <div class="card-body bg-light">
                                         <h4>Accounts: {{total_accounts}}</h4>
-                                        <h4>Administrators: 0</h4>
-                                        <h4>Banned: 0</h4>
+                                        <h4>Administrators: {{account_count_admin}}</h4>
+                                        <h4>Banned: {{account_count_banned}}</h4>
                                     </div>
 
                                 </div>
@@ -46,9 +46,9 @@
                                         <i class="fas fa-spider"></i> Challenges
                                     </div>
                                     <div class="card-body bg-light">
-                                        <h4>Solved: {{solved_challs}}</h4>
-                                        <h4>Released: {{challenges.count}}</h4>
+                                        <h4>Challenges: {{challenges.count}}</h4>
                                         <h4>Categories: {{categories.count}}</h4>
+                                        <h4>Solved: {{solved_challs}}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,6 @@
                                     </div>
                                     <div class="card-body bg-light">
                                         <h4>Wrong Submits: {{accounts.count}}</h4>
-                                        <h4>Top team: ?</h4>
                                     </div>
 
                                 </div>

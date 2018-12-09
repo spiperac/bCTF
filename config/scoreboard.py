@@ -1,5 +1,4 @@
-from apps.scoreboard.models import Configuration
-from config.themes import set_key, get_key
+from config import set_key, get_key
 
 
 def set_scoreboard_show(number_users):

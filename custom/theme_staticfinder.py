@@ -14,7 +14,7 @@ from django.utils._os import safe_join
 from django.utils.functional import LazyObject, empty
 from django.utils.module_loading import import_string
 from django.contrib.staticfiles.finders import BaseFinder
-from apps.scoreboard.utils import get_theme
+from config.themes import get_theme
 
 searched_locations = []
 
