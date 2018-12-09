@@ -15,73 +15,66 @@
     <link rel="shortcut icon" type="image/png" href="{{theme_static}}/img/favicon.png"/>
 
     <!-- CSS files -->
-    
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/fonts/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/custom.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.min.css">
     {% block extra_css%}
     
     {% endblock %}
 </head>
 
-<body>
+<body class="">
     <!-- Navigation -->
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-secondary">
-        <div class="container">
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#main-navbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+  <div class="navbar-fixed">
+      {% if request.user.is_authenticated %}
+        <ul id="dropdown1" class="dropdown-content">
+          <a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Profile</a>
+          <a class="dropdown-item" href="{% url 'account-settings' %}">Settings</a>
+          <li class="divider"></li>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </ul>
+      {% endif %}
+      <nav class="">
+        <div class="nav-wrapper">
+               <!-- NavBAR LOGO !-->
+                    {% config 'logo' as site_logo %}
+                    {% if site_logo %}
+                    <a class="brand-logo" href="/" aria-label="CTF">
+                        <img src="{{site_logo}}" width="120" height="50">
+                    </a>
+                    {% else %}
+                    <a class="brand-logo" href="/" aria-label="bCTF">
+                        {{ctf_name}}
+                    </a>
+                    {% endif %}
+                <!-- NavBAR LOGO !-->
 
-            <div class="navbar-header">
-                {% config 'logo' as site_logo %}
-                {% if site_logo %}
-                <a class="navbar-brand" href="/" aria-label="CTF">
-                    <img src="{{site_logo}}" width="120" height="50">
-                </a>
-                {% else %}
-                <a class="navbar-brand" href="/" aria-label="bCTF">
-                    {{ctf_name}}
-                </a>
-                {% endif %}
+            <ul style="margin-left: 150px;">
+                <li><a href="/"><i class="medium material-icons left">home</i>Home</a></li>
+                <li><a href="{% url 'scoreboard:scoreboard' %}"><i class="medium material-icons left">flag</i>Scoreboard</a></li>
+                <li><a href="{% url 'challenge:list-challenges' %}"><i class="medium material-icons left">bug_report</i>Challenges</a></li>
+                {% for page in pages %}
+                <li><a href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
+                {% endfor %}
 
-            </div>
-
-            <div id="main-navbar" class="navbar-collapse collapse">
-                <ul class="navbar-nav navbar-left">
-                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home fa-lg"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">Scoreboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}">Challenges</a></li>
-                    {% for page in pages %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
-                    {% endfor %}
-                </ul>
-                <ul class="navbar-nav ml-auto">
+            </ul>
+            <ul class="right hide-on-med-and-down">
                     {% if request.user.is_superuser %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'administration:index' %}">
-                        <i class="fas fa-cog fa-lg"></i> Admin
+                    <li><a href="{% url 'administration:index' %}">
+                        <i class="medium material-icons left">settings_applications</i> Admin
                         </a>
                     </li>
                     {% endif %}
+
                     {% if request.user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user fa-lg"></i> ( {{request.user.username}} )
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Profile</a>
-                                <a class="dropdown-item" href="{% url 'account-settings' %}">Settings</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                            </div>
-                        </li>
+                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account<i class="material-icons right">arrow_drop_down</i></a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
                     {% endif %}
-                </ul>
-            </div>
+            </ul>
         </div>
-    </nav>
+      </nav>
+  </div>
 
 
     {% if messages %}
@@ -96,28 +89,39 @@
     {% endif %}
 
 <main role="main">
-    <div class="container mainframe">
+    <div class="container">
         {% block content %}
 
         {% endblock %}
     </div>
 </main>
 
-    <div id="footer" class="text-center">
-        <p>
-            Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
-        </p>
+<footer class="center-align">
+          <div class="container">
+            <div class="row center-align">
+              <div class="col l12 s12 center-align">
+                <p class="center-align">
+                    Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
+                </p>
+            </div>
+        </div>
     </div>
+</footer>
 <!-- JavaScript files -->
 <script src="{{theme_static}}/js/moment.min.js"></script>
 <script src="{{theme_static}}/js/jquery.min.js"></script>
+<script src="{{theme_static}}/js/materialize.min.js"></script>
 
+<script>
+    $('document').ready(function() {
+        $(".dropdown-trigger").dropdown();
+    });
+</script>
 {% block modals %}
 
 {% endblock %}
 
-<script src="{{theme_static}}/js/popper.min.js"></script>
-<script src="{{theme_static}}/js/bootstrap.min.js"></script>
+
 <!-- JavaScript files -->
 {% block extra_js%}
 {% endblock %}

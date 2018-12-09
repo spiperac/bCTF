@@ -20,10 +20,8 @@ function clean_events() {
 function feed_events(element) {
     $('#events').append(
         `
-        <li class="collection-item avatar">
-        <i class="material-icons circle red">place</i>
-        <span class="title">[${element.time}]</span>
-        <p><a href="/accounts/profile/${element.team_id}">${element.team}</a> just captured ${element.challenge}!</p>
+        <li><span style="color:red">[${element.time}]</span> 
+        -> <a href="/accounts/profile/${element.team_id}">${element.team}</a> just captured ${element.challenge}!
         </li>
         `
     )
