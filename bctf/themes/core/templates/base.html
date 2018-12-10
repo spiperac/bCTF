@@ -27,14 +27,6 @@
 <body class="dark-layout">
     <!-- Navigation -->
   <div class="navbar-fixed">
-      {% if request.user.is_authenticated %}
-        <ul id="dropdown1" class="dropdown-content">
-          <li><a href="{% url 'profile' request.user.pk %}">Profile</a></li>
-          <li><a href="{% url 'account-settings' %}">Settings</a></li>
-          <li class="divider"></li>
-          <li><a href="{% url 'logout' %}">Logout</a></li>
-        </ul>
-      {% endif %}
       <nav class="">
         <div class="nav-wrapper">
                <!-- NavBAR LOGO !-->
@@ -49,8 +41,9 @@
                     </a>
                     {% endif %}
                 <!-- NavBAR LOGO !-->
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-            <ul style="margin-left: 150px;">
+            <ul class="left hide-on-med-and-down" style="margin-left: 150px;">
                 <li><a href="/"><i class="medium material-icons left">home</i>Home</a></li>
                 <li><a href="{% url 'scoreboard:scoreboard' %}"><i class="medium material-icons left">flag</i>Scoreboard</a></li>
                 <li><a href="{% url 'challenge:list-challenges' %}"><i class="medium material-icons left">bug_report</i>Challenges</a></li>
@@ -68,16 +61,49 @@
                     {% endif %}
 
                     {% if request.user.is_authenticated %}
-                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Account<i class="material-icons right">arrow_drop_down</i></a></li>
+                      <li><a href="{% url 'profile' request.user.pk %}">Profile</a></li>
+                      <li><a href="{% url 'account-settings' %}">Settings</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
                     {% endif %}
-            </ul>
-        </div>
-      </nav>
+                </ul>
+            </div>
+        </nav>
   </div>
 
+    <!-- Mobile menu !-->
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="/"><i class="medium material-icons left">home</i>Home</a></li>
+        <li><a href="{% url 'scoreboard:scoreboard' %}"><i class="medium material-icons left">flag</i>Scoreboard</a></li>
+        <li><a href="{% url 'challenge:list-challenges' %}"><i class="medium material-icons left">bug_report</i>Challenges</a></li>
+
+        <div class="divider"></div>
+        {% for page in pages %}
+        <li><a href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
+        {% endfor %}
+
+        <div class="divider"></div>
+        {% if request.user.is_superuser %}
+        <li><a href="{% url 'administration:index' %}">
+            <i class="medium material-icons left">settings_applications</i> Admin
+            </a>
+        </li>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+          <li><a href="{% url 'profile' request.user.pk %}">Profile</a></li>
+          <li><a href="{% url 'account-settings' %}">Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
+        {% endif %}
+    </ul>
+    <!-- Mobile menu !-->
 
     {% if messages %}
         {% for message in messages %}
@@ -116,7 +142,7 @@
 
 <script>
     $('document').ready(function() {
-        $(".dropdown-trigger").dropdown();
+        $('.sidenav').sidenav();
     });
 </script>
 {% block modals %}

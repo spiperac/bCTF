@@ -5,3 +5,14 @@
 .container.dark {
     background: #303030;
 }
+
+.challenge-button {
+    height: 100px;
+    width: 200px;
+    margin: 10px;
+    background-color: black;
+}
+
+.challenge-button.solved {
+    background-color: green;
+}

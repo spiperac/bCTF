@@ -24,22 +24,22 @@
                     {% for challenge in category.challenge_set.all %}
                         {% if challenge.visible %}
                             {% if challenge.pk in solved_by_user %}
-                            <a  value="{{challenge}}" 
-                                class="btn btn-large modal-trigger"
-                                href="#challengeModal"
+                            <button  value="{{challenge}}"
+                                class="btn modal-trigger solved challenge-button"
+                                data-target="challengeModal"
                                 data-challenge-id="{{challenge.pk}}"
                                 >
-                                <i class="fas fa-check"></i>
                             {% else %}
-                            <a  value="{{challenge}}" 
-                                class="btn btn-large modal-trigger"
-                                href="#challengeModal"
+                            <button  value="{{challenge}}"
+                                class="btn challenge-button modal-trigger"
+                                data-target="challengeModal"
                                 data-challenge-id="{{challenge.pk}}"
                                 >
-                                <i class="fas fa-crosshairs"></i>
+
                             {% endif %}
-                                {{challenge.name}}<br />{{challenge.points}}
-                            </a>
+                                <span>{{challenge.name}}</span><br />
+                                <span>{{challenge.points}}</span>
+                            </button>
                             <!-- Modal -->
                         {% endif %}
                     {% endfor %}
