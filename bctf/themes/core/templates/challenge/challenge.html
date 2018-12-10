@@ -2,16 +2,24 @@
     <div class="modal-header">
         <h4>{{challenge.name}}<span class="badge right">{{challenge.points}} points</span></h4>
     </div>
-    <div class="modal-body">
-        {{challenge.description|linebreaks}}
+    <div class="modal-body" onload="init_tabs()">
 
-        <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#description">Description</a></li>
+        <li class="tab col s3"><a href="#hints">Hints</a></li>
+        <li class="tab col s3"><a href="#solves">Solved</a></li>
+      </ul>
+
+        <div id="description">
+            {{challenge.description|linebreaks}}
+
+            <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                 {% csrf_token %}
                     <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
-                
+
                 {% if challenge.pk in solved_by_user %}
                     <div class="alert alert-success">
-                        <strong>Already Solved</strong>
+                        <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
                     </div>
                 {% else %}
                     <div class="input-field col s6">
@@ -27,8 +35,15 @@
                         M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
                     </script>
             {% endif %}
+        </div>
+        <div id="hints">
+            hints
+        </div>
+        <div id="solves">
+            solves
+        </div>
+
     </div>
 
     
 </div>
-
