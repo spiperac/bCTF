@@ -1,120 +1,37 @@
-<div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="challenge-modal-title">
-            <span class="challenge-category">{{challenge.category}}</span>
-            <span class="badge badge-secondary">{{challenge.points}} pts</span> 
-        </h5>
-        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="modal-content">
+    <div class="card">
+        <div class="card-title">
+            {{challenge.name}}
         </div>
-        <div class="modal-body">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a href="#challengeDetails" aria-selected="true" id="details-tab" aria-controls="challengeDetails" class="nav-link active" role="tab" data-toggle="tab">
-                        <i class="fas fa-scroll"></i> Details
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#hintsTab" aria-controls="hintsTab" id="hints-tab" class="nav-link" role="tab" data-toggle="tab">
-                        <i class="fas fa-question-circle"></i> Hints <span class="badge badge-secondary">{{challenge.hint_set.count}}</span></a>
-                    </li>
-                <li class="nav-item">
-                    <a href="#solvedTab" aria-controls="solvedTab" id="solved-tab" class="nav-link" role="tab" data-toggle="tab">
-                        <i class="fas fa-question-circle"></i> Solved <span class="badge badge-secondary">{{challenge.solves.all.count}}</span>
-                    </a>
-                </li>
-            </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="challengeDetails" aria-labelledby="home-tab">
-                    <h3 class="challenge-title text-center">
-                        {{challenge.name}}
-                    </h3>
-                    {% if challenge.author %}
-                    <div class="challenge-author d-inline float-right">
-                        Author: {{challenge.author}}
-                    </div>
+        <div class="card-content">
+            {{challenge.description}}
+        </div>
+        <div class="card-footer">
+            <div class="form-group">
+                <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+                    {% csrf_token %}
+                        <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                    
+                    {% if challenge.pk in solved_by_user %}
+                        <div class="alert alert-success">
+                            <strong>Already Solved</strong>
+                        </div>
+                    {% else %}
+                        <div class="input-group mb-3">
+                            <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                            <div class="input-group-append">
+                                <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light" name="action"><i class="material-icons left">flag</i>Check</button>
+                            </div>
+                        </div>
                     {% endif %}
-                    <p class="challenge-description">
-                        {{challenge.description|linebreaks}}
-                    </p>
-                    <div class="form-group">
-                        <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
-                            {% csrf_token %}
-                            <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
-
-                            <br />
-                            {% if challenge.attachment_set.count > 0 %}
-                                {% for attachment in challenge.attachment_set.all %}
-                                    <a role="button" class="btn" href="{{attachment.data.url}}"><i class="fas fa-download"></i> {{attachment.filename}}</a>
-                                {% endfor %}
-                            {% endif %}
-
-                            <br />
-
-                            {% if challenge.pk in solved_by_user %}
-                                <div class="alert alert-success">
-                                    <strong>Already Solved</strong>
-                                </div>
-                            {% else %}
-
-                            <div class="input-group mb-3">
-                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
-                                <div class="input-group-append">
-                                    <button id="submit" type="submit" class="btn btn-primary"><i class="fas fa-flag"></i> Check</button>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </form>
-                        {% if error %}
-                            <div class="alert alert-dismissible alert-danger">
-                                <button type="button" data-dismiss="alert" class="close">×</button>
-                                <strong>Oh snap! {{error}}</strong>
-                            </div>
-                        {% endif %}
+                </form>
+                {% if error %}
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" data-dismiss="alert" class="close">×</button>
+                        <strong>Oh snap! {{error}}</strong>
                     </div>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="solvedTab">
-                    <table>
-                        <thead class="table">
-                            <th>Team</th>
-                            <th>Time</th>
-                        </thead>
-                        <tbody>
-                            {% for solve in challenge.solves.all %}
-                            <tr>
-                                <td><a href="{% url 'profile' solve.account.pk %}">{{solve.account.username}}</a></td>
-                                <td>{{solve.created_at}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane" id="hintsTab">
-                    <ul>
-                        {% for hint in challenge.hint_set.all %}
-                        <li>{{hint.text}}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-
-<script>                    
-
-    $('document').ready( function() {
-
-        var form_options = {
-            target: '#challengeModals',
-            success: function() { }
-        }
-        $('#flag-submit-form').ajaxForm(form_options);
-        
-
-    })
-</script>
