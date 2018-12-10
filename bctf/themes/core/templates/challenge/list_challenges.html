@@ -96,7 +96,13 @@
                 });
             },
             onCloseEnd: function() {
-                window.location.hash = "";
+                // document.location.hash = "💩";
+
+                // scroll back to last position
+
+                var position_y = window.scrollY;
+                location.hash = "";
+                window.scrollTo(0, position_y);
             }
     }
     var elem = document.querySelectorAll('.modal');
