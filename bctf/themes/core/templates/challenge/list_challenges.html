@@ -61,6 +61,8 @@
         var form_options = {
                 target: '#challengeModal',
                 success: function() { 
+                    // reinitialize tabs for new modal
+                    $('.tabs').tabs();
                 }
             }
             //document.querySelector('#flag-submit-form').ajaxForm(form_options)
@@ -108,7 +110,8 @@
                 var position_y = window.scrollY;
                 location.hash = "";
                 window.scrollTo(0, position_y);
-            }
+            },
+            opacity: 0.7,
     }
     var elem = document.querySelectorAll('.modal');
     var instance = M.Modal.init(elem, options);

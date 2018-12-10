@@ -17,3 +17,8 @@
 .challenge-button.solved {
     background-color: green;
 }
+
+#countDownTimer {
+    padding: 10px;
+    font-size: 18pt;
+}

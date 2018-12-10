@@ -1,17 +1,24 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h4>{{challenge.name}}<span class="badge right">{{challenge.points}} points</span></h4>
+        <h4><i class="material-icons medium left">flag</i>{{challenge.name}}<span class="badge right white-text">{{challenge.points}} points</span></h4>
     </div>
     <div class="modal-body" onload="init_tabs()">
 
       <ul class="tabs">
-        <li class="tab col s3"><a href="#description">Description</a></li>
-        <li class="tab col s3"><a href="#hints">Hints</a></li>
-        <li class="tab col s3"><a href="#solves">Solved</a></li>
+        <li class="tab col s4"><a href="#description">Description</a></li>
+        <li class="tab col s4"><a href="#hints">Hints - <strong>{{challenge.hint_set.count}}</strong></a></li>
+        <li class="tab col s4"><a href="#solves">Solved - <strong>{{challenge.solves.count}}</string></a></li>
       </ul>
 
         <div id="description">
             {{challenge.description|linebreaks}}
+            
+            <br />
+            {% if challenge.attachment_set.count > 0 %}
+                {% for attachment in challenge.attachment_set.all %}
+                    <a role="button" class="btn" href="{{attachment.data.url}}"><i class="material-icons left">file_download</i> {{attachment.filename}}</a>
+                {% endfor %}
+            {% endif %}
 
             <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                 {% csrf_token %}
@@ -22,12 +29,17 @@
                         <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
                     </div>
                 {% else %}
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">flag</i>
-                        <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                <div class="row">
 
-                        <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light" name="action"><i class="material-icons left">flag</i>Check</button>
+                    <div class="input-field col s6">
+                        <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required><br />
                     </div>
+                    <div class="input-field col s6">
+                        <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
+                            <i class="material-icons left">flag</i>Submit
+                        </button>
+                    </div>
+                </div>
                 {% endif %}
             </form>
             {% if error %}
@@ -36,11 +48,36 @@
                     </script>
             {% endif %}
         </div>
+        
+        <!-- Hints -->
         <div id="hints">
-            hints
+            <ul>
+                {% for hint in challenge.hint_set.all %}
+                    <li>{{hint.text}}</li>
+                {% empty %}
+                    <li>No hints!</li>
+                {% endfor %}
+            </ul>
         </div>
+
+        <!-- Solves -->
         <div id="solves">
-            solves
+            <table>
+                <thead class="table">
+                    <th>Team</th>
+                    <th>Time</th>
+                </thead>
+                <tbody>
+                    {% for solve in challenge.solves.all %}
+                    <tr>
+                        <td><a href="{% url 'profile' solve.account.pk %}">{{solve.account.username}}</a></td>
+                        <td>{{solve.created_at}}</td>
+                    </tr>
+                    {% empty %}
+                        <p>No solves yet!</p>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
 
     </div>
