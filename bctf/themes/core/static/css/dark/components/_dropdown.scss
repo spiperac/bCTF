@@ -28,6 +28,7 @@
     }
 
     &.divider {
+      background-color: $borders-color;
       min-height: 0;
       height: 1px;
     }

@@ -16,21 +16,23 @@
 
     <!-- CSS files -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
+
     {% block extra_css%}
     
     {% endblock %}
 </head>
 
-<body class="">
+<body class="dark-layout">
     <!-- Navigation -->
   <div class="navbar-fixed">
       {% if request.user.is_authenticated %}
         <ul id="dropdown1" class="dropdown-content">
-          <a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Profile</a>
-          <a class="dropdown-item" href="{% url 'account-settings' %}">Settings</a>
+          <li><a href="{% url 'profile' request.user.pk %}">Profile</a></li>
+          <li><a href="{% url 'account-settings' %}">Settings</a></li>
           <li class="divider"></li>
-          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
         </ul>
       {% endif %}
       <nav class="">
@@ -89,7 +91,7 @@
     {% endif %}
 
 <main role="main">
-    <div class="container" style="margin-top: 20px;">
+    <div class="container dark" style="margin-top: 20px;">
         {% block content %}
 
         {% endblock %}
