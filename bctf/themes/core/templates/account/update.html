@@ -3,24 +3,26 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="jumbotron jt-scores">
-    <div class="row tall-row text-center">
-        <div class="col-lg-12">
-            <h1>Settings [{{object.username}}]</h1>
-            <hr>
-        </div>
-    </div>
-    <div class="content">
-        <div class="row">
-            <div class="col-12">
-                <form method="POST" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{form|crispy}}
-                        <button id='submit' class="btn btn-success" type="submit">Save</button>
-                </form>
-            </div>
-        </div>
+
+<div class="row">
+    <div class="col-12">
+        <h3>Settings [{{object.username}}]</h3>
+        <div class="divider"></div>
+        <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button id='submit' class="btn btn-large" type="submit">Update</button>
+                
+        </form>
     </div>
 </div>
 
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+$(document).ready(function(){
+    $('#id_country').formSelect();
+});
+</script>
 {% endblock %}
