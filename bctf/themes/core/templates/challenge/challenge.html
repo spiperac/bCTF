@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h4><i class="material-icons medium left">flag</i>{{challenge.name}}<span class="badge right white-text">{{challenge.points}} points</span></h4>
+        <h4>{{challenge.name}}<span class="badge right white-text">{{challenge.points}} points</span></h4>
     </div>
     <div class="modal-body" onload="init_tabs()">
 
@@ -20,16 +20,11 @@
                 <div id="description">
 
                     <div class="row">
-                        <div class="col s8 m8 l8">
-                            <h5>Description</h5>
-                            <div class="divider"></div>
+                        <div class="col s12 m12 l12">
                             {{challenge.description|linebreaks}}
-                        </div>
 
-                        <div class="col s4 m4 l4">
-                            <h5>Attachments</h5>
-                            <div class="divider"></div>
                              {% if challenge.attachment_set.count > 0 %}
+                                <div class="divider"></div>
                                 <ul class="collection" style="border: 0px !important;">
                                     {% for attachment in challenge.attachment_set.all %}
                                         <li class="collection-item" style="border: 0px !important;">
@@ -37,8 +32,6 @@
                                         </li>
                                     {% endfor %}
                                 </ul>
-                            {% else %}
-                                <strong>- No attachments.</strong>
                             {% endif %}
                         </div>
                     </div>
@@ -51,17 +44,15 @@
                                         <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
 
                                     {% if challenge.pk in solved_by_user %}
-                                        <div class="alert alert-success">
-                                            <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
+                                        <div>
+                                            <strong>Solved<i class="material-icons left green circle">check</i> </strong>
                                         </div>
                                     {% else %}
                                     <div class="row">
 
-                                        <div class="input-field col s8">
+                                        <div class="input-field col s12 m12 l12">
                                             <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required>
-                                        </div>
-                                        <div class="input-field col 4">
-                                            <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
+                                            <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field right" name="action">
                                                 <i class="material-icons left">flag</i>Submit
                                             </button>
                                         </div>
