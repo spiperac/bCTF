@@ -16,13 +16,14 @@
         </div>
 
         <div id="description">
-
+            
             <div class="row">
                 <div class="col s12 m12 l12">
-                    {{challenge.description|linebreaks}}
+                    <div class="challenge-description">
+                        {{challenge.description|linebreaks}}
+                    </div>
 
                     {% if challenge.attachment_set.count > 0 %}
-                        <div class="divider"></div>
                         <ul class="collection" style="border: 0px !important;">
                         {% for attachment in challenge.attachment_set.all %}
                             <li class="collection-item" style="border: 0px !important;">
@@ -36,23 +37,23 @@
 
             <div class="row">
                 <div class="col s12 m12 l12">
-                        <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
-                            {% csrf_token %}
-                                <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                    <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+                        {% csrf_token %}
+                            <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
 
-                            {% if challenge.pk in solved_by_user %}
-                                <div>
-                                    <strong>Solved<i class="material-icons left green circle">check</i> </strong>
-                                </div>
-                            {% else %}
-                                <div class="input-field col s12 m12 l12">
-                                    <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required>
-                                    <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field right" name="action">
-                                        <i class="material-icons left">flag</i>Submit
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </form>
+                        {% if challenge.pk in solved_by_user %}
+                            <div>
+                                <strong>Solved<i class="material-icons left green circle">check</i> </strong>
+                            </div>
+                        {% else %}
+                            <div class="input-field">
+                                <input id="flag" name="flag" type="text" class="validate" autocomplete="off" placeholder="Flag here ..." required>
+                            </div>
+                            <button id="submit" type="submit" onclick="submit_flag()" class="btn right" name="action">
+                                <i class="material-icons left">flag</i>Submit
+                            </button>
+                        {% endif %}
+                    </form>
                     {% if error %}
                             <script>
                                 M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
