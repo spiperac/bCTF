@@ -57,12 +57,18 @@
 
 <script>
 
+    var tab_options = {
+        swipeable: false
+    }
+
     function submit_flag() {
         var form_options = {
                 target: '#challengeModal',
                 success: function() { 
                     // reinitialize tabs for new modal
-                    $('.tabs').tabs();
+                    var tabs = document.getElementById("challenge-tabs");
+                    var instance = M.Tabs.init(tabs, tab_options);
+
                 }
             }
             //document.querySelector('#flag-submit-form').ajaxForm(form_options)
@@ -86,7 +92,8 @@
                     context: document.body
                 }).done(function(response) {
                     modal.html(response);
-                    $('.tabs').tabs();
+                    var tabs = document.getElementById("challenge-tabs");
+                    var instance = M.Tabs.init(tabs, tab_options);
                     window.location.hash = "#" + challengeID;
                 }).fail(function(err){
                     if (err.status == 403) {
@@ -104,7 +111,8 @@
                         `)
                     }
                 });
-                $('.tabs').tabs();
+                var tabs = document.getElementById("challenge-tabs");
+                var instance = M.Tabs.init(tabs, tab_options);
             },
             onCloseEnd: function() {
                 // document.location.hash = "💩";

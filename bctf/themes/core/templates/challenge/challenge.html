@@ -7,10 +7,10 @@
         <!-- Tabs -->
         <div class="row">
             <div class="col s12 m12 l12">
-                <ul class="tabs">
+                <ul class="tabs" id="challenge-tabs">
                     <li class="tab col s4"><a href="#description">Description</a></li>
                     <li class="tab col s4"><a href="#hints">Hints - <strong>{{challenge.hint_set.count}}</strong></a></li>
-                    <li class="tab col s4"><a href="#solves">Solved - <strong>{{challenge.solves.count}}</string></a></li>
+                    <li class="tab col s4"><a href="#solves">Solved - <strong>{{challenge.solves.count}}</strong></a></li>
                 </ul>
             </div>
         </div>
@@ -43,33 +43,39 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
-                        {% csrf_token %}
-                            <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div id="flag-submit-holder">
+                                <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+                                    {% csrf_token %}
+                                        <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
 
-                        {% if challenge.pk in solved_by_user %}
-                            <div class="alert alert-success">
-                                <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
-                            </div>
-                        {% else %}
-                        <div class="row">
+                                    {% if challenge.pk in solved_by_user %}
+                                        <div class="alert alert-success">
+                                            <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
+                                        </div>
+                                    {% else %}
+                                    <div class="row">
 
-                            <div class="input-field col s8">
-                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required>
-                            </div>
-                            <div class="input-field col 4">
-                                <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
-                                    <i class="material-icons left">flag</i>Submit
-                                </button>
+                                        <div class="input-field col s8">
+                                            <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required>
+                                        </div>
+                                        <div class="input-field col 4">
+                                            <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
+                                                <i class="material-icons left">flag</i>Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </form>
+                            {% if error %}
+                                    <script>
+                                        M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
+                                    </script>
+                            {% endif %}
                             </div>
                         </div>
-                        {% endif %}
-                    </form>
-                    {% if error %}
-                            <script>
-                                M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
-                            </script>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
