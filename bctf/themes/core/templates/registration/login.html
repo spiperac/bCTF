@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
   <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +14,10 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
       <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
+
+      <script src="{{theme_static}}/js/jquery.min.js"></script>
+      <script src="{{theme_static}}/js/materialize.min.js"></script>
+
       <style>
       .login-box {
         height: 100%;
@@ -21,34 +25,46 @@
       </style>
       </head>
       
-      <body class="dark-layout">
+      <body class="dark-layout" style="height: 100%;">
           <div class="valign-wrapper row login-box">
               <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
-                <form>
+
+              <form method="POST" action="{% url 'login' %}">
+                  {% csrf_token %}
                   <div class="card-content">
                     <span class="card-title">Enter credentials</span>
                     <div class="row">
-                      <div class="input-field col s12">
-                        <label for="id_username">Username</label>
-                        <input type="text" class="validate" name="username" id="id_username" />
-                      </div>
-                      <div class="input-field col s12">
-                        <label for="password">Password </label>
-                        <input type="password" class="validate" name="password" id="password" />
-                      </div>
+                        <div class="input-field col s12">
+                            <label for="id_username">Username</label>
+                            <input type="text" class="validate" name="username" id="id_username" />
+                        </div>
+                        <div class="input-field col s12">
+                            <label for="password">Password </label>
+                            <input type="password" class="validate" name="password" id="password" />
+                        </div>
+
+                        <br />
+                         <input type="submit" class="btn green waves-effect waves-light" value="Login">
                     </div>
                   </div>
                   <div class="card-action right-align">
-                    <input type="reset" id="reset" class="btn-flat grey-text waves-effect">
-                    <input type="submit" class="btn green waves-effect waves-light" value="Login">
+                      <a href="{% url 'registration' %}">Register?</a> | <a href="{% url 'password-reset' %}">Forgot password?</a>
+                  </div>
+                  <div class="card-footer">
+                      {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <script>
+                                    M.toast({html: '{{error}}', classes: 'rounded red black-text'})
+                                </script>
+                            {% endfor %}
+                        {% endif %}
                   </div>
                 </form>
               </div>
             </div>
+
         </main>
-      
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
       </body>
       
       </html>
