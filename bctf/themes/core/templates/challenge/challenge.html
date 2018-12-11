@@ -18,14 +18,28 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div id="description">
-                    {{challenge.description|linebreaks}}
 
-                    <br />
-                    {% if challenge.attachment_set.count > 0 %}
-                        {% for attachment in challenge.attachment_set.all %}
-                            <a role="button" class="btn" href="{{attachment.data.url}}"><i class="material-icons left">file_download</i> {{attachment.filename}}</a>
-                        {% endfor %}
-                    {% endif %}
+                    <div class="row">
+                        <div class="col s8 m8 l8">
+                            <h5>Description</h5>
+                            <div class="divider"></div>
+                            {{challenge.description|linebreaks}}
+                        </div>
+
+                        <div class="col s4 m4 l4">
+                            <h5>Attachments</h5>
+                            <div class="divider"></div>
+                             {% if challenge.attachment_set.count > 0 %}
+                                <ul class="collection" style="border: 0px !important;">
+                                    {% for attachment in challenge.attachment_set.all %}
+                                        <li class="collection-item" style="border: 0px !important;">
+                                            <i class="material-icons circle left">file_download</i><a class="truncate" href="{{attachment.data.url}}">{{attachment.filename}}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
 
                     <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
                         {% csrf_token %}
@@ -38,10 +52,10 @@
                         {% else %}
                         <div class="row">
 
-                            <div class="input-field col s6">
-                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required><br />
+                            <div class="input-field col s8">
+                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required>
                             </div>
-                            <div class="input-field col s6">
+                            <div class="input-field col 4">
                                 <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
                                     <i class="material-icons left">flag</i>Submit
                                 </button>
@@ -98,6 +112,4 @@
         </div>
 
     </div>
-
-    
 </div>
