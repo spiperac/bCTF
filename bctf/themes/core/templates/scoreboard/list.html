@@ -7,17 +7,31 @@
 
 {% block extra_js %}
     <script src="{{theme_static}}/js/Chart.min.js"></script>
-    <script src="{{theme_static}}/js/scoreboard.js"></script>    
+    <script src="{{theme_static}}/js/scoreboard.js"></script>
+
+    <style>
+
+        #score-graph-live {
+            min-height: 200px;
+        }
+    </style>
+
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col l12 s12">
+    <div class="col s8 m10 l10">
         <div id="score-graph-placeholder">
-            <div id="loaderScoreboard" class="loader align-content-center"></div>
+            <div id="loaderScoreboard" class=" center-align">
+                <div class="progress">
+                  <div class="indeterminate"></div>
+                </div>
+            </div>
             <canvas id="score-graph-live"></canvas>
         </div>
-
+    </div>
+    <div class="col s4 m2 l2" style="padding-top:20px;">
+        <strong>Legend</strong>
         <div id="chart-legend"></div>
     </div>
 </div>

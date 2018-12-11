@@ -38,7 +38,7 @@ function feed_table(element) {
                         <img src="${element.avatar}" height="50" width="50" class="img-fluid">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
-                        <a href="/accounts/profile/${element.id}">${element.name}</a> <span class="badge badge-secondary"><i class="fas fa-crown" style="color:gold"></i></span>
+                        <a href="/accounts/profile/${element.id}">${element.name}</a>
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
@@ -67,7 +67,6 @@ function feed_table(element) {
             `
         )
     }
-
 }
 
 function scores_graph() {
@@ -78,7 +77,7 @@ function scores_graph() {
         if (Object.keys(ranks).length === 0 ){
             // If no one scored, set no solves
             $('#score-graph-placeholder').html(
-                '<div class="text-center"><h3 class="spinner-error">No solves yet</h3></div>'
+                '<div class="center-align"><h3>No solves yet</h3></div>'
             );
             return;
         }
@@ -130,32 +129,44 @@ function scores_graph() {
 
         $('#loaderScoreboard').hide();
         var ctx = document.getElementById('score-graph-live').getContext('2d');
-        var LineChartDemo = new Chart(ctx , {
+        window.scoreboardChart = new Chart(ctx , {
             type: "scatter",
             data: chartData, 
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
 
             options: {
  
                 legend: {
-                    position: 'bottom',
+                    position: false,
                     labels: {
-                        fontColor: "#fff",
                         usePointStyle: true,
                     }
                 },
+                legendCallback: function(chart) { 
+                    var text = []; 
+                    text.push('<ul class="' + chart.id + '-legend">');
+                    for (var i = 0; i < chart.data.datasets.length; i++) { 
+                        text.push('<li class="truncate" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"><i class="material-icons left" style="color:' +
+                                   chart.data.datasets[i].backgroundColor + 
+                                   '">flag</i> ');
+                        if (chart.data.datasets[i].label) { 
+                            text.push(chart.data.datasets[i].label); 
+                        } 
+                        text.push('</li>'); 
+                    } 
+                    text.push('</ul>'); 
+                    return text.join(''); 
+                },                 
                 title: {
                     display: true,
                     text: 'Top 10 Teams',
                     fontSize: 18,
-                    fontColor: '#fff'
                 },
                 scales: {
                     xAxes: [{
                         type: 'time',
                         ticks: {
-                            fontColor: "#fff",
                             beginAtZero: false
                         },
                         gridLines: {
@@ -164,7 +175,6 @@ function scores_graph() {
                     }],
                     yAxes: [{
                         ticks: {
-                            fontColor: "#fff",
                         },
                         gridLines: {
                             display:false
@@ -173,9 +183,23 @@ function scores_graph() {
                 }
             }
         });
+        $('#chart-legend').html(scoreboardChart.generateLegend());
         
     });
 }
+
+// Show/hide chart by click legend
+updateDataset = function(e, datasetIndex) {
+    var index = datasetIndex;
+    var ci = e.view.scoreboardChart;
+    var meta = ci.getDatasetMeta(index);
+
+    // See controller.isDatasetVisible comment
+    meta.hidden = meta.hidden === null? !ci.data.datasets[index].hidden : null;
+
+    // We hid a dataset ... rerender the chart
+    ci.update();
+};
 
 function cumulativesum (arr) {
     var result = arr.concat();
