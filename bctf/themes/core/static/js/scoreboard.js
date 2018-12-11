@@ -12,9 +12,9 @@ function update_feed() {
 function populate_scores(){
     var scoresURL = "/api/scores/";
     $.getJSON( scoresURL, function( data ) {
-        $.each( data.ranks, function( key, val ) {
-            feed_table(val);
-        });
+        for (var i = 0; i < data.ranks.length; i++) {
+            feed_table(data.ranks[i]);
+        }
     });
 }
 
@@ -92,7 +92,7 @@ function scores_graph() {
             var scores = []
             var times = []
             // Organise team data into sets
-            for (i in team.solves){
+            for (var i = 0; i < team.solves.length; i++){
                 scores.push(team.solves[i].value)
                 var date = moment(team.solves[i].time * 1000);
                 times.push(date.toDate())
@@ -100,7 +100,7 @@ function scores_graph() {
 
             final_scores = cumulativesum(scores);
             axes = []
-            for (var c in final_scores) {
+            for (var c = 0; c < final_scores.length; c++) {
                 var tmp_data = {
                     x: times[c],
                     y: final_scores[c]

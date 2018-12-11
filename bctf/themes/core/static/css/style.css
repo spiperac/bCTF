@@ -2,6 +2,10 @@
     background-color: #201f1D;
 }
 
+.inline-icon {
+    vertical-align: bottom;
+ }
+
 .container.dark {
     background: #303030;
     padding: 20px;
