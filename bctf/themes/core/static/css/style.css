@@ -22,3 +22,26 @@
     padding: 10px;
     font-size: 18pt;
 }
+
+/*----------------------------------------
+    Profile Page
+------------------------------------------*/
+#profile-page-header .card-image {
+    height: 250px;
+  }
+
+#profile-page-header .card-profile-image {
+    width: 110px;
+    z-index: 1;
+    left: 40px;
+    cursor: pointer;
+    margin: 0;
+}
+
+#profile-page-header .card-content {
+    margin-top: -40px;
+}
+
+#profile-page-header .card-content .card-title {
+    margin-bottom: 0;
+}

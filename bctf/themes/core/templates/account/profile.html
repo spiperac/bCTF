@@ -8,93 +8,127 @@
 {% endblock %}
 
 {% block content %}
-<div class="row tall-row">
-    <div class="col-lg-12">
-        <div class="d-flex justify-content-between bd-highlight mb-3">
-            <div class="p-2 bd-highlight">
-                <h1>#{{rank}} </h1>
-            </div>
-            <div class="p-2 bd-highlight">
-                <h1>
-                    {{object.username}} {% if rank == 1 %} <i class="fas fa-crown" style="color:goldenrod"></i> {% endif %}
-                </h1>
-            </div>
-            <div class="p-2 bd-highlight">
+
+<div id="profile-page-header" class="card">
+    <figure class="card-profile-image">
+        <img src="{{ object.get_avatar_medium }}" alt="profile image" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan gradient-shadow">
+    </figure>
+    <div class="card-content">
+        <div class="row pt-2">
+        <div class="col s12 m3 offset-m2">
+            <h4 class="card-title">{{object.username}}</h4>
+            <div class="progress">
+                <div class="determinate" style="width: {{progress}}%"></div>
             </div>
         </div>
-        <hr>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{rank|to_word}}</h4>
+            <p class="medium-small">Rank</p>
+        </div>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{solved_stats.0}}/{{solved_stats.1}}</h4>
+            <p class="medium-small">Challenges Solved</p>
+        </div>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{object.points}} pts</h4>
+            <p class="medium-small">Points</p>
+        </div>
+        <div class="col s12 m1 right-align">
+                <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20">
+        </div>
+        </div>
     </div>
 </div>
-<div class="content">
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-auto">
-                        <img src="{{ object.get_avatar_medium }}" width="128" height="128" class="img-fluid" alt="">
-                    </div>
-                    <div class="col">
-                        <div class="card-block px-2">
-                            <h4 class="card-title">{{object.username}}</h4>
-                            <p class="card-text">Currently at <b style="color:whitesmoke">{{rank|to_word}}</b> place!</p>
-                            {% if object.country %}
-                                <p class="card-text">Team is from  <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20"></p>
-                            {% endif %}
-                            <h4>Points: <span class="badge badge-dark"><b>{{object.points}} pts</b></span></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer w-100 text-muted">
-                        <h6>Progress <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="top" title="Team progress based on points gathered"></i></h6>
+<div class="row">
+    <div class="col s12 m12">
+        <ul class="tabs">
+            <li class="tab col s4 m4"><a class="active" href="#statistics">Statistics</a></li>
+            <li class="tab col s4 m4"><a href="#solved">Solved</a></li>
+            <li class="tab col s4 m4"><a href="#achivements">Achivements</a></li>
+        </ul>
+    </div>
+</div>
 
-                        <div class="progress bg-default" style="height: 20px;">
-                            <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{progress}}%;" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100">
-                                <span><b>{{progress}}%</b></span>
-                            </div>
-                        </div>
+
+<div id="statistics">
+    <div class="row">
+        <!-- Solved Total Chart -->
+        <div class="col s12 m4">
+                <div style="height: 300px">
+                    <canvas id="id_solved_chart" width="300px"></canvas>
                 </div>
-            </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-            {% if solved_stats.0 %}
-            <div style="height: 300px">
-                <canvas id="id_solved_line_chart"></canvas>
-            </div>
-            {% else %}
-            <h2>Nothing solved currently!</h2>
-            {% endif %}
+    
+        <!-- Solved Line Chart -->
+        <div class="col s12 m8" style="padding-bottom: 150px;">
+                {% if solved_stats.0 %}
+                    <div style="height: 300px">
+                        <canvas id="id_solved_line_chart"></canvas>
+                    </div>
+                {% else %}
+                    <h2>Nothing solved currently!</h2>
+                {% endif %}
         </div>
     </div>
+    
+</div>
+
+<div id="solved">
     <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div style="height: 300px">
-                <canvas id="id_solved_chart" width="300px"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <h3>History</h3>
-            <hr />
-            <h6>Solved</h6>
+        <div class="col s12 m12">
             {% if solved|length == 0 %}
                 <p>Nothing solved yet!</p>
             {% else %}
-            <ul>
-                {% for solve in solved %}
-                    <li>{{solve.challenge.name}} - ({{solve.challenge.category}} - {{solve.challenge.points}})</li>
-                {% endfor %}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Challenge</th>
+                        <th>Category</th>
+                        <th>Time</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solve in solved %}
+                    <tr>
+                        <td><a href="/challenges/#{{solve.challenge_id}}" target="_blank"> {{solve.challenge.name}}</a></td>
+                        <td>{{solve.challenge.category}}</td>
+                        <td>{{solve.created_at}}</td>
+                        <td>{{solve.challenge.points}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% endif %}
+        </div>
+    </div>
+</div>
 
-            <h6>First bloods</h6>
-            {% if not first_bloods %}
-                <p>No first bloods!</p>
-            {% else %}
-            <ul>
-                {% for first_blood in first_bloods %}
-                    <li>{{first_blood.challenge.name}}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+<div id="achivements">
+    <div class="row">
+        <div class="col s12 m12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Achivement</th>
+                        <th>Text</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if first_bloods %}
+                        {% for first_blood in first_bloods %}
+                        <tr>
+                            <td>First Blood!</td>
+                            <td>Team {{first_blood.account.username}} just got first blood on <a href="/challenges/#{{first_blood.challenge_id}}" target="_blank"> {{first_blood.challenge.name}}</a>!</td>
+                            <td>{{first_blood.created_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <h4>No achivements yet!</h4>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -104,6 +138,7 @@
 {% block custom_javascript %}
 <script>
 $('document').ready(function() {
+        $('.tabs').tabs();
         var ctx = document.getElementById('id_solved_chart').getContext('2d');
         var stats = {{solved_stats|safe}};
         solvedChart(ctx, stats)
