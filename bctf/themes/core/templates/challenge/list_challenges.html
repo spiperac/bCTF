@@ -71,7 +71,13 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         var options = {
-            onOpenStart: function(chall_modal) {
+            onOpenStart: function () {
+                var modal = this.$el;
+                modal.html(
+                    `{% include 'templates/challenge/challenge_loading.html' %}`
+                )
+            },
+            onOpenEnd: function(chall_modal) {
                 var modal = this.$el
                 var challengeID = this._openingTrigger.dataset.challengeId
                 var formURL = `/challenges/${challengeID}/flag/`
@@ -98,8 +104,6 @@
                         `)
                     }
                 });
-            },
-            onOpenEnd: function() {
                 $('.tabs').tabs();
             },
             onCloseEnd: function() {

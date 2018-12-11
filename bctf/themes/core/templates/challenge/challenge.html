@@ -4,80 +4,97 @@
     </div>
     <div class="modal-body" onload="init_tabs()">
 
-      <ul class="tabs">
-        <li class="tab col s4"><a href="#description">Description</a></li>
-        <li class="tab col s4"><a href="#hints">Hints - <strong>{{challenge.hint_set.count}}</strong></a></li>
-        <li class="tab col s4"><a href="#solves">Solved - <strong>{{challenge.solves.count}}</string></a></li>
-      </ul>
-
-        <div id="description">
-            {{challenge.description|linebreaks}}
-            
-            <br />
-            {% if challenge.attachment_set.count > 0 %}
-                {% for attachment in challenge.attachment_set.all %}
-                    <a role="button" class="btn" href="{{attachment.data.url}}"><i class="material-icons left">file_download</i> {{attachment.filename}}</a>
-                {% endfor %}
-            {% endif %}
-
-            <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
-                {% csrf_token %}
-                    <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
-
-                {% if challenge.pk in solved_by_user %}
-                    <div class="alert alert-success">
-                        <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
-                    </div>
-                {% else %}
-                <div class="row">
-
-                    <div class="input-field col s6">
-                        <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required><br />
-                    </div>
-                    <div class="input-field col s6">
-                        <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
-                            <i class="material-icons left">flag</i>Submit
-                        </button>
-                    </div>
-                </div>
-                {% endif %}
-            </form>
-            {% if error %}
-                    <script>
-                        M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
-                    </script>
-            {% endif %}
+        <!-- Tabs -->
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <ul class="tabs">
+                    <li class="tab col s4"><a href="#description">Description</a></li>
+                    <li class="tab col s4"><a href="#hints">Hints - <strong>{{challenge.hint_set.count}}</strong></a></li>
+                    <li class="tab col s4"><a href="#solves">Solved - <strong>{{challenge.solves.count}}</string></a></li>
+                </ul>
+            </div>
         </div>
-        
+
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div id="description">
+                    {{challenge.description|linebreaks}}
+
+                    <br />
+                    {% if challenge.attachment_set.count > 0 %}
+                        {% for attachment in challenge.attachment_set.all %}
+                            <a role="button" class="btn" href="{{attachment.data.url}}"><i class="material-icons left">file_download</i> {{attachment.filename}}</a>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'challenge:flag-submit' challenge.pk %}" id="flag-submit-form">
+                        {% csrf_token %}
+                            <input type="hidden" id="challenge_id" name="challenge_id" value="{{challenge.pk}}">
+
+                        {% if challenge.pk in solved_by_user %}
+                            <div class="alert alert-success">
+                                <strong>Solved<i class="material-icons left green cricle">check</i> </strong>
+                            </div>
+                        {% else %}
+                        <div class="row">
+
+                            <div class="input-field col s6">
+                                <input id="flag" name="flag" type="text" class="form-control" placeholder="Flag here ..." required><br />
+                            </div>
+                            <div class="input-field col s6">
+                                <button id="submit" type="submit" onclick="submit_flag()" class="btn waves-effect waves-light input-field" name="action">
+                                    <i class="material-icons left">flag</i>Submit
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </form>
+                    {% if error %}
+                            <script>
+                                M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
+                            </script>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
         <!-- Hints -->
-        <div id="hints">
-            <ul>
-                {% for hint in challenge.hint_set.all %}
-                    <li>{{hint.text}}</li>
-                {% empty %}
-                    <li>No hints!</li>
-                {% endfor %}
-            </ul>
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div id="hints">
+                    <ul>
+                        {% for hint in challenge.hint_set.all %}
+                            <li>{{hint.text}}</li>
+                        {% empty %}
+                            <li>No hints!</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <!-- Solves -->
-        <div id="solves">
-            <table>
-                <thead class="table">
-                    <th>Team</th>
-                    <th>Time</th>
-                </thead>
-                <tbody>
-                    {% for solve in challenge.solves.all %}
-                    <tr>
-                        <td><a href="{% url 'profile' solve.account.pk %}">{{solve.account.username}}</a></td>
-                        <td>{{solve.created_at}}</td>
-                    </tr>
-                    {% empty %}
-                        <p>No solves yet!</p>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div id="solves">
+                    <table>
+                        <thead class="table">
+                            <th>Team</th>
+                            <th>Time</th>
+                        </thead>
+                        <tbody>
+                            {% for solve in challenge.solves.all %}
+                            <tr>
+                                <td><a href="{% url 'profile' solve.account.pk %}">{{solve.account.username}}</a></td>
+                                <td>{{solve.created_at}}</td>
+                            </tr>
+                            {% empty %}
+                                <p>No solves yet!</p>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
     </div>
