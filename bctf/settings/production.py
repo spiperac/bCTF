@@ -26,9 +26,7 @@ else:
 DEBUG = False
 
 ALLOWED_HOSTS = ['*', ]
-# STATICFILES_STORAGE = 'custom.theme_storage.ThemeStorage'
 
-STATIC_ROOT = "/var/tmp/static"
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media/')
 
 # Caching
