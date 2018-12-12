@@ -11,7 +11,7 @@ ADD . /app/
 
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates gcc linux-headers musl-dev \
-    libffi-dev jpeg-dev zlib-dev \
+    libffi-dev jpeg-dev zlib-dev libjpeg-turbo-dev jpeg \
     && pip install -r requirements.txt \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
@@ -24,17 +24,19 @@ RUN apk add --no-cache --virtual .build-deps \
                 | xargs -r apk info --installed \
                 | sort -u \
     )" \
-    && apk add --virtual .rundeps $runDeps nginx supervisor \
+    && apk add --virtual .rundeps $runDeps libjpeg-turbo-dev jpeg-dev jpeg \
     && apk del .build-deps
 
 ENV DJANGO_SETTINGS_MODULE bctf.settings.production
 
-COPY config/bctf-nginx.conf /etc/nginx/conf.d/default.conf
-COPY config/nginx.conf /etc/nginx/
-COPY config/supervisord.conf /etc/
+#COPY config/bctf-nginx.conf /etc/nginx/conf.d/default.conf
+#COPY config/nginx.conf /etc/nginx/
+#COPY config/supervisord.conf /etc/
 
 RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
 RUN rm -rf ./static/
 
-EXPOSE 80
+EXPOSE 31337
 CMD ["/usr/bin/supervisord", "-n"]
+CMD ["/usr/local/bin/gunicorn", "--chdir", "/app/", "--workers=4", "bctf.wsgi", "-b", "0.0.0.0:31337"]

@@ -48,10 +48,13 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '/tmp/bctf-prod.log',
         },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
