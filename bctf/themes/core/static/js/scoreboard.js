@@ -133,7 +133,7 @@ function scores_graph() {
             type: "scatter",
             data: chartData, 
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
 
             options: {
  
