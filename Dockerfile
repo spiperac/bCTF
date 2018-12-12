@@ -39,4 +39,4 @@ RUN rm -rf ./static/
 
 EXPOSE 31337
 CMD ["/usr/bin/supervisord", "-n"]
-CMD ["/usr/local/bin/gunicorn", "--chdir", "/app/", "--workers=4", "bctf.wsgi", "-b", "0.0.0.0:31337"]
+CMD ["/usr/local/bin/gunicorn", "--chdir", "/app/", "--workers=4", "bctf.wsgi", "-b", "0.0.0.0:8000"]
