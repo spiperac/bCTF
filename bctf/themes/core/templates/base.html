@@ -18,7 +18,7 @@
     {% load compress %}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    {% compress css %}
+    {% compress css inline %}
     <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
     <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
     {% endcompress %}
@@ -151,7 +151,7 @@
         </div>
     </div>
 </footer>
-{% compress js %}
+{% compress js inline %}
 <!-- JavaScript files -->
 <script src="{{theme_static}}/js/moment.min.js"></script>
 <script src="{{theme_static}}/js/jquery.min.js"></script>
