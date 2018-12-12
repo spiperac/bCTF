@@ -23,6 +23,8 @@ INSTALLED_APPS += [
     'crispy_forms',
     'django_countries',
     'rest_framework',
+    'compressor',
+
 
     # apps
     'apps.accounts',
@@ -144,7 +146,11 @@ STATICFILES_FINDERS = (
     'custom.theme_staticfinder.ThemeStaticFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 )
+
+COMPRESS_ROOT = '/var/tmp/compressed'
+COMPRESS_ENABLED = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
