@@ -76,7 +76,7 @@ function scores_graph() {
 
         if (Object.keys(ranks).length === 0 ){
             // If no one scored, set no solves
-            $('#score-graph-placeholder').html(
+            $('#scoreboard').html(
                 '<div class="center-align"><h3>No solves yet</h3></div>'
             );
             return;

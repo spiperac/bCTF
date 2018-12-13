@@ -17,6 +17,7 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
     </div>
 
+    {% if challenges.count > 0 %}
     <div class="row">
         <div class="col m12 s12">
             {% for category in categories %}
@@ -46,8 +47,9 @@
                 {% endfor %}
         </div>
     </div>
-
-
+    {% else %}
+        <h1 class="center-align">No challenges available yet!</h1>
+    {% endif %}
 
 <div id="challengeModal" class="modal">
 </div>

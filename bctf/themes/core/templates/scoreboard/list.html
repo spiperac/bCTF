@@ -16,45 +16,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="row hide-on-small-and-down">
-    <div class="col s8 m10 l10">
-        <div id="score-graph-placeholder">
-            <div id="loaderScoreboard" class=" center-align">
-                <div class="progress">
-                  <div class="indeterminate"></div>
-                </div>
-            </div>
-            <canvas id="score-graph-live"></canvas>
-        </div>
-    </div>
-    <div class="col s4 m2 l2" style="padding-top:20px;">
-        <strong>Legend</strong>
-        <div id="chart-legend"></div>
-    </div>
-</div>
-
-<div class="row show-on-small hide-on-med-and-up">
+<div id="scoreboard">
+    <div class="row hide-on-small-and-down">
         <div class="col s8 m10 l10">
-            <h1>Leaderboard</h1>
+            <div id="score-graph-placeholder">
+                <div id="loaderScoreboard" class=" center-align">
+                    <div class="progress">
+                      <div class="indeterminate"></div>
+                    </div>
+                </div>
+                <canvas id="score-graph-live"></canvas>
+            </div>
         </div>
-</div>
+        <div class="col s4 m2 l2" style="padding-top:20px;">
+            <strong>Legend</strong>
+            <div id="chart-legend"></div>
+        </div>
+    </div>
 
-<div class="row">
-    <div class="col l12 s12">
-        <table class="highlight" id="scores">
-            <thead>
-                <tr>
-                    <th>#Rank</th>
-                    <th>Team</th>
-                    <th>Country</th>
-                    <th>Points</th>
-                </tr>
-            </thead>
-            <tbody id="scores-body">
-            </tbody>
-        </table>
+    <div class="row show-on-small hide-on-med-and-up">
+            <div class="col s8 m10 l10">
+                <h1>Leaderboard</h1>
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col l12 s12">
+            <table class="highlight" id="scores">
+                <thead>
+                    <tr>
+                        <th>#Rank</th>
+                        <th>Team</th>
+                        <th>Country</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody id="scores-body">
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
 
 
 {% endblock %}
