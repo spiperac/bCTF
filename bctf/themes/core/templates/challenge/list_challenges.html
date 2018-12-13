@@ -84,9 +84,9 @@
                 )
             },
             onOpenEnd: function(chall_modal) {
-                var modal = this.$el
-                var challengeID = this._openingTrigger.dataset.challengeId
-                var formURL = `/challenges/${challengeID}/flag/`
+                var modal = this.$el;
+                var challengeID = this._openingTrigger.dataset.challengeId;
+                var formURL = `/challenges/${challengeID}/flag/`;
                 $.ajax({
                     url: formURL,
                     context: document.body
@@ -131,8 +131,8 @@
 
     if(window.location.hash) {
       var hash = window.location.hash.split('#')[1];
-      var chall = $('*[data-challenge-id="' + hash + '"]')[0]
-      chall.click()
+      var chall = $('*[data-challenge-id="' + hash + '"]')[0];
+      chall.click();
     }
 
 
