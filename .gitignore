@@ -7,7 +7,7 @@
 
 # Icon must end with two \r
 Icon
-
+.sass-cache/*
 
 # Thumbnails
 ._*
