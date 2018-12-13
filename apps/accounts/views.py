@@ -13,7 +13,11 @@ from apps.accounts.forms import AccountCreationForm, AccountChangeForm
 from apps.challenges.models import Solves, FirstBlood, Challenge
 
 
-class RegistrationView(CreateView):
+class RegistrationView(RatelimitMixin, CreateView):
+    ratelimit_key = 'ip'
+    ratelimit_rate = '3/m'
+    ratelimit_method = 'POST'
+    ratelimit_block = True
     form_class = AccountCreationForm
     success_url = reverse_lazy('login')
 

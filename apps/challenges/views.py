@@ -55,7 +55,7 @@ class ChallengesListView(LoginRequiredMixin, View):
 
 class SubmitFlagView(RatelimitMixin, CtfNotEnded, LoginRequiredMixin, FormView):
     ratelimit_key = 'user'
-    ratelimit_rate = '3/m'
+    ratelimit_rate = '10/m'
     ratelimit_method = 'POST'
     ratelimit_block = True
     form_class = SubmitFlagForm

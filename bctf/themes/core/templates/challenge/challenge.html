@@ -59,6 +59,13 @@
                                 M.toast({html: 'Oh snap! {{error}}', classes: 'rounded red black-text'})
                             </script>
                     {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <script>
+                                M.toast({html: '{{message}}', classes: 'rounded red black-text'})
+                            </script>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             
