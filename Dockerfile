@@ -35,6 +35,7 @@ ENV DJANGO_SETTINGS_MODULE bctf.settings.production
 
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate
+RUN python manage.py flush --noinput
 RUN rm -rf ./static/
 
 EXPOSE 31337

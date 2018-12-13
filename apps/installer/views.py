@@ -23,7 +23,7 @@ class InstallView(UserIsAnonymousMixin, View):
 
     def get(self, request, *args, **kwargs):
         if Account.objects.count() == 0:
-            return render(self.request, 'administration/settings/installer/install.html', {'form': self.form_class})
+            return render(self.request, 'templates/installer/install.html', {'form': self.form_class})
         else:
             return redirect('scoreboard:home')
 
@@ -49,6 +49,6 @@ class InstallView(UserIsAnonymousMixin, View):
 
                 new_admin.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, new_admin)
-                return render(self.request, 'administration/settings/installer/success.html')
+                return render(self.request, 'templates/installer/success.html')
         else:
             return HttpResponse(status=403)
