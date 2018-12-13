@@ -8,7 +8,7 @@ from apps.accounts.models import Account
 from apps.installer.forms import InstallForm
 from apps.installer.utils import initialize_keys
 from apps.scoreboard.utils import create_key
-
+from config import set_key
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class InstallView(UserIsAnonymousMixin, View):
 
                 try:
                     initialize_keys()
-                    create_key("name", request.POST['ctf_name'])
+                    set_key("ctf_name", request.POST['ctf_name'])
                     create_key("installed", True)
                 except Exception as exception:
                     logger.error('Installation failed: {0}'.format(exception))
