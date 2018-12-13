@@ -11,6 +11,14 @@
     padding: 20px;
 }
 
+#countDownTimer {
+    padding: 10px;
+    font-size: 18pt;
+}
+
+/*----------------------------------------
+    Challenge Page
+------------------------------------------*/
 .challenge-button {
     height: 100px;
     width: 200px;
@@ -20,11 +28,6 @@
 
 .challenge-button.solved {
     background-color: green;
-}
-
-#countDownTimer {
-    padding: 10px;
-    font-size: 18pt;
 }
 
 #challenge-tabs {

@@ -16,7 +16,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row hide-on-small-and-down">
     <div class="col s8 m10 l10">
         <div id="score-graph-placeholder">
             <div id="loaderScoreboard" class=" center-align">
@@ -31,6 +31,12 @@
         <strong>Legend</strong>
         <div id="chart-legend"></div>
     </div>
+</div>
+
+<div class="row show-on-small hide-on-med-and-up">
+        <div class="col s8 m10 l10">
+            <h1>Leaderboard</h1>
+        </div>
 </div>
 
 <div class="row">

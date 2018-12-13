@@ -5,7 +5,7 @@ from ratelimit.exceptions import Ratelimited
 
 def error_view_403(request, exception=None):
     if isinstance(exception, Ratelimited):
-        return HttpResponse('Slow down.', status=429)
+        return render(request, template_name=request.template_name ,context={'error': 'test'}, status=429)
     return render(request, 'templates/errors/403.html', status=403)
 
 
