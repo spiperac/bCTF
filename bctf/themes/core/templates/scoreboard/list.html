@@ -3,19 +3,16 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+    <style>
+        #score-graph-live {
+            min-height: 200px;
+        }
+    </style>
 {% endblock %}
 
 {% block extra_js %}
     <script src="{{theme_static}}/js/Chart.min.js"></script>
     <script src="{{theme_static}}/js/scoreboard.js"></script>
-
-    <style>
-
-        #score-graph-live {
-            min-height: 200px;
-        }
-    </style>
-
 {% endblock %}
 
 {% block content %}
