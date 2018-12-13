@@ -5,24 +5,20 @@ services:
     build: .
     container_name: bctf-app
     restart: always
-    env_file:
-      - ./.env
-      - ./.env.secret
     volumes:
-      - media-volume:/app/bctf/media
+      - .data/media:/app/bctf/media
     ports:
       - "8000:8000"
-    depends_on:
-      - nginx
 
   nginx:
     image: "nginx"
     container_name: bctf-nginx
     restart: always
     volumes:
-      - media-volume:/media
+      - .data/media:/media
+      - ./resources/nginx/sites-enabled/:/etc/nginx/conf.d/
     ports:
       - "80:80"
+    depends_on:
+      - web
 
-volumes:
-  media-volume:
