@@ -1,17 +1,45 @@
-{% extends 'templates/admin_base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends 'templates/install_base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12">
-            <h1 class="text-center">Install bCTF</h1>
-            <form method="POST" action="{% url 'installer' %}" id="installer-from">
-                {% csrf_token %}
-                {{form|crispy}}
-                <button id="submit" type="submit" class="btn btn-primary">Setup</button>
-            
-            </form> 
+
+
+<main class="content" role="content">
+
+	<section id="section1">
+		<div class="container-fluid col-md-6 col-md-offset-3">
+
+<!-- MultiStep Form -->
+<form method="POST" action="{% url 'installer' %}" id="installForm">
+    {% csrf_token %}
+
+    <h1>Setup bCTF</h1>
+
+    <div class="tab">CTF General information:
+        <p><input placeholder="CTF Name ..." oninput="this.className = ''" name="ctf_name"></p>
     </div>
-</div>
+
+    <div class="tab">Administrator account:
+        <p><input placeholder="Username" oninput="this.className = ''" name="admin_username"></p>
+        <p><input placeholder="E-mail..." oninput="this.className = ''" name="admin_email"></p>
+        <p><input placeholder="Password" oninput="this.className = ''" name="admin_password"></p>
+    </div>
+
+    <div style="overflow:auto;">
+        <div style="float:right;">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <span class="step"></span>
+    <span class="step"></span>
+  </div>
+</form>
+<!-- /.MultiStep Form -->
+
+		</div>
+	</section>
+
+</main> <!-- /content -->
 {% endblock %}

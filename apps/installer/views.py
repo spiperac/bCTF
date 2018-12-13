@@ -44,6 +44,7 @@ class InstallView(UserIsAnonymousMixin, View):
                 try:
                     initialize_keys()
                     create_key("name", request.POST['ctf_name'])
+                    create_key("installed", True)
                 except Exception as exception:
                     logger.error('Installation failed: {0}'.format(exception))
 
