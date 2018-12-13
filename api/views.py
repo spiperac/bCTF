@@ -4,8 +4,10 @@ from django.http import JsonResponse
 from django.db.models import Sum
 from apps.accounts.models import Account
 from apps.challenges.models import Solves, Challenge
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 3)
 def scores(request):
     if request.method == 'GET':
         response = {}
@@ -29,6 +31,8 @@ def scores(request):
         
         return JsonResponse(response)
 
+
+@cache_page(60 * 3)
 def top_scores(request):
     if request.method == 'GET':
         response = {}
@@ -72,6 +76,8 @@ def events(request):
         
         return JsonResponse(response)
 
+
+@cache_page(60 * 3)
 def teams(request):
     if request.method == 'GET':
         response = {}
