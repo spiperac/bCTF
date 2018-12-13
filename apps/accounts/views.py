@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from ratelimit.mixins import RatelimitMixin
 from django.views.generic import CreateView, View, UpdateView
 from apps.accounts.models import Account
 from apps.accounts.forms import AccountCreationForm, AccountChangeForm
@@ -25,7 +26,11 @@ class RegistrationView(CreateView):
         return super(RegistrationView, self).dispatch(request, *args, **kwargs)
 
 
-class Login(LoginView):
+class Login(RatelimitMixin, LoginView):
+    ratelimit_key = 'ip'
+    ratelimit_rate = '10/m'
+    ratelimit_method = 'POST'
+    ratelimit_block = True
     redirect_authenticated_user = True
 
     def get_template_names(self):

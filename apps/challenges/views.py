@@ -1,5 +1,5 @@
 import time
-
+from ratelimit.mixins import RatelimitMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
@@ -53,7 +53,11 @@ class ChallengesListView(LoginRequiredMixin, View):
         return render(self.request, 'templates/challenge/list_challenges.html', context=context)
 
 
-class SubmitFlagView(CtfNotEnded, LoginRequiredMixin, FormView):
+class SubmitFlagView(RatelimitMixin, CtfNotEnded, LoginRequiredMixin, FormView):
+    ratelimit_key = 'user'
+    ratelimit_rate = '3/m'
+    ratelimit_method = 'POST'
+    ratelimit_block = True
     form_class = SubmitFlagForm
 
     def get_context_data(self, **kwargs):
