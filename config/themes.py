@@ -1,6 +1,7 @@
 import os
 from django.conf import settings
 from config import set_key, get_key
+from django.core.cache import cache
 
 
 def get_themes():
@@ -17,11 +18,19 @@ def get_themes():
 
 def set_theme(theme):
     set_key("theme", theme)
+    cache.set("theme", theme)
 
 
 def get_theme():
-    theme = get_key("theme")
-    if theme:
+    theme = cache.get("theme")
+    if theme is not None:
+        print("cached theme")
         return theme
     else:
-        return "core"
+        theme = get_key("theme")
+        if theme:
+            cache.set("theme", theme)
+            return theme
+        else:
+            cache.set("theme", "core")
+            return "core"

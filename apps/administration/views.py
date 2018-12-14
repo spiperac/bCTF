@@ -1,5 +1,6 @@
 
 from django.conf import settings
+from django.core.cache import cache
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -219,6 +220,7 @@ class GeneralUpdateView(UserIsAdminMixin, View):
         if form.is_valid():
             if 'theme' in request.POST:
                 set_theme(request.POST['theme'])
+                cache.set("theme", request.POST['theme'])
 
             if 'start_time' in request.POST:
                 if request.POST['start_time']:

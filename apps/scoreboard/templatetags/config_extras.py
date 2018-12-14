@@ -1,5 +1,5 @@
 from django import template
-from apps.scoreboard.utils import get_key, get_theme
+from config import get_key
 from apps.pages.models import Page
 register = template.Library()
 

@@ -9,6 +9,7 @@ from apps.installer.forms import InstallForm
 from apps.installer.utils import initialize_keys
 from apps.scoreboard.utils import create_key
 from config import set_key
+from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
@@ -44,12 +45,13 @@ class InstallView(UserIsAnonymousMixin, View):
                 try:
                     initialize_keys()
                     set_key("ctf_name", request.POST['ctf_name'])
-                    create_key("installed", True)
+                    set_key("installed", True)
+                    cache.set("theme", "core")
                 except Exception as exception:
                     logger.error('Installation failed: {0}'.format(exception))
 
                 new_admin.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, new_admin)
-                return render(self.request, 'templates/installer/success.html')
+                return render(request, 'templates/installer/success.html')
         else:
             return HttpResponse(status=403)
