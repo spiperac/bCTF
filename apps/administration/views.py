@@ -243,9 +243,6 @@ class GeneralUpdateView(UserIsAdminMixin, View):
             if 'registration_status' in request.POST:
                 set_key("registration_status", request.POST['registration_status'])
 
-            if request.FILES['ctf_logo']:
-                pass
-
             return HttpResponse(status=204)
         else:
             return HttpResponse(status=400)

@@ -24,7 +24,6 @@ def set_theme(theme):
 def get_theme():
     theme = cache.get("theme")
     if theme is not None:
-        print("cached theme")
         return theme
     else:
         theme = get_key("theme")

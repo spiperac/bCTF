@@ -1,6 +1,6 @@
 import time
 from PIL import Image
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.utils.six import BytesIO
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -8,6 +8,7 @@ from django.core.files.base import ContentFile
 from apps.accounts.models import Account
 from apps.challenges.models import Challenge, Category, Flag, Hint, Attachment
 from apps.installer.utils import initialize_keys
+from config import set_key
 
 
 # "borrowed" from easy_thumbnails/tests/test_processors.py
@@ -40,7 +41,9 @@ class AdministrationTest(TestCase):
         self.admin_account.save()
         self.test_title = "Example CTF"
         initialize_keys()
+        set_key("installed", True)
 
+    @override_settings(RATELIMIT_ENABLE=False)
     def login_as_admin(self):
         """
         Login client as admin user.

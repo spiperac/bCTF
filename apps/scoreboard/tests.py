@@ -1,6 +1,6 @@
 import random
 import string
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 
 from apps.accounts.models import Account
@@ -18,6 +18,7 @@ class ScoreboardTest(TestCase):
             new_account.set_password(team_name)
             new_account.save()
 
+    @override_settings(STATICFILES_STORAGE='')
     def test_scoreboard(self):
         client = Client()
 
