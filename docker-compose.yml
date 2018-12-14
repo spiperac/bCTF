@@ -4,6 +4,7 @@ services:
 
   db:
     image: mariadb:10.4
+    container_name: bctf-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: bctf
@@ -32,8 +33,6 @@ services:
   
   web:
     build: .
-    environment:
-      DATABASE_URL: mysql+pymysql://bctf:bctf@db/bctf
     container_name: bctf-app
     restart: always
     volumes:
@@ -41,8 +40,6 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
-    links:
       - db
     networks:
       - main

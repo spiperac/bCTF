@@ -15,7 +15,7 @@ from apps.challenges.models import Solves, FirstBlood, Challenge
 
 class RegistrationView(RatelimitMixin, CreateView):
     ratelimit_key = 'ip'
-    ratelimit_rate = '3/m'
+    ratelimit_rate = '5/m'
     ratelimit_method = 'POST'
     ratelimit_block = True
     form_class = AccountCreationForm

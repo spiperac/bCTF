@@ -3,8 +3,7 @@ import datetime
 import random
 from django.core.management.base import BaseCommand
 from apps.accounts.models import Account
-from apps.challenges.models import Category, Challenge, Solves, FirstBlood
-
+from apps.challenges.models import Category, Challenge, Solves, FirstBlood, Flag
 
 categories_list = [
     'web',
@@ -83,12 +82,17 @@ class Command(BaseCommand):
     def create_challenges(self, size):
 
         for x in range(0, size):
-            Challenge.objects.create(
+            new_challenge = Challenge.objects.create(
                 category=Category.objects.get(name=random.choice(categories_list)),
                 name=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(8)),
                 description=''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + ' ' + string.digits) for _ in range(40)),
                 points=''.join(random.choice(string.digits) for _ in range(3))
             )
+            new_flag = Flag(
+                challenge=new_challenge,
+                text="1"
+            )
+            new_flag.save()
 
     def create_solves(self, size):
         for x in range(0, size):
