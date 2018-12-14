@@ -29,6 +29,18 @@ ALLOWED_HOSTS = ['*', ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# Database
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.mysql', 
+    'NAME': 'bctf',
+    'USER': 'bctf',
+    'PASSWORD': 'bctf',
+    'HOST': 'db',
+    'PORT': '3306',
+  }
+}
+
 # Caching
 CACHES = {
     'default': {

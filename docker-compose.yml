@@ -1,15 +1,20 @@
 version: "3"
 
 services:
-  
-  web:
-    build: .
-    container_name: bctf-app
+
+  db:
+    image: mariadb:10.4
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: bctf
+      MYSQL_DATABASE: bctf
+      MYSQL_USER: bctf
+      MYSQL_PASSWORD: bctf
     volumes:
-      - .data/media:/app/bctf/media
-    ports:
-      - "8000:8000"
+      - .data/mysql:/var/lib/mysql
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+    networks:
+      - main
 
   nginx:
     image: "nginx"
@@ -22,4 +27,25 @@ services:
       - "80:80"
     depends_on:
       - web
+    networks:
+      - main
+  
+  web:
+    build: .
+    environment:
+      DATABASE_URL: mysql+pymysql://bctf:bctf@db/bctf
+    container_name: bctf-app
+    restart: always
+    volumes:
+      - .data/media:/app/bctf/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - main
+networks:
+  main:
 

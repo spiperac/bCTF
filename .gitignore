@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io
 
+.data/*
+CACHE/*
+bctf/themes/CACHE/
 ### OSX ###
 .DS_Store
 .AppleDouble
