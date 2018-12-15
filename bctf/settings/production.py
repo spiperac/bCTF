@@ -1,4 +1,6 @@
 import secrets
+from dotenv import load_dotenv
+from pathlib import Path
 from .base import *
 from .email import *
 from .uptime import *
@@ -27,19 +29,35 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*', ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Reading configuration from environment file
+env_path = Path("{0}/../".format(BASE_DIR)) / '.env'
+load_dotenv(dotenv_path=env_path)
 
-# Database
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql', 
-    'NAME': 'bctf',
-    'USER': 'bctf',
-    'PASSWORD': 'bctf',
-    'HOST': 'db',
-    'PORT': '3306',
-  }
-}
+db_type = os.getenv("DB_TYPE")
+if db_type == 'sqlite':
+    db_name = os.getenv("DB_FILE_NAME")
+    # Database
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, db_name),
+        }
+    }
+elif db_type == 'mysql':
+    # Database
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_USER_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
+        }
+    }
+else:
+    print("- Error: DB Type not specified. Please edit your .env file and specify proper DB Type ( sqlite, mysql, postgres)")
+    exit(1)
 
 # Caching
 CACHES = {
@@ -76,3 +94,5 @@ LOGGING = {
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = "DENY"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
