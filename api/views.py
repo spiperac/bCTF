@@ -21,7 +21,7 @@ def scores(request):
 
         accounts_scored = cache.get('accounts_scored')
         if accounts_scored is None:
-            accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')[:100]
+            accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')
             cache.set('accounts_scored', list(accounts_scored), timeout=120)
 
         for (rank, account) in enumerate(accounts_scored, start=1):
