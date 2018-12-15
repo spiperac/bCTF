@@ -5,6 +5,7 @@ from django.db.models import Sum
 from apps.accounts.models import Account
 from apps.challenges.models import Solves, Challenge
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 
 @cache_page(60 * 3)
@@ -13,8 +14,14 @@ def scores(request):
         response = {}
         response['ranks'] = []
         total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
-        
-        accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')[:100]
+        scores = cache.get('accounts_scored')
+        print(scores)
+        if scores is None:
+            accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')[:100]
+            cache.set('accounts_scored', list(accounts_scored))
+        else:
+            print("cached")
+            accounts_scored = scores
 
         for (rank, account) in enumerate(accounts_scored, start=1):
             team = {}

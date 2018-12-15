@@ -7,10 +7,10 @@ services:
     container_name: bctf-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: bctf
-      MYSQL_DATABASE: bctf
-      MYSQL_USER: bctf
-      MYSQL_PASSWORD: bctf
+      MYSQL_ROOT_PASSWORD: "${DB_USER_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_USER_PASSWORD}"
     volumes:
       - .data/mysql:/var/lib/mysql
     command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
