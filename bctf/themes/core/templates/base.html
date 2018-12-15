@@ -21,14 +21,14 @@
     <!-- CSS files -->
     {% load compress %}
 
-    {% compress css inline %}
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/material-icons.css">
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
-    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
-    
-    {% block extra_css%}
-    
-    {% endblock %}
+        {% compress css inline %}
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
+        
+        {% block extra_css%}
+        
+        {% endblock %}
 
     {% endcompress %}
 

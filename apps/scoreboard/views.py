@@ -25,10 +25,10 @@ class IndexView(View):
         context['total_points_available'] = total_points_available if total_points_available else 0
         context['number_bad_submission'] = bad_submissions_number
         context['kings_of_wrong'] = king_of_wrong
-        return render(self.request, 'templates/index.html', context=context)
+        return render(request, 'templates/index.html', context=context)
 
 
 class ScoreboardView(View):
 
     def get(self, request, *args, **kwargs):
-        return render(self.request, 'templates/scoreboard/list.html')
+        return render(request, 'templates/scoreboard/list.html')
