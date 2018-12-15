@@ -13,15 +13,16 @@ def scores(request):
     if request.method == 'GET':
         response = {}
         response['ranks'] = []
-        total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
-        scores = cache.get('accounts_scored')
-        print(scores)
-        if scores is None:
+
+        total_points = cache.get('total_points')
+        if total_points is None:
+            total_points = Challenge.objects.aggregate(Sum('points'))['points__sum']
+            cache.set('total_points', int(total_points), timeout=120)
+
+        accounts_scored = cache.get('accounts_scored')
+        if accounts_scored is None:
             accounts_scored = Account.objects.prefetch_related('solves').filter(points__gt=0).filter(is_active=True).order_by('-points')[:100]
-            cache.set('accounts_scored', list(accounts_scored))
-        else:
-            print("cached")
-            accounts_scored = scores
+            cache.set('accounts_scored', list(accounts_scored), timeout=120)
 
         for (rank, account) in enumerate(accounts_scored, start=1):
             team = {}
