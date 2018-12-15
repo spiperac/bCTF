@@ -67,6 +67,8 @@ def top_scores(request):
         else:
             return JsonResponse(response)
 
+
+@cache_page(60 * 7)
 def events(request):
     if request.method == 'GET':
         response = {}
