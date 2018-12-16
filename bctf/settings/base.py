@@ -40,6 +40,7 @@ INSTALLED_APPS += [
 
 AUTH_USER_MODEL = 'accounts.Account'
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
