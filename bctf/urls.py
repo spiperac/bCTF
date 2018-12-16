@@ -47,7 +47,7 @@ urlpatterns += [
     path('', include('apps.scoreboard.urls')),
     path('api/', include('api.urls')),
     path('administration/', include('apps.administration.urls')),
-    # path('teams/', include('apps.teams.urls')),
+    path('teams/', include('apps.teams.urls')),
     path('challenges/', include('apps.challenges.urls')),
     path('pages/', include('apps.pages.urls')),
     path('importer/', include('apps.tasksimporter.urls')),
