@@ -1,5 +1,8 @@
 {% extends 'templates/base.html' %}
+
 {% load static %}
+{% load cache %}
+
 
 {% block extra_css %}
     {% cache 5000 flag_cache %}
@@ -12,10 +15,12 @@
     </style>
 {% endblock %}
 
+
 {% block extra_js %}
     <script src="{{theme_static}}/js/Chart.min.js"></script>
     <script src="{{theme_static}}/js/scoreboard.js"></script>
 {% endblock %}
+
 
 {% block content %}
 <div id="scoreboard">
