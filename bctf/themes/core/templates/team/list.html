@@ -1,6 +1,16 @@
 {% extends 'templates/base.html' %}
 
+{% load static %}
+{% load cache %}
 {% load pagination_teams %}
+
+
+{% block extra_css %}
+    {% cache 5000 flag_cache %}
+        <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+    {% endcache %}
+{% endblock %}
+
 
 {% block content %}
 
@@ -16,7 +26,7 @@
                     <img src="{{team.get_avatar}}" width="50px" height="50px" alt="avatar" class="circle">
                     <span class="title"><a href="{% url 'profile' team.pk %}">{{team.username}}</a></span>
                     {% if team.country %}
-                        <img class="secondary-content" src="{{team.country.flag}}" width="25" height="20">
+                        <i class="secondary-content flag2x {{team.country.flag_css}}"></i>
                     {% endif %}
                 </li>
             {% endfor %}
