@@ -12,9 +12,9 @@ function update_feed() {
 function populate_scores(){
     var scoresURL = "/api/scores/";
     $.getJSON( scoresURL, function( data ) {
-        $.each( data.ranks, function( key, val ) {
-            feed_table(val);
-        });
+        for (var i = 0; i < data.ranks.length; i++) {
+            feed_table(data.ranks[i]);
+        }
     });
 }
 
@@ -32,13 +32,13 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td style="color:white">${element.rank}</td>
+                <td>${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50" width="50" class="img-fluid">
+                        <img src="${element.avatar}" height="50" width="50" class="img-fluid" alt="">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
-                        <a href="/accounts/profile/${element.id}">${element.name}</a> <span class="badge badge-secondary"><i class="fas fa-crown" style="color:gold"></i></span>
+                        <a href="/accounts/profile/${element.id}">${element.name}</a>
                         <p>Solved ${element.precentage}%</p>
                     </div>
                 </td>
@@ -51,10 +51,10 @@ function feed_table(element) {
         $('#scores-body').append(
             `
             <tr>
-                <td style="color:white">${element.rank}</td>
+                <td>${element.rank}</td>
                 <td>
                     <div id="avatar" style="float:left">
-                        <img src="${element.avatar}" height="50" width="50" class="img-fluid">
+                        <img src="${element.avatar}" height="50" width="50" class="img-fluid" alt="">
                     </div>
                     <div id="team_info" style="margin-left: 70px;">
                         <a href="/accounts/profile/${element.id}">${element.name}</a>
@@ -67,7 +67,6 @@ function feed_table(element) {
             `
         )
     }
-
 }
 
 function scores_graph() {
@@ -77,8 +76,8 @@ function scores_graph() {
 
         if (Object.keys(ranks).length === 0 ){
             // If no one scored, set no solves
-            $('#score-graph-placeholder').html(
-                '<div class="text-center"><h3 class="spinner-error">No solves yet</h3></div>'
+            $('#scoreboard').html(
+                '<div class="center-align"><h3>No solves yet</h3></div>'
             );
             return;
         }
@@ -93,7 +92,7 @@ function scores_graph() {
             var scores = []
             var times = []
             // Organise team data into sets
-            for (i in team.solves){
+            for (var i = 0; i < team.solves.length; i++){
                 scores.push(team.solves[i].value)
                 var date = moment(team.solves[i].time * 1000);
                 times.push(date.toDate())
@@ -101,7 +100,7 @@ function scores_graph() {
 
             final_scores = cumulativesum(scores);
             axes = []
-            for (var c in final_scores) {
+            for (var c = 0; c < final_scores.length; c++) {
                 var tmp_data = {
                     x: times[c],
                     y: final_scores[c]
@@ -130,7 +129,7 @@ function scores_graph() {
 
         $('#loaderScoreboard').hide();
         var ctx = document.getElementById('score-graph-live').getContext('2d');
-        var LineChartDemo = new Chart(ctx , {
+        window.scoreboardChart = new Chart(ctx , {
             type: "scatter",
             data: chartData, 
             responsive: true,
@@ -139,17 +138,31 @@ function scores_graph() {
             options: {
  
                 legend: {
-                    position: 'bottom',
+                    position: false,
                     labels: {
-                        fontColor: "#fff",
                         usePointStyle: true,
                     }
                 },
+                legendCallback: function(chart) { 
+                    var text = []; 
+                    text.push('<ul class="' + chart.id + '-legend">');
+                    for (var i = 0; i < chart.data.datasets.length; i++) { 
+                        text.push('<li class="truncate" onclick="updateDataset(event, ' + '\'' + i + '\'' + ')"><i class="fas fa-circle" style="color:' +
+                                   chart.data.datasets[i].backgroundColor + 
+                                   '"></i> ');
+                        if (chart.data.datasets[i].label) { 
+                            text.push(chart.data.datasets[i].label); 
+                        } 
+                        text.push('</li>'); 
+                    } 
+                    text.push('</ul>'); 
+                    return text.join(''); 
+                },                 
                 title: {
                     display: true,
                     text: 'Top 10 Teams',
                     fontSize: 18,
-                    fontColor: '#fff'
+                    fontColor: "#fff",
                 },
                 scales: {
                     xAxes: [{
@@ -173,9 +186,23 @@ function scores_graph() {
                 }
             }
         });
+        $('#chart-legend').html(scoreboardChart.generateLegend());
         
     });
 }
+
+// Show/hide chart by click legend
+updateDataset = function(e, datasetIndex) {
+    var index = datasetIndex;
+    var ci = e.view.scoreboardChart;
+    var meta = ci.getDatasetMeta(index);
+
+    // See controller.isDatasetVisible comment
+    meta.hidden = meta.hidden === null? !ci.data.datasets[index].hidden : null;
+
+    // We hid a dataset ... rerender the chart
+    ci.update();
+};
 
 function cumulativesum (arr) {
     var result = arr.concat();
