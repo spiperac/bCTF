@@ -1,0 +1,106 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">Attachments {{object.name}}</h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="new-attachment-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="id_challenge_id" name="challenge_id" value="{{challenge.pk}}">
+                <div class="input-group mb-3">
+                    <input id="id_attachment" name="attachment" type="file" class="form-control" required><br />
+                    <div class="input-group-append">
+                        <button id="attachment-button" type="button" class="btn btn-primary">Upload</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>File</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attachment in object.attachment_set.all %}
+                        <tr>
+                            <td>{{attachment.pk}}</td>
+                            <td><a href="/{{attachment.data.url}}">{{attachment.filename}}</a></td>
+                            <td>
+                                <i class="fas fa-edit"></i>
+                                <button href="#" class="btn btn-default delete-attachment" value="{{attachment.pk}}"><i class="fas fa-trash"></i></button> 
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$('document').ready( function() {
+    $("#new-attachment-form").submit(function(e) {
+        e.preventDefault();
+    });
+
+    $( "#attachment-button" ).click(function() {
+        var URL=`{% url 'challenge:add-attachment' object.pk %}`;
+        var file = $("#id_attachment")[0].files
+
+        var DATA = new FormData();
+        DATA.append("csrfmiddlewaretoken", '{{ csrf_token }}');
+        DATA.append("challenge_id", `{{object.pk}}`);
+        DATA.append("data", file[0]);
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                reloadAttachments();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    $(".delete-attachment" ).click(function() {
+        var URL=`{% url 'challenge:delete-attachment' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            attachment: $(this).val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadAttachments();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    function reloadAttachments() {
+        var modal = $('#attachmentsModal').modal();
+        var challengeID = `{{challenge.pk}}`;
+        var formURL = `/challenges/${challengeID}/attachments`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    }
+
+})
+</script>

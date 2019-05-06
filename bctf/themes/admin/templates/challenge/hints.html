@@ -1,0 +1,101 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">Hints for {{object.name}}</h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="new-hint-form">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input id="id_hint" name="hint" type="text" class="form-control" placeholder="Hint ..." required><br />
+                    <div class="input-group-append">
+                        <button id="hint-button" type="button" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Hint</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hint in object.hint_set.all %}
+                        <tr>
+                            <td>{{hint.pk}}</td>
+                            <td>{{hint.text}}</td>
+                            <td>
+                                <button href="#" class="btn btn-default delete-hint" value="{{hint.pk}}"><i class="fas fa-trash"></i></button> 
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$('document').ready( function() {
+    $("#new-hint-form").submit(function(e) {
+        e.preventDefault();
+    });
+
+    $( "#hint-button" ).click(function() {
+        var URL=`{% url 'challenge:add-hint' object.pk %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: `{{object.pk}}`,
+            hint: $("#id_hint").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadHints();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    $(".delete-hint" ).click(function() {
+        var URL=`{% url 'challenge:delete-hint' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            hint: $(this).val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadHints();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    function reloadHints() {
+        var modal = $("#hintsModal").modal();
+        var formURL = `/challenges/{{challenge.pk}}/hints`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    }
+
+})
+</script>

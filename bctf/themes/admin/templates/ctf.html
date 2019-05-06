@@ -1,0 +1,311 @@
+{% extends 'templates/admin_base.html' %}
+{% load static %}
+
+{% block extra_js%}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <h1>Challenges <i class="fas fa-spider"></i></h1>
+            <hr>
+            <a  role="button" 
+                class="btn btn-info" 
+                href="#categoryModals"
+                data-toggle="modal"
+                data-target="#categoryModals"
+                >
+                <i class="fas fa-plus"></i>Add Category
+            </a>
+            <a role="button" 
+                class="btn btn-info" 
+                href="{% url 'challenge:create-challenge' %}">
+                <i class="fas fa-plus"></i>Add Challenge
+            </a>
+            <a role="button" 
+                class="btn btn-info" 
+                href="{% url 'importer:import-tasks' %}">
+                <i class="fas fa-plus"></i>Import Challenges from .ZIP
+            </a>
+            <a role="button" 
+                class="btn btn-info" 
+                href="{% url 'importer:export-tasks' %}">
+                <i class="fas fa-plus"></i>Export Challenges to .ZIP
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Challenges
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Points</th>
+                            <th>Visible?</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for challenge in challenges %}
+                        <tr>
+                            <td style="color:#b5e853"><b>{{challenge.name}}</b></td>
+                            <td>{{challenge.category}}</td>
+                            <td>{{challenge.points}}</td>
+                            <td>
+                                {% if challenge.visible %}
+                                    <button class="btn btn-success toggle-challenge" data-challenge-id="{{challenge.pk}}">Visible</button>
+                                {% else %}
+                                    <button class="btn btn-danger toggle-challenge" data-challenge-id="{{challenge.pk}}">Hidden</button>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeUpdateModal">
+                                    <i class="fas fa-edit fa-lg"></i> 
+                                </a>
+                                <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#attachmentsModal">
+                                    <i class="fas fa-download fa-lg"></i>
+                                </a>
+                                <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#hintsModal">
+                                    <i class="fas fa-question fa-lg"></i>
+                                </a>
+                                <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#flagsModal">
+                                    <i class="fas fa-flag fa-lg"></i> 
+                                </a>
+                                <a data-challenge-id="{{challenge.pk}}" data-toggle="modal" data-target="#challengeDeleteModal">
+                                    <i class="fas fa-trash fa-lg"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Categories
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td style="color:#b5e853"><b>{{category.name}}</b></td>
+                            <td>
+                                <a data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryUpdateModal">
+                                    <i class="fas fa-edit fa-lg"></i>
+                                </a>
+                                <a role="button" data-category-id="{{category.pk}}" data-toggle="modal" data-target="#categoryDeleteModal">
+                                    <i class="fas fa-trash fa-lg"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Category Modal -->
+<div class="modal fade" tabindex="-1" id="categoryModals">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Category Update Modal -->
+<div class="modal fade" tabindex="-1" id="categoryUpdateModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Category Delete Modal -->
+<div class="modal fade" tabindex="-1" id="categoryDeleteModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Challenge Modal -->
+<div class="modal fade" tabindex="-1" id="challengeAddModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Challenge Update Modal -->
+<div class="modal fade" tabindex="-1" id="challengeUpdateModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+<!-- Challenge Delete Modal -->
+<div class="modal fade" tabindex="-1" id="challengeDeleteModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Flags Modal -->
+<div class="modal fade" tabindex="-1" id="flagsModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Hints Modal -->
+<div class="modal fade" tabindex="-1" id="hintsModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+<!-- Attachments Modal -->
+<div class="modal fade" tabindex="-1" id="attachmentsModal">
+    <!-- Hack to close modal from inside another view -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block custom_javascript %}
+
+<script>
+$('document').ready(function() {
+
+    $('#categoryModals').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var formURL = `{% url 'challenge:add-category' %}`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#categoryUpdateModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var categoryID = $(event.relatedTarget).data('category-id');
+        var formURL = `/challenges/category/${categoryID}/update`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#categoryDeleteModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var categoryID = $(event.relatedTarget).data('category-id');
+        var formURL = `/challenges/category/${categoryID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#challengeUpdateModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `/challenges/${challengeID}/update`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#challengeDeleteModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `/challenges/${challengeID}/delete`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#flagsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `/challenges/${challengeID}/flags`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+
+    $('#hintsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `/challenges/${challengeID}/hints`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('#attachmentsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var challengeID = $(event.relatedTarget).data('challenge-id');
+        var formURL = `/challenges/${challengeID}/attachments`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $('.toggle-challenge').on('click', function() {
+        var challengeID = $(this).data('challenge-id');
+        var URL=`{% url 'challenge:toggle-visibility-challenge' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: challengeID
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+
+});
+</script>
+{% endblock %}

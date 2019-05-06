@@ -1,0 +1,209 @@
+{% extends 'templates/admin_base.html' %}
+{% load static %}
+{% load docker_tags %}
+{% block extra_js %}
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="jumbotron">
+        <div class="row tall-row text-center">
+            <div class="col-lg-12">
+                <h1>Docker <i class="fab fa-docker"></i></h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" href="#containers" aria-selected="true" aria-controls="containers" role="tab" data-toggle="tab">
+                    <i class="fas fa-box fa-lg"></i> Containers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#images" aria-controls="images" role="tab" data-toggle="tab">
+                    <i class="fas fa-compact-disc fa-lg"></i> Images
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
+                    <i class="fas fa-cogs fa-lg"></i> Configuration
+                </a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="containers">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Container</th>
+                            <th>Image</th>
+                            <th>Ports</th>
+                            <th>Status</th>
+                            <th>Controll</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for container in docker_containers %}
+                        <tr>
+                            <td>{{container.name}}</td>
+                            <td>{{container.image.attrs.RepoTags.0}}</td>
+                            <td>
+                                {{container.attrs.NetworkSettings.Ports|get_port}}
+
+                            </td>
+                            <td>{{container.status}}</td>
+                            <td>
+                                {% if container.status == 'running' %}
+                                <button class="btn action-docker" id="container-logs" data-toggle="modal" data-target="#containerLogsModal" data-container-id="{{container.id}}">
+                                    <i class="fas fa-terminal fa-lg" style="color:green"></i>
+                                </button>
+
+                                <button class="btn" id="container-logs" data-toggle="modal" data-target="#containerLogsModal" data-container-id="{{container.id}}">
+                                        <i class="fas fa-search fa-lg" style="color:blue"></i>
+                                </button>
+                                {% endif %}
+
+                                {% if container.status == 'running' or container.status == 'paused' %}
+                                <button class="btn action-docker" id="container-start" data-action="start" data-container-id="{{container.id}}" disabled>
+                                {% else %}
+                                <button class="btn action-docker" id="container-start" data-action="start" data-container-id="{{container.id}}">
+                                {% endif %}
+                                    <i class="fas fa-play fa-lg" style="color:green"></i>
+                                </button>
+
+                                {% if container.status == 'running' %}
+                                <button class="btn action-docker" id="container-restart" data-action="restart" data-container-id="{{container.id}}">
+                                {% else %}
+                                <button class="btn action-docker" id="container-restart" data-action="restart" data-container-id="{{container.id}}" disabled>
+                                {% endif %}
+                                    <i class="fas fa-sync fa-lg" style="color:grey"></i>
+                                </button>
+
+                                {% if container.status == 'running' or container.status == 'paused' %}
+                                <button class="btn action-docker" id="container-pause"  data-action="pause" data-container-id="{{container.id}}">
+                                {% else %}
+                                <button class="btn action-docker" id="container-pause"  data-action="pause" data-container-id="{{container.id}}" disabled>
+                                {% endif %}
+                                    <i class="fas fa-pause fa-lg" style="color:grey"></i>
+                                </button>
+                                
+                                {% if container.status == 'running' %}
+                                <button class="btn action-docker" id="container-stop"  data-action="stop" data-container-id="{{container.id}}">
+                                {% else %}
+                                <button class="btn action-docker" id="container-stop"  data-action="stop" data-container-id="{{container.id}}" disabled>
+                                {% endif %}
+                                    <i class="fas fa-stop fa-lg" style="color:red"></i>
+                                </button>
+
+                                {% if container.status == 'running' or container.status == 'paused' %}
+                                <button class="btn action-docker" id="container-remove"  data-action="remove" data-container-id="{{container.id}}" disabled>
+                                {% else %}
+                                <button class="btn action-docker" id="container-remove"  data-action="remove" data-container-id="{{container.id}}">
+                                {% endif %}
+                                    <i class="fas fa-trash fa-lg" style="color:red"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="images">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Controll</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for image in docker_images %}
+                        <tr>
+                            <td>{{image.attrs.RepoTags.0}}</tD>
+                            <td>
+                                <button class="btn action-image" id="container-create" data-action="create" data-image-id="{{image.id}}">
+                                    <i class="fas fa-box fa-lg" style="color:green"></i>
+                                </button>
+                                <button class="btn action-image" id="image-remove" data-action="remove" data-image-id="{{image.id}}">
+                                    <i class="fas fa-trash fa-lg" style="color:red"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="settings">
+            </div>
+        </div>
+</div>
+
+<!-- Logs Modal -->
+<div class="modal fade" tabindex="-1" id="containerLogsModal">
+        <!-- Hack to close modal from inside another view -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+
+$('document').ready(function() {
+    $('#containerLogsModal').on('show.bs.modal', function (event) {
+        var modal = $(this)
+        var containerID = $(event.relatedTarget).data('container-id');
+        var formURL = `${containerID}/logs`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    })
+
+    $(".action-docker" ).click(function() {
+        var URL=`{% url 'administration:action-docker' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            container_id: $(this).data("container-id"),
+            action: $(this).data("action")
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+
+    $(".action-image" ).click(function() {
+        var URL=`{% url 'administration:action-image' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            image_id: $(this).data("image-id"),
+            action: $(this).data("action")
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+
+})
+</script>
+
+{% endblock %}

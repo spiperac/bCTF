@@ -1,0 +1,143 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block extra_js%}
+    <script src="{{theme_static}}/js/jquery.form.js"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Typography -->
+    <div class="row">
+        <div class="col l12 center-align">
+            <h1>Challenges <i class=" large material-icons inline-icon">flag</i></h1>
+            <div class="divider"></div>
+        </div>
+    </div>
+    <div class="col-md-12 text-center" id="challenge-loader">
+        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+    </div>
+
+    {% if challenges.count > 0 %}
+    <div class="row">
+        <div class="col m12 s12">
+            {% for category in categories %}
+                    <h1>{{category}}</h1>
+                    {% for challenge in category.challenge_set.all %}
+                        {% if challenge.visible %}
+                            {% if challenge.pk in solved_by_user %}
+                            <button  value="{{challenge}}"
+                                class="btn modal-trigger solved challenge-button"
+                                data-target="challengeModal"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                            {% else %}
+                            <button  value="{{challenge}}"
+                                class="btn challenge-button modal-trigger"
+                                data-target="challengeModal"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+
+                            {% endif %}
+                                <span>{{challenge.name}}</span><br />
+                                <span>{{challenge.points}}</span>
+                            </button>
+                            <!-- Modal -->
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <h1 class="center-align">No challenges available yet!</h1>
+    {% endif %}
+
+<div id="challengeModal" class="modal">
+</div>
+{% endblock %}
+
+{% block custom_javascript %}
+
+<script>
+
+    var tab_options = {
+        swipeable: false
+    }
+
+    function submit_flag() {
+        var form_options = {
+                target: '#challengeModal',
+                success: function() { 
+                    // reinitialize tabs for new modal
+                    var tabs = document.getElementById("challenge-tabs");
+                    var instance = M.Tabs.init(tabs, tab_options);
+
+                }
+            }
+            //document.querySelector('#flag-submit-form').ajaxForm(form_options)
+        $('#flag-submit-form').ajaxForm(form_options);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var options = {
+            onOpenStart: function () {
+                var modal = this.$el;
+                modal.html(
+                    `{% include 'templates/challenge/challenge_loading.html' %}`
+                )
+            },
+            onOpenEnd: function(chall_modal) {
+                var modal = this.$el;
+                var challengeID = this._openingTrigger.dataset.challengeId;
+                var formURL = `/challenges/${challengeID}/flag/`;
+                $.ajax({
+                    url: formURL,
+                    context: document.body
+                }).done(function(response) {
+                    modal.html(response);
+                    var tabs = document.getElementById("challenge-tabs");
+                    var instance = M.Tabs.init(tabs, tab_options);
+                    window.location.hash = "#" + challengeID;
+                }).fail(function(err){
+                    if (err.status == 403) {
+                        modal.html(`
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    CTF Ended
+                                </div>
+                                <div class="modal-body">
+                                    Be faster next year!
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    }
+                });
+                var tabs = document.getElementById("challenge-tabs");
+                var instance = M.Tabs.init(tabs, tab_options);
+            },
+            onCloseEnd: function() {
+                // document.location.hash = "💩";
+
+                // scroll back to last position
+
+                var position_y = window.scrollY;
+                location.hash = "";
+                window.scrollTo(0, position_y);
+            },
+            opacity: 0.7,
+    }
+    var elem = document.querySelectorAll('.modal');
+    var instance = M.Modal.init(elem, options);
+
+
+    if(window.location.hash) {
+      var hash = window.location.hash.split('#')[1];
+      var chall = $('*[data-challenge-id="' + hash + '"]')[0];
+      chall.click();
+    }
+
+
+  });
+  </script>
+{% endblock %}

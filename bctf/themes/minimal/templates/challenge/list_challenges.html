@@ -1,0 +1,107 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block extra_js%}
+    <script src="{{theme_static}}/js/jquery.form.js"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Typography -->
+    <div class="grid">
+        <div class="cell -12of12">
+            <h1><i class="fas fa-flag-checkered"></i> Challenges</h1>
+        </div>
+    </div>
+
+ <div class="grid -stretch">
+     <div class="cell -6of12">
+            <div class="content">
+            {% for category in categories %}
+                <h3>{{category}}</h3>
+                <ul>
+                {% for challenge in category.challenge_set.all %}
+                    {% if challenge.visible %}
+                    <li>
+                            {{challenge.points}} pts -
+                            {% if challenge.pk in solved_by_user %}
+                            <i class="fas fa-check"></i>  -
+                            <a  value="{{challenge}}"
+                                class="btn-challenge"
+                                style="color:greenyellow"
+                                href="#{{challenge.name}}"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                            {% else %}
+                            <i class="fas fa-times"></i>  -
+                            <a  value="{{challenge}}" 
+                                class="btn-challenge"
+                                href="#{{challenge.name}}"
+                                data-toggle="modal"
+                                data-target="#challengeModals"
+                                data-challenge-id="{{challenge.pk}}"
+                                >
+                            {% endif %}
+                                {{challenge.name}}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+     </div>
+     <div class="cell -4of12">
+         <div class="sticky">
+            <div id="challengeCard" class="sticky">
+
+            </div>
+        </div>
+     </div>
+ </div>
+
+
+{% endblock %}
+
+{% block custom_javascript %}
+
+<script>
+    $('document').ready(function() {
+
+        $(document).keyup(function(e) {
+            if (e.keyCode === 27) $('#challengeCard').hide();
+        });
+
+        $('.btn-challenge').on('click', function (event) {
+            var modal = $("#challengeCard")
+            modal.show();
+            modal.html("Loading...")
+            var challengeID = $(this).data('challenge-id')
+            var formURL = `/challenges/${challengeID}/flag/`
+            $.ajax({
+                url: formURL,
+                context: document.body
+            }).done(function(response) {
+                modal.html(response);
+            }).fail(function(err){
+                if (err.status == 403) {
+                    modal.html(`
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                CTF Ended
+                            </div>
+                            <div class="modal-body">
+                                Be faster next year!
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }
+            });
+        })
+
+    });
+</script>
+{% endblock %}

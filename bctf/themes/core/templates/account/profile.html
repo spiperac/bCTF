@@ -1,0 +1,147 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load account_tags %}
+
+{% block extra_js %}
+    <script src="{{theme_static}}/js/Chart.min.js"></script>
+    <script src="{{theme_static}}/js/profile.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="profile-page-header" class="card">
+    <figure class="card-profile-image">
+        <img src="{{ object.get_avatar_medium }}" alt="profile image" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan gradient-shadow">
+    </figure>
+    <div class="card-content">
+        <div class="row pt-2">
+        <div class="col s12 m3 offset-m2">
+            <h3 class="card-title"><h4>{{object.username}}</h4></h3>
+            <div class="progress">
+                <div class="determinate" style="width: {{progress}}%"></div>
+            </div>
+        </div>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{rank|to_word}}</h4>
+            <p class="medium-small">Rank</p>
+        </div>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{solved_stats.0}}/{{solved_stats.1}}</h4>
+            <p class="medium-small">Challenges Solved</p>
+        </div>
+        <div class="col s12 m2 center-align">
+            <h4 class="card-title">{{object.points}} pts</h4>
+            <p class="medium-small">Points</p>
+        </div>
+        <div class="col s12 m1 right-align">
+            {% if object.country %}
+                <img src="{{object.country.flag}}" class="img-fluid" width="25" height="20">
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12">
+        <ul class="tabs">
+            <li class="tab col s4 m4"><a class="active" href="#statistics">Statistics</a></li>
+            <li class="tab col s4 m4"><a href="#solved">Solved</a></li>
+            <li class="tab col s4 m4"><a href="#achivements">Achivements</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div id="statistics">
+    <div class="row">
+        <!-- Solved Total Chart -->
+        <div class="col s12 m4">
+                <div style="height: 300px">
+                    <canvas id="id_solved_chart" width="300px"></canvas>
+                </div>
+        </div>
+    
+        <!-- Solved Line Chart -->
+        <div class="col s12 m8" style="padding-bottom: 150px;">
+                {% if solved_stats.0 %}
+                    <div style="height: 300px">
+                        <canvas id="id_solved_line_chart"></canvas>
+                    </div>
+                {% else %}
+                    <h4>Nothing solved currently!</h4>
+                {% endif %}
+        </div>
+    </div>
+    
+</div>
+
+<div id="solved">
+    <div class="row">
+        <div class="col s12 m12">
+            {% if solved|length == 0 %}
+                <h4>Nothing solved yet!</h4>
+            {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Challenge</th>
+                        <th>Category</th>
+                        <th>Time</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solve in solved %}
+                    <tr>
+                        <td><a href="/challenges/#{{solve.challenge_id}}" target="_blank"> {{solve.challenge.name}}</a></td>
+                        <td>{{solve.challenge.category}}</td>
+                        <td>{{solve.created_at}}</td>
+                        <td>{{solve.challenge.points}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="achivements">
+    <div class="row">
+        <div class="col s12 m12">
+            {% if first_bloods %}
+            <ul class="collection">
+                {% for first_blood in first_bloods %}
+                    <li class="collection-item avatar">
+                        <img src="{{theme_static}}/img/first-blood.png" width="50px" height="50px" alt="first_blood" class="circle">
+                        <span class="title">First Blood</span>
+                        <p>Team {{first_blood.account.username}} just got first blood on <a href="/challenges/#{{first_blood.challenge_id}}" target="_blank"> {{first_blood.challenge.name}}</a>!<br>
+                            {{first_blood.created_at}}
+                        </p>
+                    </li>
+                {% endfor %}
+              </ul>
+
+            {% else %}
+                <h4>No achivements yet!</h4>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+$('document').ready(function() {
+        $('.tabs').tabs();
+        var ctx = document.getElementById('id_solved_chart').getContext('2d');
+        var stats = {{solved_stats|safe}};
+        solvedChart(ctx, stats)
+
+        var new_ctx = document.getElementById('id_solved_line_chart').getContext('2d');
+        var dataset = {{solved_dataset|safe}};
+        solvedLineChart(new_ctx, dataset)
+});
+</script>
+{% endblock %}

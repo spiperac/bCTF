@@ -1,0 +1,59 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{theme_static}}/js/Chart.min.js"></script>
+    <script src="{{theme_static}}/js/scoreboard.js"></script>    
+{% endblock %}
+
+{% block content %}
+<div class="row tall-row ">
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-between bd-highlight mb-3">
+            <div class="p-2 bd-highlight">
+                
+            </div>
+            <div class="p-2 bd-highlight">
+                <h1><i class="fas fa-trophy" style="color:goldenrod"></i> Scoreboard</h1>
+            </div>
+            <div class="p-2 bd-highlight">
+                <img src="{{theme_static}}/img/live_icon.png" class="img-fluid" width="60" height="30">
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10">
+        <div id="score-graph-placeholder">
+            <div id="loaderScoreboard" class="loader align-content-center"></div>
+            <canvas id="score-graph-live"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-2">
+            <div id="chart-legend"></div>
+    </div>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table table-borderless w-100 d-block d-md-table" id="scores">
+        <thead>
+            <tr>
+                <th scope="col" class="tr-rank">#Rank</th>
+                <th scope="col">Team</th>
+                <th scope="col">Country</th>
+                <th scope="col">Points</th>
+            </tr>
+        </thead>
+        <tbody id="scores-body">
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

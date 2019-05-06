@@ -1,0 +1,45 @@
+{% extends 'templates/install_base.html' %}
+
+{% block content %}
+
+
+<main class="content" role="content">
+
+	<section id="section1">
+		<div class="container-fluid col-md-6 col-md-offset-3">
+
+<!-- MultiStep Form -->
+<form method="POST" action="{% url 'installer' %}" id="installForm">
+    {% csrf_token %}
+
+    <h1>Setup bCTF</h1>
+
+    <div class="tab"><h4>General information:</h4>
+        <p><input placeholder="CTF Name ..." oninput="this.className = ''" name="ctf_name"></p>
+    </div>
+
+    <div class="tab"><h4>Administrator account:</h4>
+        <p><input placeholder="Username" oninput="this.className = ''" name="admin_username"></p>
+        <p><input placeholder="E-mail..." oninput="this.className = ''" name="admin_email"></p>
+        <p><input placeholder="Password" oninput="this.className = ''" name="admin_password"></p>
+    </div>
+
+    <div style="overflow:auto;">
+        <div style="float:right;">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+  <!-- Circles which indicates the steps of the form: -->
+  <div style="text-align:center;margin-top:40px;">
+    <span class="step"></span>
+    <span class="step"></span>
+  </div>
+</form>
+<!-- /.MultiStep Form -->
+
+		</div>
+	</section>
+
+</main> <!-- /content -->
+{% endblock %}

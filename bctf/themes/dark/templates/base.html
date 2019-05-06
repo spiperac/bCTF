@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load config_extras %}
+    {% get_pages as pages %}
+    {% config 'ctf_name' as ctf_name %}
+    
+    <title>{{ctf_name}}</title>
+    
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{{theme_static}}/img/favicon.png"/>
+
+    <!-- CSS files -->
+    
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/fonts/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/custom.css">
+    {% block extra_css%}
+    
+    {% endblock %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-secondary">
+        <div class="container">
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#main-navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-header">
+                {% config 'logo' as site_logo %}
+                {% if site_logo %}
+                <a class="navbar-brand" href="/" aria-label="CTF">
+                    <img src="{{site_logo}}" width="120" height="50">
+                </a>
+                {% else %}
+                <a class="navbar-brand" href="/" aria-label="bCTF">
+                    {{ctf_name}}
+                </a>
+                {% endif %}
+
+            </div>
+
+            <div id="main-navbar" class="navbar-collapse collapse">
+                <ul class="navbar-nav navbar-left">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home fa-lg"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">Scoreboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'challenge:list-challenges' %}">Challenges</a></li>
+                    {% for page in pages %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
+                    {% endfor %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'administration:index' %}">
+                        <i class="fas fa-cog fa-lg"></i> Admin
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user fa-lg"></i> ( {{request.user.username}} )
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' request.user.pk %}">Profile</a>
+                                <a class="dropdown-item" href="{% url 'account-settings' %}">Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show fixed-top" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ message }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<main role="main">
+    <div class="container mainframe">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</main>
+
+    <div id="footer" class="text-center">
+        <p>
+            Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
+        </p>
+    </div>
+<!-- JavaScript files -->
+<script src="{{theme_static}}/js/moment.min.js"></script>
+<script src="{{theme_static}}/js/jquery.min.js"></script>
+
+{% block modals %}
+
+{% endblock %}
+
+<script src="{{theme_static}}/js/popper.min.js"></script>
+<script src="{{theme_static}}/js/bootstrap.min.js"></script>
+<!-- JavaScript files -->
+{% block extra_js%}
+{% endblock %}
+
+{% block custom_javascript %}
+
+{% endblock %}
+
+</body>
+</html>

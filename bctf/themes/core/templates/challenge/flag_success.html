@@ -1,0 +1,13 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">Congrats, {{challenge.name}} pwned!</h4>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>The flag is captured! You got +{{challenge.points}} points!</p>
+    </div><!-- /.modal-body -->
+</div><!-- /.modal-content -->
+
+<script>
+    M.toast({html: 'Correct! You won +{{challenge.points}} points!', classes: 'rounded green black-text'})
+</script>

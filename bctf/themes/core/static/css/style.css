@@ -1,0 +1,61 @@
+.dark-layout {
+    background-color: #201f1D;
+}
+
+.inline-icon {
+    vertical-align: bottom;
+ }
+
+.container.dark {
+    background: #303030;
+    padding: 20px;
+}
+
+#countDownTimer {
+    padding: 10px;
+    font-size: 18pt;
+}
+
+/*----------------------------------------
+    Challenge Page
+------------------------------------------*/
+.challenge-button {
+    height: 100px;
+    width: 200px;
+    margin: 10px;
+    background-color: black;
+}
+
+.challenge-button.solved {
+    background-color: green;
+}
+
+#challenge-tabs {
+}
+
+.challenge-description {
+    font-size: 14pt;
+}
+/*----------------------------------------
+    Profile Page
+------------------------------------------*/
+#profile-page-header .card-image {
+    height: 250px;
+  }
+
+#profile-page-header .card-profile-image {
+    width: 110px;
+    z-index: 1;
+    left: 40px;
+    cursor: pointer;
+    margin: 0;
+}
+
+#profile-page-header .card-content {
+    margin-top: -40px;
+}
+
+#profile-page-header .card-content .card-title {
+    font-size: 15pt;
+    margin-bottom: 0;
+}

@@ -1,0 +1,16 @@
+image: python:3.5.1
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - pip
+
+        script:
+          - pip install -r requirements.txt
+          - pip install -r requirements-dev.txt
+          - python manage.py makemigrations
+          - python manage.py migrate
+          - pycodestyle --ignore E501 apps
+          - coverage run manage.py test -v 2
+          - coverage report

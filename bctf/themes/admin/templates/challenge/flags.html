@@ -1,0 +1,103 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="challenge-modal-title">Flags {{object.name}}</h5>
+        <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="new-flag-form">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input id="id_flag" name="flag" type="text" class="form-control" placeholder="Flag{} ..." required><br />
+                    <div class="input-group-append">
+                        <button id="flag-button" type="button" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-stripped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Flag</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flag in object.flag_set.all %}
+                        <tr>
+                            <td>{{flag.pk}}</td>
+                            <td>{{flag.text}}</td>
+                            <td>
+                                <i class="fas fa-edit"></i>
+                                <button href="#" class="btn btn-default delete-flag" value="{{flag.pk}}"><i class="fas fa-trash"></i></button> 
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$('document').ready( function() {
+    $("#new-flag-form").submit(function(e) {
+        e.preventDefault();
+    });
+
+    $( "#flag-button" ).click(function() {
+        var URL=`{% url 'challenge:add-flag' object.pk %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            challenge_id: `{{object.pk}}`,
+            flag: $("#id_flag").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadFlags();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    $(".delete-flag" ).click(function() {
+        var URL=`{% url 'challenge:delete-flag' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            flag: $(this).val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                reloadFlags();
+            },
+            dataType: 'json'
+        });
+    
+    });
+
+    function reloadFlags() {
+        var modal = $('#flagsModal').modal();
+        var challengeID = `{{challenge.pk}}`;
+        var formURL = `/challenges/${challengeID}/flags`
+        $.ajax({
+            url: formURL,
+            context: document.body
+        }).done(function(response) {
+            modal.html(response);
+        });
+    }
+
+})
+</script>
