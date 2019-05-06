@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load cache %}
+    {% load config_extras %}
+    {% get_pages as pages %}
+    {% config 'ctf_name' as ctf_name %}
+    
+    <title>{{ctf_name}}</title>
+    
+    {% load static %}
+
+    {% cache None favicon %}
+    <link rel="shortcut icon" type="image/png" href="{{theme_static}}/img/favicon.png"/>
+    {% endcache %}
+
+    <!-- CSS files -->
+    {% load compress %}
+
+        {% compress css inline %}
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/material-icons.css">
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/materialize.css">
+        <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/style.css">
+        
+        {% block extra_css%}
+        
+        {% endblock %}
+
+        {% endcompress %}
+
+</head>
+
+<body class="dark-layout">
+    <!-- Navigation -->
+  <div class="navbar-fixed">
+      <nav class="">
+        <div class="nav-wrapper">
+               <!-- NavBAR LOGO !-->
+                    {% config 'logo' as site_logo %}
+                    {% if site_logo %}
+                    <a class="brand-logo" href="/" aria-label="CTF">
+                        <img src="{{site_logo}}" width="120" height="50">
+                    </a>
+                    {% else %}
+                    <a class="brand-logo" href="/" aria-label="bCTF">
+                        {{ctf_name}}
+                    </a>
+                    {% endif %}
+                <!-- NavBAR LOGO !-->
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+            <ul class="hide-on-med-and-down" style="margin-left: 150px;">
+                <li><a href="/"><i class="medium material-icons left">home</i>Home</a></li>
+                <li><a href="{% url 'teams:list' %}"><i class="medium material-icons left">group</i>Teams</a></li>
+                <li><a href="{% url 'scoreboard:scoreboard' %}"><i class="medium material-icons left">flag</i>Scoreboard</a></li>
+                <li><a href="{% url 'challenge:list-challenges' %}"><i class="medium material-icons left">bug_report</i>Challenges</a></li>
+                {% for page in pages %}
+                <li><a href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a></li>
+                {% endfor %}
+
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                    {% if request.user.is_superuser %}
+                    <li><a href="{% url 'administration:index' %}">
+                        <i class="medium material-icons left">settings_applications</i> Admin
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                      <li><a href="{% url 'profile' request.user.pk %}">Profile</a></li>
+                      <li><a href="{% url 'account-settings' %}">Settings</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registration' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+  </div>
+
+    <!-- Mobile menu !-->
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="/"><i class="material-icons left">home</i>Home</a></li>
+        <li><a href="{% url 'teams:list' %}"><i class="material-icons left">group</i>Teams</a></li>
+        <li><a href="{% url 'scoreboard:scoreboard' %}"><i class="material-icons left">flag</i>Scoreboard</a></li>
+        <li><a href="{% url 'challenge:list-challenges' %}"><i class="material-icons left">bug_report</i>Challenges</a></li>
+
+        <div class="divider"></div>
+        {% for page in pages %}
+        <li>
+            <a href="{% url 'pages:details-page' page.slug %}">{{page.title}}</a>
+        </li>
+        {% endfor %}
+
+        <div class="divider"></div>
+        {% if request.user.is_superuser %}
+        <li>
+            <a href="{% url 'administration:index' %}">
+                <i class="material-icons left">settings_applications</i> Admin
+            </a>
+        </li>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+          <li>
+              <a href="{% url 'profile' request.user.pk %}">
+                  <i class="material-icons left">account_circle</i> Profile
+              </a>
+          </li>
+
+          <li>
+              <a href="{% url 'account-settings' %}">
+                  <i class="material-icons left">settings</i>Settings
+              </a>
+          </li>
+          <li class="divider"></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'registration' %}">Register</a></li>
+        {% endif %}
+    </ul>
+    <!-- Mobile menu !-->
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show fixed-top" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{ message }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+<main role="main">
+    <div class="container dark" style="margin-top: 20px;">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</main>
+
+<footer class="center-align">
+          <div class="container">
+            <div class="row center-align">
+              <div class="col l12 s12 center-align">
+                <p class="center-align">
+                    Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+{% compress js inline %}
+<!-- JavaScript files -->
+<script src="{{theme_static}}/js/moment.min.js"></script>
+<script src="{{theme_static}}/js/jquery.min.js"></script>
+<script src="{{theme_static}}/js/materialize.min.js"></script>
+
+<!-- Additional JavaScript files -->
+{% block extra_js%}
+{% endblock %}
+
+<script>$("document").ready(function(){$(".sidenav").sidenav()});</script>
+
+{% block custom_javascript %}
+{% endblock %}
+
+{% endcompress %}
+
+{% block modals %}
+{% endblock %}
+
+</body>
+</html>

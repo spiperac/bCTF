@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% load config_extras %}
+    {% get_pages as pages %}
+    {% config 'ctf_name' as ctf_name %}
+    
+    <title>{{ctf_name}}</title>
+    
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{{theme_static}}/img/favicon.png"/>
+
+    <!-- CSS files -->
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/hack.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/dark-grey.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="{{theme_static}}/fonts/css/all.min.css">
+    {% block extra_css%}
+    
+    {% endblock %}
+</head>
+
+<body class="hack dark-grey">
+    <!-- Navigation -->
+    <div class="container">
+        <hr />
+        <div class="grid -stretch">
+            <div class="cell -6of12">
+                <div class="content">
+                    <a class="nav-link" href="/"><i class="fas fa-home fa-lg">/</i></a>
+                    <a class="nav-link" href="{% url 'scoreboard:scoreboard' %}">/scoreboard</a>
+                    <a class="nav-link" href="{% url 'challenge:list-challenges' %}">/challenges</a>
+                    {% for page in pages %}
+                        <a class="nav-link" href="{% url 'pages:details-page' page.slug %}">/{{page.title}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="cell -6of12">
+                <div class="content">
+                    {% if request.user.is_superuser %}
+                        <a class="nav-link" href="{% url 'administration:index' %}">
+                            <i class="fas fa-cog fa-lg"></i> Admin
+                        </a>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'profile' request.user.pk %}">/profile</a>
+                        <a href="{% url 'account-settings' %}">/settings</a>
+                        <a href="{% url 'logout' %}">/logout</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'login' %}">/login</a>
+                        <a class="nav-link" href="{% url 'registration' %}">/register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <main role="main">
+        <div class="container mainframe">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </main>
+
+    <div class="container">
+        <div id="footer" class="grid">
+            <div class="cell -12of12 grid -center">
+                <p>
+                    Powered by <a href="https://github.com/spiperac/bctf/" target="_blank">bCTF</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+<!-- JavaScript files -->
+<script src="{{theme_static}}/js/moment.min.js"></script>
+<script src="{{theme_static}}/js/jquery.min.js"></script>
+
+{% block modals %}
+
+{% endblock %}
+
+<script src="{{theme_static}}/js/popper.min.js"></script>
+<!-- JavaScript files -->
+{% block extra_js%}
+{% endblock %}
+
+{% block custom_javascript %}
+
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  db:
+    image: mariadb:10.4
+    container_name: bctf-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_USER_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_USER_PASSWORD}"
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+    networks:
+      - main
+
+  nginx:
+    image: "nginx"
+    container_name: bctf-nginx
+    restart: always
+    volumes:
+      - .data/media:/media
+      - ./resources/nginx/sites-enabled/:/etc/nginx/conf.d/
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    networks:
+      - main
+  
+  web:
+    build: .
+    container_name: bctf-app
+    restart: always
+    volumes:
+      - .data/media:/app/bctf/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - main
+networks:
+  main:
+

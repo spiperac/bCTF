@@ -1,0 +1,125 @@
+{% extends 'templates/admin_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="jumbotron">
+        <div class="row tall-row text-center">
+            <div class="col-lg-12">
+                <h1>Settings <i class="fas fa-cogs"></i></h1>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <form class="form" id="configuration-form" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="id_title">CTF Title/Name</label>
+            <input type="text" class="form-control" id="id_title" aria-describedby="titleHelp" value="{{title}}" required>
+            <small id="titleHelp" class="form-text text-muted">This is title of your CTF.</small>
+        </div>
+
+        <div class="form-group">
+            {{form.theme|as_crispy_field}}
+            <small id="titleHelp" class="form-text text-muted">Set a theme for your CTF.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="id_start_time">Start time</label>
+            <div class="input-group date" id="id_start_time" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#id_start_time"/>
+                <div class="input-group-append" data-target="#id_start_time" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+            <small id="titleHelp" class="form-text text-muted">Starting time and date of your CTF. Timezone is UTC!</small>
+        </div>
+        <div class="form-group">
+            <label for="id_end_time">End time</label>
+            <div class="input-group date" id="id_end_time" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" data-target="#id_end_time"/>
+                <div class="input-group-append" data-target="#id_end_time" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+            <small id="titleHelp" class="form-text text-muted">Ending time and date of your CTF. Timezone is UTC!</small>
+        </div>
+        <button type="submit" id="update-config" class="btn btn-primary">Save</button>
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+
+$('document').ready(function() {
+        $(function () {
+            var default_start_timestamp = null
+            var default_end_timestamp = null
+            if (`{{start_time}}` != 'None' && `{{end_time}}` != 'None') {
+                var default_start_timestamp = moment.unix(`{{start_time}}`);
+                var default_end_timestamp = moment.unix(`{{end_time}}`);
+            }
+
+            $('#id_start_time').datetimepicker({
+                defaultDate: default_start_timestamp
+            });
+            $('#id_end_time').datetimepicker({
+                defaultDate: default_end_timestamp,
+                useCurrent: false
+            });
+
+            $("#id_start_time").on("change.datetimepicker", function (e) {
+                $('#id_end_time').datetimepicker('minDate', e.date);
+            });
+            $("#id_end_time").on("change.datetimepicker", function (e) {
+                $('#id_start_time').datetimepicker('maxDate', e.date);
+            });
+        });
+    $("#configuration-form").on('submit', function(event) {
+        event.preventDefault();
+        var start_datetime = $("#id_start_time").data('date');
+        var end_datetime = $("#id_end_time").data('date');
+        
+        if (start_datetime) {
+            var start_timestamp = moment(start_datetime).unix();
+        }   else {
+            start_timestamp = null;
+        }
+        
+        if (end_datetime) {
+            var end_timestamp = moment(end_datetime).unix();
+        } else {
+            end_timestamp = null;
+        }
+
+        var URL=`{% url 'administration:update-general' %}`;
+        var DATA = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            title: $('#id_title').val(),
+            theme: $("#id_theme").val(),
+            start_time: start_timestamp,
+            end_time: end_timestamp
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL,
+            data: DATA,
+            success: function (data) {
+                window.location.reload();
+            },
+        });
+    });
+})
+</script>
+
+{% endblock %}

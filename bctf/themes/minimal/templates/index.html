@@ -1,0 +1,126 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load config_extras %}
+
+{% block extra_js %}
+    <script src="{{theme_static}}/js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="grid">
+        <div class="cell -12of12 grid -center">
+            <div class="content">
+                <div id="countDownTimer">
+                    Loading timer...
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="grid">
+        <div class="cell -3of12">
+            <p><i class="fas fa-users"></i> Total Teams</p>
+            <h2>{{teams_number}}</h2>
+        </div>
+        <div class="cell -3of12">
+            <p><i class="fas fa-flag"></i> Total Challenges</p>
+            <h2>{{challenges_number}}</h2>
+        </div>
+        <div class="cell -3of12">
+            <p><i class="fas fa-crosshairs"></i> Total Points Available</p>
+            <h2>{{total_points_available}} pts</h2>
+        </div>
+        <div class="cell -3of12">
+            <p><i class="fas fa-key"></i> Wrong Flag Submissions</p>
+            <h2>
+                <span style="color:red">{{number_bad_submission}}</span>
+            </h2>
+            <p>#Kings of Wrong: {{kings_of_wrong}}</p>
+        </div>
+    </div>
+    <hr />
+    <div class="grid">
+        <div class="cell -6of12">
+            <div class="card">
+                <div class="card-header">
+                        <h5><i class="fas fa-comment-alt"></i> News</h5>
+                </div>
+                <div class="card-body">
+                        <ul>
+                            {% for article in news %}
+                                <li style="margin-bottom:5px;">
+                                    <span>[{{article.created_at|date:"SHORT_DATETIME_FORMAT"}}]</span><br />
+                                    {{article.text}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>
+        </div>
+        <div class="cell -6of12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-rss-square"></i> Events</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="events">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+    $('document').ready(function() {
+        var countDownTime = `{% config 'end_time' %}`;
+        var startingTime = `{% config 'start_time' %}`;
+        var now = moment().unix();
+        
+        if (startingTime == 'None' || countDownTime == 'None') {
+            document.getElementById("countDownTimer").innerHTML = "Timer not set!"
+        } else {
+            if (now < startingTime) {
+                var distance = startingTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = "CTF Starting in: " + duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+                }, 1000);
+
+            } else {
+                var distance = countDownTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+
+                }, 1000);
+            }
+        }
+       
+    
+
+    })
+
+</script>
+{% endblock %}

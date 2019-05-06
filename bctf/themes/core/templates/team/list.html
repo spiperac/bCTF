@@ -1,0 +1,61 @@
+{% extends 'templates/base.html' %}
+
+{% load static %}
+{% load cache %}
+{% load pagination_teams %}
+
+
+{% block extra_css %}
+    {% cache 5000 flag_cache %}
+        <link rel="stylesheet" href="{% static 'flags/sprite-hq.css' %}">
+    {% endcache %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col s12 m12 l12">
+        <form method="GET" action="{% url 'teams:list' %}">
+            <p>Filter: <input type="text" placeholder="Team name..." name="filter"></p>
+            <p><input type="submit" class="btn" name="submit" value="Search"/></p>
+        </form>
+        <ul class="collection">
+            {% for team in teams %}
+                <li class="collection-item avatar">
+                    <img src="{{team.get_avatar}}" width="50px" height="50px" alt="avatar" class="circle">
+                    <span class="title"><a href="{% url 'profile' team.pk %}">{{team.username}}</a></span>
+                    {% if team.country %}
+                        <i class="secondary-content flag2x {{team.country.flag_css}}"></i>
+                    {% endif %}
+                </li>
+            {% endfor %}
+          </ul>
+    </div>
+</div>
+
+{% if is_paginated %}
+  {% if page_obj.has_previous %}
+    <a href="?{% param_replace page=1 %}">First</a>
+    {% if page_obj.previous_page_number != 1 %}
+      <a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+    {% endif %}
+  {% endif %}
+
+  Page {{ page_obj.number }} of {{ paginator.num_pages }}
+
+  {% if page_obj.has_next %}
+    {% if page_obj.next_page_number != paginator.num_pages %}
+      <a href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+    {% endif %}
+    <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+  {% endif %}
+
+  <p>Objects {{ page_obj.start_index }}—{{ page_obj.end_index }}</p>
+{% endif %}
+
+{% endblock %}
+
+{% block custom_javascript %}
+
+{% endblock %}

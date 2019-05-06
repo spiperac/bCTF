@@ -1,0 +1,73 @@
+.loader{border:16px solid #f3f3f3;border-top:16px solid #3498db;border-radius:50%;width:120px;height:120px;animation:spin 2s linear infinite;margin:auto}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.tr-rank{width:50px}.td-points{font-size:18px;}
+
+.mainframe {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 40px;
+}
+
+
+#id_search_area {
+    width: 100%;
+    clear: both;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#id_search_area input {
+    width: 600px;
+    font-size: 20px;
+    padding: 20px;
+}
+
+#countDownTimer {
+    font-size: 35px;
+    padding: 20px;
+}
+.header {
+    height: 300px;
+    background-color: grey;
+}
+
+.challenge-description {
+    font-size: 15px;
+    padding: 25px;
+}
+
+body {
+
+}
+
+hr {
+    border: none;
+    height: 1px;
+    color: black;
+    background-color: black;
+}
+
+.challenge-title {
+    padding-top: 10px;
+}
+
+.challenge-category {
+}
+
+.challenge-table td.category {
+    border-right: 2px solid black;
+    padding-bottom: 20px;
+}
+
+.challenge-table td.challenge {
+    padding-left: 30px;
+    padding-bottom: 20px;
+}
+
+
+.btn-challenge {
+    width: 200px;
+    height: 80px;
+    margin: 10px;
+}

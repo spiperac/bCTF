@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="delete-account-modal-title">Delete {{object.username}}</h5>
+            <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'administration:delete-account' object.pk %}" id="delete-account-from">
+                    {% csrf_token %}
+                    <p>Are you sure you want to delete <h4>{{object.username}}</h4> acount?</p>
+                    <button id="submit" type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    $('document').ready( function() {
+    
+        var form_options = {
+                target: '#deleteAccountModal',
+                success: function() { }
+            }
+            $('#delete-account-from').ajaxForm(form_options);
+    
+    
+    })
+    </script>

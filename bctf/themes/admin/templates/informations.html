@@ -1,0 +1,227 @@
+{% extends 'templates/admin_base.html' %}
+{% load static %}
+
+{% block extra_js %}
+    <script src="/static/admin/static/js/informations.js"></script>
+{% endblock %}
+
+{% block content %}
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-server"></i> System
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Uptime: {{uptime}}</h4>
+                                        <h4>Docker installed: {{docker_exists}}</h4>
+                                        <h4>Categories: {{categories.count}}</h4>
+                                    </div>
+                               </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-users"></i> Accounts
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Accounts: {{total_accounts}}</h4>
+                                        <h4>Administrators: {{account_count_admin}}</h4>
+                                        <h4>Banned: {{account_count_banned}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fas fa-spider"></i> Challenges
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Challenges: {{challenges.count}}</h4>
+                                        <h4>Categories: {{categories.count}}</h4>
+                                        <h4>Solved: {{solved_challs}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fab fa-keycdn"></i> Submits
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <h4>Wrong Submits: {{accounts.count}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card border-secondary">
+                            <div class="card-body">
+                                <div style="height: 300px">
+                                    <canvas id="id_solved_chart" width="300px"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card border-secondary">
+                            <div class="card-body">
+                                <div style="height: 300px">
+                                    <canvas id="id_accounts_solved_chart" width="300px"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card border-secondary">
+                                <div class="card-body">
+                                    {% if first_bloods_data %}
+                                        <div style="height: 300px">
+                                            <canvas id="id_bloods_chart" width="300px"></canvas>
+                                        </div>
+                                    {% else %}
+                                        <h2>No first bloods yet!</h2>
+                                    {% endif %}
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card border-secondary">
+                                <div class="card-body">
+                                        <div style="height: 300px">
+                                            <canvas id="id_top_teams_chart" width="300px"></canvas>
+                                        </div>
+            
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                    <h1>Bad Submissions</h1>
+                            </div>
+                            <div class="card-body">
+                                {% if bad_submissions %}
+                                <table class="table table-light">
+                                    <thead>
+                                        <tr>
+                                            <th>Team</th>
+                                            <th>Challenge</th>
+                                            <th>Flag</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for bad_submission in bad_submissions %}
+                                            <tr>
+                                                <td>{{bad_submission.account.username}}</td>
+                                                <td>{{bad_submission.challenge.name}}</td>
+                                                <td>{{bad_submission.flag}}</td>
+                                                <td>{{bad_submission.created_at}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                    <h2 class="text-center">No bad submissions yet!</h2>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer">
+
+                                    {% if is_paginated %}
+                                    <hr>
+                                    <nav aria-label="pagination">
+                                        <ul class="pagination justify-content-center pagination-sm">
+                                            {% if page_obj.has_previous %}
+                                              {% if not search %}
+                                              <li class="page-item">
+                                                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                              </li>
+                                              {% else %}
+                                                <li class="page-item">
+                                                  <a class="page-link" href="?{{search}}&page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                              </li>
+                                              {% endif %}
+                                            {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            </li>
+                                            {% endif %} 
+                                            {% for object in page_obj.paginator.page_range %}
+                                                <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+                                            {% endfor %} 
+                                            {% if page_obj.has_next %}
+                                              {% if not search %}
+                                              <li class="page-item">
+                                                  <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                              </li>
+                                              {% else %}
+                                                <li class="page-item">
+                                                  <a class="page-link" href="?{{search}}&page={{ page_obj.next_page_number }}">Next</a>
+                                              </li>
+                                              {% endif %}
+                                            {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#">Next</a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+        
+{% endblock %}
+
+
+{% block custom_javascript %}
+
+<script>
+
+$('document').ready(function() {
+        var ctx = document.getElementById('id_solved_chart').getContext('2d');
+        var stats = {{chall_stats|safe}};
+        solvedChart(ctx, stats)
+    
+        var ctx = document.getElementById('id_accounts_solved_chart').getContext('2d');
+        var stats = {{account_stats|safe}};
+        solvedAtLeastOne(ctx, stats);
+
+        {% if first_bloods_data %}
+            var ctx = document.getElementById('id_bloods_chart').getContext('2d');
+            var first_bloods_labels = {{first_bloods_labels|safe}};
+            var first_bloods_data = {{first_bloods_data|safe}};
+            firstBloods(ctx, first_bloods_labels, first_bloods_data);
+        {% endif %}
+
+        var ctx = document.getElementById('id_top_teams_chart').getContext('2d');
+        var team_stats = {{top_10_stats|safe}};
+        topTeams(ctx, team_stats)
+})
+</script>
+
+{% endblock %}

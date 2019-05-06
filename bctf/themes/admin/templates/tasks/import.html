@@ -1,0 +1,56 @@
+{% extends 'templates/admin_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load string_tags %}
+
+{% block content %}
+<div class="jumbotron">
+    <div class="row tall-row text-center">
+        <div class="col-lg-12">
+            <h1>Import Challenges</i></h1>
+            <hr>
+            <p>Imports challenges from .zip file. For .zip and folder format, please refer to documentation <a href="https://b-ctf.io/docs/site/taskimporter/">here</a>.</p>
+            <p>Or you can check examples in github repository, under directory named 'docs'.</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Import Challenges
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'importer:import-tasks' %}" id="import-tasks-from" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button id="submit" type="submit" class="btn btn-primary">Import</button>
+                
+                </form> 
+
+                <div id="import_log">
+                    {% for log in import_log %}
+                    <ul>
+                        {% for log_line in log %}
+                            {% if log_line|startswith:'Importing' %}
+                                <li style="color:green;font-size: 18;">
+                            {% elif log_line|startswith:'Success!' %}
+                                <li style="color:greenyellow">
+                            {% elif log_line|startswith:'Error:' %}
+                                <li style="color:red">
+                            {% else %}
+                                <li>
+                            {% endif %}
+                                    {{log_line}}
+                                </li>
+                        {% endfor %}
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

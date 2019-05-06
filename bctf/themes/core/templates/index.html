@@ -1,0 +1,173 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load config_extras %}
+
+{% block extra_js %}
+    <script src="{{theme_static}}/js/index.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col s12 center-align">
+            <i class="material-icons medium">watch_later</i>
+            <div id="countDownTimer">
+                Loading timer...
+            </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+        <div class="col m3 s12">
+            <div class="card horizontal">
+                <div class="card=image">
+                    <i class="medium material-icons left">account_circle</i>
+                </div>
+                <div class="card-stacked">
+                        <div class="card-title">
+                            Teams
+                        </div>
+                        <div class="card-content">
+                            <h4>{{teams_number}}</h4>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m3 s12">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <i class="medium material-icons left">security</i>
+                </div>
+                <div class="card-stacked">
+                        <div class="card-title">
+                            Challenges
+                        </div>
+                        <div class="card-content">
+                            <h4>{{challenges_number}}</h4>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m3 s12">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <i class="medium material-icons left">flag</i>
+                </div>
+                <div class="card-stacked">
+                    <div class="card-title">
+                        Points
+                    </div>
+                    <div class="card-content">
+                        <h4>{{total_points_available}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m3 col s12">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <i class="medium material-icons left">vpn_key</i>
+                </div>
+                <div class="card-stacked">
+                    <div class="card-title">
+                        Bad Flags
+                    </div>
+                    <div class="card-content">
+                        <h4>
+                            <span style="color:red">{{number_bad_submission}}</span>
+                        </h4>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+   <div class="divider"></div>
+
+    <div class="row">
+        <div class="col m6 col s12">
+            <div class="card">
+
+                <div class="card-body">
+                        <ul class="collection with-header">
+                            <li class="collection-header">
+                                <h5><i class="material-icons">rss_feed</i>News</h5>
+                            </li>
+
+                            {% for article in news %}
+                                <li class="collection-item avatar">
+                                    <i class="material-icons circle blue">textsms</i>
+                                    <span class="title">[{{article.created_at|date:"SHORT_DATETIME_FORMAT"}}]</span><br />
+                                    <p>{{article.text}}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col m6 col s12">
+            <div class="card">
+                <div class="card-body">
+                    <ul id="events" class="collection with-header">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_javascript %}
+<script>
+    $('document').ready(function() {
+        var countDownTime = `{% config 'end_time' %}`;
+        var startingTime = `{% config 'start_time' %}`;
+        var now = moment().unix();
+        
+        if (startingTime == 'None' || countDownTime == 'None') {
+            document.getElementById("countDownTimer").innerHTML = "Timer not set!"
+        } else {
+            if (now < startingTime) {
+                var distance = startingTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = "CTF Starting in: " + duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+                }, 1000);
+
+            } else {
+                var distance = countDownTime - now;
+                var duration = moment.duration(distance*1000, 'milliseconds');
+                var interval = 1000;
+
+                var x = setInterval(function() {
+                    duration = moment.duration(duration - interval, 'milliseconds');
+                    if ( duration > 0 ){
+                        document.getElementById("countDownTimer").innerHTML = duration.days() + "d " + duration.hours() + "h "
+                    + duration.minutes() + "m " + duration.seconds() + "s ";
+                    } else {
+                        document.getElementById("countDownTimer").innerHTML = "CTF Ended!"
+                    }
+
+                }, 1000);
+            }
+        }
+       
+    
+
+    })
+
+</script>
+{% endblock %}
