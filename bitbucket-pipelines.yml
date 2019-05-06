@@ -6,7 +6,7 @@ pipelines:
         caches:
           - pip
 
-        script: # Modify the commands below to build your repository.
+        script:
           - pip install -r requirements.txt
           - pip install -r requirements-dev.txt
           - python manage.py makemigrations
