@@ -102,6 +102,16 @@ If you want to  use our supplied Dockerfile, keep in mind that it comes in produ
 
 docker build -t bCTF .
 
+## Deployment with Docker Compose
+
+If you want to  use our supplied docker-compose.yml, copy .env.example to .env and change desired variables like db settings.
+Once you are done, you can run docker-compose up, which should bring up db, web, and bctf-app containers.
+
+* Note: In docker-compose file, containers are linked together in a isolated network, so, in order for bctf-app to see
+a mysql server ( for example), you will have to specify containers name in .env DB_HOST instead of IP address.
+Which in this case would be "db".
+
+
 ### Run 
 docker run -p 80:80 bCTF
 
