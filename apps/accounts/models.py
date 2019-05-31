@@ -1,4 +1,8 @@
 import logging
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
 from libs import pagan
 from django.db import models
 from django.conf import settings
@@ -18,6 +22,23 @@ def create_pagan(sender, instance, created, **kwargs):
         img = pagan.Avatar(inpt=instance.username, hashfun=pagan.SHA512)
         thumbs = [50, 256]
         img.save(thumbs=thumbs, path=avatar_folder, filename=avatar_name)
+
+
+def notify_registration(sender, instance, created, **kwargs):
+    if created:
+        print("Sending email...")
+        msg_plain = render_to_string('email/registration.txt', {'team_name': instance.username})
+
+        try:
+            send_mail(
+                'New Registration - bCTF',
+                msg_plain,
+                settings.EMAIL_HOST_USER,
+                [instance.email],
+            )
+        except Exception as excp:
+            print("Error: {0}".format(str(excp)))
+            pass
 
 
 class Account(AbstractUser):
@@ -80,3 +101,4 @@ class Account(AbstractUser):
 
 
 post_save.connect(create_pagan, sender=Account)
+post_save.connect(notify_registration, sender=Account)

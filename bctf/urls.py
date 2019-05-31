@@ -8,14 +8,13 @@ from apps.installer.views import InstallView
 from api.account_views import AccountViewSet
 from api.scoreboard_views import ScoreboardViewSet
 from api.solves_views import SolvesViewSet
-from bctf.views import error_view_403, error_view_404, error_view_500
 from rest_framework import routers
 from django.conf.urls import handler403, handler404, handler500
 from plugins import list_plugins, install_plugin_urls
 
-handler403 = error_view_403
-handler404 = error_view_404
-handler500 = error_view_500
+handler403 = 'bctf.views.error_view_403'
+handler404 = 'bctf.views.error_view_404'
+handler500 = 'bctf.views.error_view_500'
 
 # API Router
 router = routers.DefaultRouter()

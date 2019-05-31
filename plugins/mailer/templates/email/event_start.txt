@@ -1,0 +1,3 @@
+Howdy {team_name}
+
+CTF just started!

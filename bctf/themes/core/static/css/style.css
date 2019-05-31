@@ -39,6 +39,12 @@
 /*----------------------------------------
     Profile Page
 ------------------------------------------*/
+#profile-page-header .card {
+    border-top: 0!important;
+    border-left: 0!important;
+    border-right: 0!important;
+}
+
 #profile-page-header .card-image {
     height: 250px;
   }

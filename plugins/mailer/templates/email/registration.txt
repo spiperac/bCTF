@@ -1,0 +1,8 @@
+Hi {{team_name}}!
+Welcome and thanks for registration.
+
+We hope you enjoy our game, and learn something along the way.
+Here are your credentials:
+
+Username: {{team_name}}
+Password: *******
