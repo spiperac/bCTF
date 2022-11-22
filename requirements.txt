@@ -14,4 +14,4 @@ mysqlclient==1.3.14
 whitenoise==4.1.2
 docker==3.5.1
 gunicorn==19.9.0
-Pillow==6.2.0
+Pillow==9.3.0
